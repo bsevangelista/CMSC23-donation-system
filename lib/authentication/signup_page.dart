@@ -5,7 +5,7 @@ class SignUpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign Up'),
+        automaticallyImplyLeading: false, // Remove back arrow
       ),
       body: SingleChildScrollView( // Wrap with SingleChildScrollView
         child: Padding(
@@ -111,9 +111,16 @@ class SignUpPage extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   // Navigate to sign-in page
-                  Navigator.pop(context); // Go back to previous page
+                  Navigator.pushNamed(context, '/');
                 },
                 child: Text('Already have an account? Sign In', style: TextStyle(color: Colors.grey[500])),
+              ),
+              TextButton(
+                onPressed: () {
+                  // Navigate to sign-in page
+                  Navigator.pushNamed(context, '/org_signup'); // Go back to previous page
+                },
+                child: Text('Signing up as an organization?', style: TextStyle(color: Colors.grey[500])),
               ),
             ],
           ),
