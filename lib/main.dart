@@ -1,23 +1,46 @@
+import 'package:app/firebase_options.dart';
+import 'package:app/pages/organizationHome.dart';
+import 'package:app/providers/organization_provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'authentication/signin_page.dart';
-import 'authentication/signup_page.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: ((context) => OrgListProvider())),
+  ], child: const RootWidget()));
 }
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+class RootWidget extends StatelessWidget {
+  const RootWidget({super.key});
+
+  Widget build(BuildContext) {
     return MaterialApp(
-      title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        appBarTheme: const AppBarTheme(
+          color: Colors.indigo,
+          iconTheme: IconThemeData(color: Colors.white),
+        ),
+        colorScheme: ColorScheme.dark(),
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => SignInPage(),
-        '/signup': (context) => SignUpPage(),
+      title: "Organization Name",
+      initialRoute: "/",
+      home: OrganizationHomePage(), //initializing first page
+      onGenerateRoute: (settings) {
+        //sets routes
+        if (settings.name == "/") {
+          return MaterialPageRoute(builder: (context) => OrganizationHomePage());
+        }
+
+        // if (settings.name == "/second") {
+        //   return MaterialPageRoute(builder: (context) => SecondPage());
+        // }
+
+        return null;
       },
     );
   }
