@@ -1,11 +1,12 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Donation {
   String? id;
   String category;
   String deliveryMode;
   int weight;
-  String approval;
   // photo
   DateTime dateTime;
   List<String> address;
@@ -19,7 +20,6 @@ class Donation {
     required this.category,
     required this.deliveryMode,
     required this.weight,
-    required this.approval,
     required this.dateTime,
     required this.address,
     required this.contactNum,
@@ -35,8 +35,7 @@ class Donation {
       category: json['category'],
       deliveryMode: json['deliveryMode'],
       weight: json['weight'],
-      approval: json['approval'],
-      dateTime: DateTime.parse(json['dateTime']),
+      dateTime: (json['dateTime'] as Timestamp).toDate(),
       address: List<String>.from(json['address']),
       contactNum: json['contactNum'],
       status: json['status'],
@@ -55,7 +54,6 @@ class Donation {
       'category': dono.category,
       'deliveryMode': dono.deliveryMode,
       'weight': dono.weight,
-      'approval': dono.approval,
       'dateTime': dono.dateTime.toIso8601String(),
       'address': dono.address,
       'contactNum': dono.contactNum,
