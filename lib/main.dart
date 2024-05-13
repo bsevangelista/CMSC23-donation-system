@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:app/firebase_options.dart';
 import 'package:app/pages/organizationHome.dart';
 import 'package:app/providers/organization_provider.dart';
@@ -11,7 +13,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: ((context) => OrgListProvider())),
+    ChangeNotifierProvider(create: ((context) => OrgListProvider("PssGUv1edsDRb67AES9l"))), //fix later 
   ], child: const RootWidget()));
 }
 
@@ -25,12 +27,11 @@ class RootWidget extends StatelessWidget {
           color: Colors.indigo,
           iconTheme: IconThemeData(color: Colors.white),
         ),
-        colorScheme: ColorScheme.dark(),
       ),
       title: "Organization Name",
       initialRoute: "/",
       home: OrganizationHomePage(), //initializing first page
-      onGenerateRoute: (settings) {
+      onGenerateRoute: (settings) { 
         //sets routes
         if (settings.name == "/") {
           return MaterialPageRoute(builder: (context) => OrganizationHomePage());

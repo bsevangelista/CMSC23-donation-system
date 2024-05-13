@@ -6,14 +6,14 @@ class OrgListProvider with ChangeNotifier {
   FirebaseOrgAPI firebaseService = FirebaseOrgAPI();
   late Stream<QuerySnapshot> _donationsStream;
 
-  OrgListProvider() {
-    fetchDonations();
+  OrgListProvider(String organizationId) {
+    fetchDonations(organizationId);
   }
   // getter
   Stream<QuerySnapshot> get donations => _donationsStream;
 
-  void fetchDonations() {
-    _donationsStream = firebaseService.getAllDonations();
+  void fetchDonations(String organizationId) {
+    _donationsStream = firebaseService.getAllDonations(organizationId);
     notifyListeners();
   }
 }
