@@ -13,7 +13,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: ((context) => OrgListProvider("PssGUv1edsDRb67AES9l"))), //fix later 
+    ChangeNotifierProvider(create: ((context) => OrgListProvider("PssGUv1edsDRb67AES9l"))), //remove string if auth is implemented
   ], child: const RootWidget()));
 }
 

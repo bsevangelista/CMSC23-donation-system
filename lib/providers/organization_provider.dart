@@ -12,8 +12,23 @@ class OrgListProvider with ChangeNotifier {
   // getter
   Stream<QuerySnapshot> get donations => _donationsStream;
 
+
+  // remove function if auth is implemented
   void fetchDonations(String organizationId) {
     _donationsStream = firebaseService.getAllDonations(organizationId);
     notifyListeners();
   }
+
+  // uncomment if auth is implemented
+  // void fetchDonations() async {
+  //   // Get the current user's ID
+  //   User? user = FirebaseAuth.instance.currentUser;
+  //   String? orgId = user?.uid;
+
+  //   if (orgId != null) {
+  //     // Fetch donations for the organization (using user ID as organization ID)
+  //     _donationsStream = firebaseService.getAllDonations(orgId);
+  //     notifyListeners();
+  //   }
+  // }
 }
