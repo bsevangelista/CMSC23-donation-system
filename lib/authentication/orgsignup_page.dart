@@ -21,10 +21,34 @@ class OrgSignUp extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20.0),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Organization Name',
-                  prefixIcon: Icon(Icons.business),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: Colors.grey[200],
+                ),
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Organization Name',
+                    prefixIcon: Icon(Icons.person),
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.0),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: Colors.grey[200],
+                ),
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    prefixIcon: Icon(Icons.lock),
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
+                  ),
+                  obscureText: true,
                 ),
               ),
               SizedBox(height: 20.0),
@@ -40,7 +64,14 @@ class OrgSignUp extends StatelessWidget {
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.black),
                 ),
-                child: Text('Upload Files', style: TextStyle(color: Colors.white)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.cloud_upload), // Upload symbol
+                    SizedBox(width: 8.0),
+                    Text('Upload Files', style: TextStyle(color: Colors.white)),
+                  ],
+                ),
               ),
               SizedBox(height: 20.0),
               ElevatedButton(
