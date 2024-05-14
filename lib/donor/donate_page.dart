@@ -17,7 +17,6 @@ class _DonatePageState extends State<DonatePage> {
   bool necessities = false;
   bool others = false;
 
-  // List<String> deliveryType = ["Pickup", "Dropoff"];
   List<String> deliveryTypeChoices = <String>['Pickup', 'Dropoff'];
   String deliveryType = 'Pickup';
 
