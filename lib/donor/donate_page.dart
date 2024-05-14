@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
+
+// !!!!!!!!!! gagawan pa ng sariling classes ung mga nandito
 
 class DonatePage extends StatefulWidget {
   const DonatePage({super.key});
@@ -21,6 +24,12 @@ class _DonatePageState extends State<DonatePage> {
   double weight = 0;
   List<String> weightTypeChoices = <String>['kg', 'lb'];
   String weightType = 'kg'; 
+
+  int timeHour = 0;
+  int timeMinute = 0;
+
+  List<String> timePeriodChoices = <String>['AM', 'PM'];
+  String timePeriod = 'AM';
 
  @override
   Widget build(BuildContext context) {
@@ -196,16 +205,221 @@ class _DonatePageState extends State<DonatePage> {
             SizedBox(height: 20.0),
             Row(
               children: [
-                Text("Photo", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
+                Text("Photo of Donated Items", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
                 Text("(optional)", style: TextStyle(fontSize: 12, color: Color.fromRGBO(120, 117, 117, 1))),
               ]
             ),
 
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 28.0),
+                    child: FilledButton(
+                    style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
+                    onPressed: () {
 
-            
-           
+                      setState(() {
+        
+                      });
+                    },
+                    child:
+                      Column(
+                        children: [
+                          Icon(
+                            Icons.upload,
+                            color: Colors.grey.shade700,
+                            // semanticLabel: "QR Generator",
+                            size: 40,
+                          ),
+                          const Text("Upload", style: TextStyle(fontSize: 12, color: const Color.fromARGB(255, 0, 0, 0))) 
+                        ]
+                      ) 
+                      // Text("Generate QR", style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)))
+                    ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 28.0),
+                    child: FilledButton(
+                    style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
+                    onPressed: () {
 
+                      setState(() {
+        
+                      });
+                    },
+                    child:
+                      Column(
+                        children: [
+                          Icon(
+                            Icons.photo_camera,
+                            color: Colors.grey.shade700,
+                            // semanticLabel: "QR Generator",
+                            size: 40,
+                          ),
+                          const Text("Camera", style: TextStyle(fontSize: 12, color: const Color.fromARGB(255, 0, 0, 0))) 
+                        ]
+                      ) 
+                      // Text("Generate QR", style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)))
+                    ),
+                )      
+              ]
+            ),
+
+
+
+
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            Divider(),
+            SizedBox(height: 20.0),
+            Text("Date and Time of Delivery", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
             
+            TableCalendar(
+              firstDay: DateTime.utc(2010, 10, 16),
+              lastDay: DateTime.utc(2030, 3, 14),
+              focusedDay: DateTime.now(),
+            ),
+    //////////////////////// for pickup only       
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            Divider(),
+            SizedBox(height: 20.0),
+            Text("Address", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
+
+            Padding(
+              padding: const EdgeInsets.only(left: 28.0),
+              child:Row(
+                children: [
+                  Expanded(
+                    flex: 7,
+                    child: TextFormField(
+                      onSaved: (String? value) {
+
+                      }
+                    ),
+                  ),
+
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+
+                            setState(() {
+              
+                            });
+                          },
+                          icon: Icon(Icons.add),
+
+                        )
+                      ]
+                    )
+                  ),
+
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
+                  )
+                ]
+              ),
+            ),
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            Divider(),
+            SizedBox(height: 20.0),
+            Text("Contact No", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
+
+            Padding(
+              padding: const EdgeInsets.only(left: 28.0),
+              child:Row(
+                children: [
+                  Expanded(
+                    flex: 7,
+                    child: TextFormField(
+                      onSaved: (String? value) {
+
+                      }
+                    ),
+                  ),
+
+                  Expanded(
+                    flex: 3,
+                    child: Container(),
+                  )
+                ]
+              ),
+            ),
+            
+    //////////////////////// for pickup only       
+    
+
+    //////////////////////// for dropoff only
+            Divider(),
+            SizedBox(height: 20.0),
+            Text("Generate QR", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
+
+            Padding(
+              padding: const EdgeInsets.only(left: 28.0),
+              child:             FilledButton(
+              style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
+              onPressed: () {
+
+                setState(() {
+  
+                });
+              },
+              child:
+                Column(
+                  children: [
+                    Icon(
+                      Icons.qr_code,
+                      color: Colors.grey.shade700,
+                      // semanticLabel: "QR Generator",
+                      size: 40,
+                    ),
+                    const Text("Generate QR", style: TextStyle(fontSize: 12, color: const Color.fromARGB(255, 0, 0, 0))) 
+                  ]
+                ) 
+                // Text("Generate QR", style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)))
+              ),
+            ),     
+    //////////////////////// for dropoff only   
+            Divider(),
+            SizedBox(height: 20.0),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FilledButton(
+                  style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
+                  onPressed: () {
+
+                    setState(() {
+      
+                    });
+                  },
+                  child:
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      // crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text("Donate", style: TextStyle(fontSize: 20, color: const Color.fromARGB(255, 0, 0, 0))) ,
+                        Icon(
+                          Icons.volunteer_activism,
+                          color: Colors.grey.shade700,
+                          // semanticLabel: "QR Generator",
+                          size: 20,
+                        ),
+                      ]
+                    ) 
+                    // Text("Generate QR", style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)))
+                ),
+              ]
+            )
+
+
 
             ] // children
           )
