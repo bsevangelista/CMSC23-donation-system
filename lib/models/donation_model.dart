@@ -10,7 +10,7 @@ class Donation {
   // photo
   DateTime dateTime;
   List<String> address;
-  int contactNum;
+  String contactNum;
   String status;
   String organization;
   String user;
