@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Donation {
   String? id;
-  String category;
+  List<String> category;
   String deliveryMode;
   int weight;
   // photo
@@ -32,7 +32,7 @@ class Donation {
   factory Donation.fromJson(Map<String, dynamic> json) {
     return Donation(
       id: json['id'],
-      category: json['category'],
+      category: List<String>.from(json['category']),
       deliveryMode: json['deliveryMode'],
       weight: json['weight'],
       dateTime: (json['dateTime'] as Timestamp).toDate(),
