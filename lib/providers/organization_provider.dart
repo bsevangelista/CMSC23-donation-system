@@ -19,6 +19,11 @@ class OrgListProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void updateDonationStatus(String donationId, String newStatus) {
+    firebaseService.updateDonationStatus(donationId, newStatus);
+
+  }
+
   // uncomment if auth is implemented
   // void fetchDonations() async {
   //   // Get the current user's ID

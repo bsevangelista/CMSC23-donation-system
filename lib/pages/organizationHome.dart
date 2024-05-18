@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:app/models/donation_model.dart';
+import 'package:app/pages/donationView.dart';
 import 'package:app/providers/organization_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -52,9 +53,9 @@ class _OrganizationHomePage extends State<OrganizationHomePage> {
             dono.id = snapshot.data?.docs[index].id;
 
             return Card(
-              color: Colors.blueGrey,
+              color: Colors.black,
               child: Padding(
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.all(15),
                 child: Column(
                   children: [
                     Row(
@@ -64,10 +65,11 @@ class _OrganizationHomePage extends State<OrganizationHomePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                dono.category,
+                                dono.category.join(', '), //fix later
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 30,
+                                  fontSize: 15,
+                                  color: Colors.white,
                                 ),
                               ),
                             ],
@@ -78,12 +80,12 @@ class _OrganizationHomePage extends State<OrganizationHomePage> {
                           children: [
                             TextButton(
                               onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => DetailsPage(friend), 
-                                //   ),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DonationView(dono), 
+                                  ),
+                                );
                               },
                               child: Text(
                                 "View",
@@ -113,6 +115,7 @@ class _OrganizationHomePage extends State<OrganizationHomePage> {
           "Donation List",
           style: TextStyle(color: Colors.white),
         ),
+        
       ),
       body: Center(
         child: Column(

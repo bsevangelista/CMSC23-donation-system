@@ -20,11 +20,12 @@ void main() async {
 class RootWidget extends StatelessWidget {
   const RootWidget({super.key});
 
+  @override
   Widget build(BuildContext) {
     return MaterialApp(
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
-          color: Colors.indigo,
+          color: Colors.black,
           iconTheme: IconThemeData(color: Colors.white),
         ),
       ),

@@ -8,4 +8,10 @@ class FirebaseOrgAPI {
         .where("organization", isEqualTo: organizationId)
         .snapshots();
   }
+
+  Future<void> updateDonationStatus(String donationId, String newStatus) {
+    return db.collection("donations")
+        .doc(donationId)
+        .update({"status": newStatus});
+  }
 }
