@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import 'donate_form_widgets.dart';
+
+
 // !!!!!!!!!! gagawan pa ng sariling classes ung mga nandito
 
 class DonatePage extends StatefulWidget {
@@ -24,8 +27,13 @@ class _DonatePageState extends State<DonatePage> {
   List<String> weightTypeChoices = <String>['kg', 'lb'];
   String weightType = 'kg'; 
 
+
+  List<int> timeHourChoices = <int>[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  List<int> timeMinuteChoices = <int>[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59];
+
+
   int timeHour = 0;
-  int timeMinute = 0;
+  int timeMinute = 0;  
 
   List<String> timePeriodChoices = <String>['AM', 'PM'];
   String timePeriod = 'AM';
@@ -273,11 +281,29 @@ class _DonatePageState extends State<DonatePage> {
             SizedBox(height: 20.0),
             Text("Date and Time of Delivery", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
             
-            TableCalendar(
-              firstDay: DateTime.utc(2010, 10, 16),
-              lastDay: DateTime.utc(2030, 3, 14),
-              focusedDay: DateTime.now(),
+            // TableCalendar(
+            //   // firstDay: DateTime.utc(2010, 10, 16),
+            //   firstDay: DateTime.now(),
+            //   lastDay: DateTime.utc(2030, 3, 14),
+            //   focusedDay: DateTime.now(),
+            // ),
+            // DatePicker(),
+            // SizedBox(height: 20.0),
+            // TimePicker(),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 28.0),
+                    child: DatePicker(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 28.0),
+                    child: TimePicker(),
+                )      
+              ]
             ),
+
+            
     //////////////////////// for pickup only       
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             Divider(),
