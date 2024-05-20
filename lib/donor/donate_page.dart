@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 import 'donate_form_widgets.dart';
 
@@ -136,8 +135,7 @@ class _DonatePageState extends State<DonatePage> {
               ),
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            Divider(),
-            SizedBox(height: 20.0),
+            donateDivider(),
             Text("Delivery Type", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
 
 
@@ -160,8 +158,7 @@ class _DonatePageState extends State<DonatePage> {
             ),
             
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            Divider(),
-            SizedBox(height: 20.0),
+            donateDivider(),
             Text("Weight of Donated Items", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
 
             Padding(
@@ -208,8 +205,7 @@ class _DonatePageState extends State<DonatePage> {
             ),
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            Divider(),
-            SizedBox(height: 20.0),
+            donateDivider(),
             Row(
               children: [
                 Text("Photo of Donated Items", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
@@ -235,13 +231,11 @@ class _DonatePageState extends State<DonatePage> {
                           Icon(
                             Icons.upload,
                             color: Colors.grey.shade700,
-                            // semanticLabel: "QR Generator",
                             size: 40,
                           ),
                           const Text("Upload", style: TextStyle(fontSize: 12, color: const Color.fromARGB(255, 0, 0, 0))) 
                         ]
                       ) 
-                      // Text("Generate QR", style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)))
                     ),
                 ),
                 Padding(
@@ -260,13 +254,11 @@ class _DonatePageState extends State<DonatePage> {
                           Icon(
                             Icons.photo_camera,
                             color: Colors.grey.shade700,
-                            // semanticLabel: "QR Generator",
                             size: 40,
                           ),
                           const Text("Camera", style: TextStyle(fontSize: 12, color: const Color.fromARGB(255, 0, 0, 0))) 
                         ]
                       ) 
-                      // Text("Generate QR", style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)))
                     ),
                 )      
               ]
@@ -277,8 +269,7 @@ class _DonatePageState extends State<DonatePage> {
 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            Divider(),
-            SizedBox(height: 20.0),
+            donateDivider(),
             Text("Date and Time of Delivery", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
             
             // TableCalendar(
@@ -306,113 +297,30 @@ class _DonatePageState extends State<DonatePage> {
             
     //////////////////////// for pickup only       
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            Divider(),
-            SizedBox(height: 20.0),
-            Text("Address", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
+            if (deliveryType=="Pickup") donateDivider(),
+            if (deliveryType=="Pickup") titleStyle("Address"),
 
-            Padding(
-              padding: const EdgeInsets.only(left: 28.0),
-              child:Row(
-                children: [
-                  Expanded(
-                    flex: 7,
-                    child: TextFormField(
-                      onSaved: (String? value) {
+            if (deliveryType=="Pickup") Address(),
 
-                      }
-                    ),
-                  ),
-
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-
-                            setState(() {
-              
-                            });
-                          },
-                          icon: Icon(Icons.add),
-
-                        )
-                      ]
-                    )
-                  ),
-
-                  Expanded(
-                    flex: 1,
-                    child: Container(),
-                  )
-                ]
-              ),
-            ),
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            Divider(),
-            SizedBox(height: 20.0),
-            Text("Contact No", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
+            if (deliveryType=="Pickup") donateDivider(),
+            if (deliveryType=="Pickup") titleStyle("Contact No"),
 
-            Padding(
-              padding: const EdgeInsets.only(left: 28.0),
-              child:Row(
-                children: [
-                  Expanded(
-                    flex: 7,
-                    child: TextFormField(
-                      onSaved: (String? value) {
-
-                      }
-                    ),
-                  ),
-
-                  Expanded(
-                    flex: 3,
-                    child: Container(),
-                  )
-                ]
-              ),
-            ),
+            if (deliveryType=="Pickup") ContactNo(),
             
     //////////////////////// for pickup only       
     
 
     //////////////////////// for dropoff only
-            Divider(),
-            SizedBox(height: 20.0),
-            Text("Generate QR", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
+            if (deliveryType=="Dropoff") donateDivider(),
+            if (deliveryType=="Dropoff") titleStyle("Generate QR"),
 
-            Padding(
-              padding: const EdgeInsets.only(left: 28.0),
-              child:             FilledButton(
-              style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
-              onPressed: () {
+            if (deliveryType=="Dropoff") GenerateQR(),
 
-                setState(() {
-  
-                });
-              },
-              child:
-                Column(
-                  children: [
-                    Icon(
-                      Icons.qr_code,
-                      color: Colors.grey.shade700,
-                      // semanticLabel: "QR Generator",
-                      size: 40,
-                    ),
-                    const Text("Generate QR", style: TextStyle(fontSize: 12, color: const Color.fromARGB(255, 0, 0, 0))) 
-                  ]
-                ) 
-                // Text("Generate QR", style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)))
-              ),
-            ),     
+     
     //////////////////////// for dropoff only   
-            Divider(),
-            SizedBox(height: 20.0),
+            donateDivider(),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -454,10 +362,18 @@ class _DonatePageState extends State<DonatePage> {
   }
 }
 
+Widget donateDivider(){
+  return Column(
+    children: [
+      Divider(),
+      SizedBox(height: 20.0),
+    ],
+  );
+}
 
-
-
-
+Widget titleStyle(String title){
+  return Text(title, style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold));
+}
 
 
 
