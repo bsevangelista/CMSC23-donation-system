@@ -36,7 +36,7 @@ class SignUpPage extends StatelessWidget {
         });
 
         // Navigate to next screen after successful sign-up
-        Navigator.pushNamed(context, '/');
+        Navigator.pushNamed(context, '/admin_dashboard');
       } catch (e) {
         // Handle sign-up errors
         print('Sign-up error: $e');

@@ -17,7 +17,7 @@ class SignInPage extends StatelessWidget {
           password: passwordController.text,
         );
 
-       Navigator.pushNamed(context, '/signup');
+       Navigator.pushNamed(context, '/admin_dashboard');
         // Handle sign-in success, navigate to next screen, or update UI accordingly
       } catch (e) {
         // Handle sign-in errors

@@ -6,17 +6,18 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'providers/auth_provider.dart';
+import 'pages/admin_dashboard.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
+    options: DefaultFirebaseOptions.currentPlatform,
   );
 
-    runApp(
+  runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: ((context) => UserAuthProvider()))
+        ChangeNotifierProvider(create: ((context) => UserAuthProvider())),
       ],
       child: MyApp(),
     ),
@@ -35,7 +36,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const SignInPage(),
         '/signup': (context) => const SignUpPage(),
-        '/org_signup' : (context) => const OrgSignUp(),
+        '/org_signup': (context) => const OrgSignUp(),
+        '/admin_dashboard': (context) => AdminDashboard(),
       },
     );
   }
