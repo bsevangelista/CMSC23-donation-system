@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import '/donor/donate_page.dart';
 
 class OrganizationDetails extends StatelessWidget {
   final List<String>? values;

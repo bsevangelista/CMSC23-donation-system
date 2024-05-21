@@ -50,7 +50,7 @@ class _DonorHomepageState extends State<DonorHomepage> {
             );
           }
 
-          // kailangan ng condition to only show open
+          // kailangan ng condition to only show organizations with open status for donations
           return ListView.builder(
             itemCount: snapshot.data?.docs.length,
             itemBuilder: ((context, index) {
