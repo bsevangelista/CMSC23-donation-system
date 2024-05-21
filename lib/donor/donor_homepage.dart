@@ -50,6 +50,7 @@ class _DonorHomepageState extends State<DonorHomepage> {
             );
           }
 
+          // kailangan ng condition to only show open
           return ListView.builder(
             itemCount: snapshot.data?.docs.length,
             itemBuilder: ((context, index) {
@@ -65,6 +66,8 @@ class _DonorHomepageState extends State<DonorHomepage> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5)),
                   tileColor: Color.fromARGB(184, 164, 162, 164),
                   title: Text(organization.name),
+                  // trailing: FilledButton(onPressed: () {Navigator.pushNamed(context, "/second", arguments: snapshot.data?.docs[index]);} , child: Text("View Details", style: TextStyle(fontSize: 10))),
+                  trailing: FilledButton(onPressed: () {Navigator.pushNamed(context, "/second");} , child: Text("View Details", style: TextStyle(fontSize: 10))),
                 )
               );
             }

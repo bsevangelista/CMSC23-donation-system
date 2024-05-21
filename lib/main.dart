@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // import 'authentication/signup_page.dart';
 import 'donor/donate_page.dart';
 import 'donor/donor_homepage.dart';
+import 'donor/organization_details.dart';
 
 
 import 'package:provider/provider.dart';
@@ -40,8 +41,9 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => DonatePage(),
-        // '/': (context) => DonorHomepage(),
+        '/third': (context) => DonatePage(),
+        '/second': (context) => OrganizationDetails(),
+        '/': (context) => DonorHomepage(),
         // '/': (context) => SignInPage(),
         // '/signup': (context) => SignUpPage(),
         // '/donate': (context) => DonatePage(),
