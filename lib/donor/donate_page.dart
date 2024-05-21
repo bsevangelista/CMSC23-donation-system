@@ -13,29 +13,25 @@ class DonatePage extends StatefulWidget {
 }
 
 class _DonatePageState extends State<DonatePage> {
-  bool food = false;
-  bool clothes = false;
-  bool cash = false;
-  bool necessities = false;
-  bool others = false;
+  bool _food = false;
+  bool _clothes = false;
+  bool _cash = false;
+  bool _necessities = false;
+  bool _others = false;
 
-  List<String> deliveryTypeChoices = <String>['Pickup', 'Dropoff'];
-  String deliveryType = 'Pickup';
+  List<String> _deliveryModeChoices = <String>['Pickup', 'Dropoff'];
+  String _deliveryMode = 'Pickup';
 
-  double weight = 0;
-  List<String> weightTypeChoices = <String>['kg', 'lb'];
-  String weightType = 'kg'; 
-
-
-  List<int> timeHourChoices = <int>[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-  List<int> timeMinuteChoices = <int>[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59];
+  double _weight = 0;
+  List<String> _weightTypeChoices = <String>['kg', 'lb'];
+  String _weightType = 'kg'; 
 
 
-  int timeHour = 0;
-  int timeMinute = 0;  
+  // int timeHour = 0;
+  // int timeMinute = 0;  
 
-  List<String> timePeriodChoices = <String>['AM', 'PM'];
-  String timePeriod = 'AM';
+  // List<String> timePeriodChoices = <String>['AM', 'PM'];
+  // String timePeriod = 'AM';
 
  @override
   Widget build(BuildContext context) {
@@ -65,10 +61,10 @@ class _DonatePageState extends State<DonatePage> {
                       Checkbox(
                         checkColor: Colors.black,
                         activeColor: Colors.green.shade200,
-                        value: food,
+                        value: _food,
                         onChanged: (bool? value) {
                           setState(() {
-                            food = value!;
+                            _food = value!;
                           });
                         },
                       ),
@@ -79,10 +75,10 @@ class _DonatePageState extends State<DonatePage> {
                       Checkbox(
                         checkColor: Colors.black,
                         activeColor: Colors.green.shade200,
-                        value: clothes,
+                        value: _clothes,
                         onChanged: (bool? value) {
                           setState(() {
-                            clothes = value!;
+                            _clothes = value!;
                           });
                         },
                       ),
@@ -93,10 +89,10 @@ class _DonatePageState extends State<DonatePage> {
                       Checkbox(
                         checkColor: Colors.black,
                         activeColor: Colors.green.shade200,
-                        value: cash,
+                        value: _cash,
                         onChanged: (bool? value) {
                           setState(() {
-                            cash = value!;
+                            _cash = value!;
                           });
                         },
                       ),
@@ -107,10 +103,10 @@ class _DonatePageState extends State<DonatePage> {
                       Checkbox(
                         checkColor: Colors.black,
                         activeColor: Colors.green.shade200,
-                        value: necessities,
+                        value: _necessities,
                         onChanged: (bool? value) {
                           setState(() {
-                            necessities = value!;
+                            _necessities = value!;
                           });
                         },
                       ),
@@ -121,10 +117,10 @@ class _DonatePageState extends State<DonatePage> {
                       Checkbox(
                         checkColor: Colors.black,
                         activeColor: Colors.green.shade200,
-                        value: others,
+                        value: _others,
                         onChanged: (bool? value) {
                           setState(() {
-                            others = value!;
+                            _others = value!;
                           });
                         },
                       ),
@@ -142,8 +138,8 @@ class _DonatePageState extends State<DonatePage> {
             Padding(
               padding: const EdgeInsets.only(left: 28.0),
               child:DropdownButton<String>(
-                    value: deliveryType,
-                    items: deliveryTypeChoices.map<DropdownMenuItem<String>>((String value) {
+                    value: _deliveryMode,
+                    items: _deliveryModeChoices.map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
@@ -151,7 +147,7 @@ class _DonatePageState extends State<DonatePage> {
                     }).toList(),
                     onChanged: (String? value) {
                       setState(() {
-                        deliveryType = value!;
+                        _deliveryMode = value!;
                       });
                     }
                   ),
@@ -180,8 +176,8 @@ class _DonatePageState extends State<DonatePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [DropdownButton<String>(
-                        value: weightType,
-                        items: weightTypeChoices.map<DropdownMenuItem<String>>((String value) {
+                        value: _weightType,
+                        items: _weightTypeChoices.map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
@@ -189,7 +185,7 @@ class _DonatePageState extends State<DonatePage> {
                         }).toList(),
                         onChanged: (String? value) {
                           setState(() {
-                            weightType = value!;
+                            _weightType = value!;
                           });
                         }
                       ),]
@@ -297,26 +293,26 @@ class _DonatePageState extends State<DonatePage> {
             
     //////////////////////// for pickup only       
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            if (deliveryType=="Pickup") donateDivider(),
-            if (deliveryType=="Pickup") titleStyle("Address"),
+            if (_deliveryMode=="Pickup") donateDivider(),
+            if (_deliveryMode=="Pickup") titleStyle("Address"),
 
-            if (deliveryType=="Pickup") Address(),
+            if (_deliveryMode=="Pickup") Address(),
 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            if (deliveryType=="Pickup") donateDivider(),
-            if (deliveryType=="Pickup") titleStyle("Contact No"),
+            if (_deliveryMode=="Pickup") donateDivider(),
+            if (_deliveryMode=="Pickup") titleStyle("Contact No"),
 
-            if (deliveryType=="Pickup") ContactNo(),
+            if (_deliveryMode=="Pickup") ContactNo(),
             
     //////////////////////// for pickup only       
     
 
     //////////////////////// for dropoff only
-            if (deliveryType=="Dropoff") donateDivider(),
-            if (deliveryType=="Dropoff") titleStyle("Generate QR"),
+            if (_deliveryMode=="Dropoff") donateDivider(),
+            if (_deliveryMode=="Dropoff") titleStyle("Generate QR"),
 
-            if (deliveryType=="Dropoff") GenerateQR(),
+            if (_deliveryMode=="Dropoff") GenerateQR(),
 
      
     //////////////////////// for dropoff only   
@@ -328,10 +324,11 @@ class _DonatePageState extends State<DonatePage> {
                 FilledButton(
                   style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
                   onPressed: () {
-
-                    setState(() {
+                    // Navigator.pushNamed(context, "/");
+                    Navigator.pop(context);
+                    // setState(() {
       
-                    });
+                    // });
                   },
                   child:
                     Row(

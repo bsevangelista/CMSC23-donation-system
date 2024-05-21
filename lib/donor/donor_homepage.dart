@@ -9,6 +9,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 
+// class AllOrgValues{
+//   static List<List<String>> _allOrgValues=[];
+// }
+
+// void valuesReceiver(List<String> values){
+//   AllOrgValues._allOrgValues.add(values);
+// }
+
+
+
 class DonorHomepage extends StatefulWidget {
   const DonorHomepage({super.key});
 
