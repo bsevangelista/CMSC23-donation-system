@@ -12,22 +12,24 @@ class FirebaseAuthAPI {
     return auth.authStateChanges();
   }
 
-  Future<String?> signIn(String username, String password) async {
+  Future<String?> signIn(String email, String password) async {
     try {
-      // Retrieve email from username
-      var email = await _getEmailFromUsername(username);
-      if (email == null) {
-        return "No user found for that username.";
-      }
-
       await auth.signInWithEmailAndPassword(email: email, password: password);
-      return null; // Sign in successful, no error message
+      return "";
     } on FirebaseAuthException catch (e) {
-      return _handleAuthException(e);
+      if (e.code == 'invalid-email') {
+        //possible to return something more useful
+        //than just print an error message to improve UI/UX
+        return e.message;
+      } else if (e.code == 'invalid-credential') {
+        return e.message;
+      } else {
+        return "Failed at ${e.code}: ${e.message}";
+      }
     }
-  }
+  } 
 
-Future<void> signUp({
+Future<void> userSignUp({
   required String username,
   required String name,
   required String address,
@@ -44,6 +46,7 @@ Future<void> signUp({
     // Store additional user information in Firestore
     await FirebaseFirestore.instance.collection('users').doc(credential.user!.uid).set({
       'username': username,
+      'email': email,
       'name': name,
       'address': address,
       'contactNum': contactNum,
@@ -58,6 +61,35 @@ Future<void> signUp({
   }
 }
 
+  Future<void> orgSignUp({
+    required String password,
+    required String organizationName,
+    required String description,
+    required String email, // Add email parameter
+  }) async {
+    try {
+      UserCredential credential = await auth.createUserWithEmailAndPassword(
+        email: email, // Use the provided email directly
+        password: password,
+      );
+
+      // Store additional user information in Firestore
+      await FirebaseFirestore.instance.collection('organizations').doc(credential.user!.uid).set({
+        'approval': "APPROVED",
+        'description' : description,
+        'email': email,
+        'name': organizationName,
+        'status': "OPEN",
+        // Add more fields as needed
+      });
+    } on FirebaseAuthException catch (e) {
+      // Handle exceptions
+      print(_handleAuthException(e));
+    } catch (e) {
+      // Handle other errors
+      print(e);
+    }
+  }
 
   Future<void> signOut() async {
     await auth.signOut();

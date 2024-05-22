@@ -35,7 +35,7 @@ class UserAuthProvider with ChangeNotifier {
     }
   }
 
-  Future<void> signUp({
+  Future<void> userSignUp({
     required String username,
     required String password,
     required String name,
@@ -43,7 +43,7 @@ class UserAuthProvider with ChangeNotifier {
     required String contactNum,
     required String email, // Add email parameter
   }) async {
-    await authService.signUp(
+    await authService.userSignUp(
       username: username,
       password: password,
       name: name,
@@ -53,6 +53,22 @@ class UserAuthProvider with ChangeNotifier {
     );
     notifyListeners();
   }
+
+    Future<void> orgSignUp({
+    required String password,
+    required String organizationName,
+    required String description,
+    required String email, // Add email parameter
+  }) async {
+    await authService.orgSignUp(
+      organizationName: organizationName,
+      password: password,
+      email: email,
+      description: description, // Pass email to the sign-up method
+    );
+    notifyListeners();
+  }
+
 
   Future<String?> signIn(String username, String password) async {
     String? message = await authService.signIn(username, password);

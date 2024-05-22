@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 
 class OrgSignUp extends StatefulWidget {
-  const OrgSignUp({super.key});
+  const OrgSignUp({Key? key}) : super(key: key);
 
   @override
   _OrgSignUpState createState() => _OrgSignUpState();
@@ -11,10 +11,13 @@ class OrgSignUp extends StatefulWidget {
 
 class _OrgSignUpState extends State<OrgSignUp> {
   final _formKey = GlobalKey<FormState>();
-  String? organizationName;
-  String? email;
-  String? description;
-  String? password;
+  final TextEditingController organizationNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  bool showSignUpErrorMessage = false;
+  String errorMessage = '';
 
   @override
   Widget build(BuildContext context) {
@@ -22,61 +25,24 @@ class _OrgSignUpState extends State<OrgSignUp> {
       appBar: AppBar(
         automaticallyImplyLeading: false, // Remove back arrow
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 100, horizontal: 30),
           child: Form(
             key: _formKey,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(height: 20.0),
-                Center(
-                  child: Text(
-                    'Sign Up',
-                    style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                SizedBox(height: 20.0),
+                heading,
                 organizationNameField,
-                SizedBox(height: 20.0),
                 emailField,
-                SizedBox(height: 20.0),
                 descriptionField,
-                SizedBox(height: 20.0),
                 passwordField,
-                SizedBox(height: 20.0),
-                Text(
-                  'Upload Proof(s) of Legitimacy',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-                SizedBox(height: 10.0),
-                ElevatedButton(
-                  onPressed: () {
-                    // Implement file upload functionality here
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.black),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.cloud_upload), // Upload symbol
-                      SizedBox(width: 8.0),
-                      Text('Upload Files', style: TextStyle(color: Colors.white)),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20.0),
+                uploadFileWidget,
+                if (showSignUpErrorMessage) signUpErrorMessage,
                 submitButton,
-                SizedBox(height: 20.0),
-                TextButton(
-                  onPressed: () {
-                    // Navigate back to sign-in page
-                    Navigator.pushNamed(context, '/');
-                  },
-                  child: Text('Already have an account? Sign In', style: TextStyle(color: Colors.grey[500])),
-                ),
+                signInButton,
               ],
             ),
           ),
@@ -85,98 +51,168 @@ class _OrgSignUpState extends State<OrgSignUp> {
     );
   }
 
-  Widget get organizationNameField => Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          color: Colors.grey[200],
-        ),
-        child: TextFormField(
-          decoration: InputDecoration(
-            labelText: 'Organization Name',
-            prefixIcon: Icon(Icons.person),
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
+  Widget get heading => const Padding(
+        padding: EdgeInsets.only(bottom: 20),
+        child: Center(
+          child: Text(
+            "Sign Up",
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
-          onSaved: (value) => organizationName = value,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Organization Name is required';
-            }
-            return null;
-          },
         ),
       );
 
-  Widget get emailField => Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          color: Colors.grey[200],
-        ),
-        child: TextFormField(
-          decoration: InputDecoration(
-            labelText: 'Email',
-            prefixIcon: Icon(Icons.email),
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
+  Widget get organizationNameField => Padding(
+        padding: const EdgeInsets.only(bottom: 20),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            color: Colors.grey[200],
           ),
-          onSaved: (value) => email = value,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter a valid email address';
-            }
-            if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-              return 'Please enter a valid email address';
-            }
-            return null;
-          },
+          child: TextFormField(
+            controller: organizationNameController,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              labelText: 'Organization Name',
+              prefixIcon: Icon(Icons.person),
+              contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Organization Name is required';
+              }
+              return null;
+            },
+          ),
         ),
       );
 
-  Widget get descriptionField => Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          color: Colors.grey[200],
-        ),
-        child: TextFormField(
-          decoration: InputDecoration(
-            labelText: 'Description',
-            prefixIcon: Icon(Icons.description),
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
+  Widget get emailField => Padding(
+        padding: const EdgeInsets.only(bottom: 20),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            color: Colors.grey[200],
           ),
-          onSaved: (value) => description = value,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Description is required';
-            }
-            return null;
-          },
+          child: TextFormField(
+            controller: emailController,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              labelText: 'Email',
+              prefixIcon: Icon(Icons.email),
+              contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a valid email address';
+              }
+              if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                return 'Please enter a valid email address';
+              }
+              return null;
+            },
+          ),
         ),
       );
 
-  Widget get passwordField => Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          color: Colors.grey[200],
-        ),
-        child: TextFormField(
-          decoration: InputDecoration(
-            labelText: 'Password',
-            prefixIcon: Icon(Icons.lock),
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
+  Widget get descriptionField => Padding(
+        padding: const EdgeInsets.only(bottom: 20),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            color: Colors.grey[200],
           ),
-          obscureText: true,
-          onSaved: (value) => password = value,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Password is required';
-            }
-            if (value.length < 6) {
-              return 'Password must be at least 6 characters';
-            }
-            return null;
-          },
+          child: TextFormField(
+            controller: descriptionController,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              labelText: 'Description',
+              prefixIcon: Icon(Icons.description),
+              contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Description is required';
+              }
+              return null;
+            },
+          ),
+        ),
+      );
+      
+    Widget get uploadFileWidget => Padding(
+      padding: const EdgeInsets.only(bottom: 40, top: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Proof/s of Legitimacy',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 8),  
+          InkWell(
+            onTap: () {
+              // Implement file selection logic
+            },
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.upload_outlined, color: Colors.grey[200]),
+                  SizedBox(width: 10),
+                  Text(
+                    "Upload Logo",
+                    style: TextStyle(color: Colors.grey[200]),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+
+  Widget get passwordField => Padding(
+        padding: const EdgeInsets.only(bottom: 20),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            color: Colors.grey[200],
+          ),
+          child: TextFormField(
+            controller: passwordController,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              labelText: 'Password',
+              prefixIcon: Icon(Icons.lock),
+              contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
+            ),
+            obscureText: true,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Password is required';
+              }
+              if (value.length < 6) {
+                return 'Password must be at least 6 characters';
+              }
+              return null;
+            },
+          ),
+        ),
+      );
+
+  Widget get signUpErrorMessage => Padding(
+        padding: const EdgeInsets.only(bottom: 20),
+        child: Center(
+          child: Text(
+            errorMessage,
+            style: const TextStyle(color: Colors.red),
+          ),
         ),
       );
 
@@ -184,35 +220,46 @@ class _OrgSignUpState extends State<OrgSignUp> {
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
             _formKey.currentState!.save();
+
             try {
-              UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                email: email!.trim(),
-                password: password!,
+              await context.read<UserAuthProvider>().orgSignUp(
+                organizationName: organizationNameController.text.trim(),
+                description: descriptionController.text.trim(),
+                password: passwordController.text.trim(),
+                email: emailController.text.trim(),
               );
 
-              // Save additional user information to Firestore
-              await FirebaseFirestore.instance.collection('organizations').doc(userCredential.user!.uid).set({
-                'approval': 'PENDING',
-                'name': organizationName,
-                'email': email,
-                'description': description,
-                'status': 'OPEN',
-              });
-
-              // Navigate to the next screen after successful sign-up
+              // Navigate to next screen after successful sign-up
               Navigator.pushNamed(context, '/admin_dashboard');
             } catch (e) {
               // Handle sign-up errors
-              print('Sign-up error: $e');
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text('Failed to sign up. Please try again.'),
-              ));
+              setState(() {
+                showSignUpErrorMessage = true;
+                errorMessage = e.toString();
+              });
             }
           }
         },
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(Colors.black),
         ),
-        child: Text('Sign Up', style: TextStyle(color: Colors.white)),
+        child: const Text("Create Account", style: TextStyle(color: Colors.white)),
+      );
+
+  Widget get signInButton => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Already have an account?",
+                style: TextStyle(color: Colors.grey[500])),
+            TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/');
+                },
+                child:
+                    Text("Sign In", style: TextStyle(color: Colors.grey[700])))
+          ],
+        ),
       );
 }
