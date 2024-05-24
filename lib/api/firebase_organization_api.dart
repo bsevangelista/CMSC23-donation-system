@@ -9,6 +9,12 @@ class FirebaseOrgAPI {
         .snapshots();
   }
 
+  Stream<QuerySnapshot> getAllDonationDrives(String organizationId) {
+    return db.collection("donationDrives")
+        .where("organization", isEqualTo: organizationId)
+        .snapshots();
+  }
+
   Future<void> updateDonationStatus(String donationId, String newStatus) {
     return db.collection("donations")
         .doc(donationId)

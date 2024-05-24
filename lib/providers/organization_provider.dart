@@ -7,16 +7,33 @@ import 'package:flutter/material.dart';
 class OrgProvider with ChangeNotifier {
   FirebaseOrgAPI firebaseService = FirebaseOrgAPI();
   late Stream<QuerySnapshot> _donationsStream;
+  late Stream<QuerySnapshot> _donationDriveStream;
 
+  // remove parameter if auth is implemented
   OrgProvider(String organizationId) {
     fetchDonations(organizationId);
+    fetchDonationDrives(organizationId);
   }
   // getter
   Stream<QuerySnapshot> get donations => _donationsStream;
+  Stream<QuerySnapshot> get donationDrives => _donationDriveStream;
 
-  // remove function if auth is implemented
-  void fetchDonations(String organizationId) {
+  // remove parameter if auth is implemented
+  void fetchDonations(String organizationId) { 
+
+    // User? user = FirebaseAuth.instance.currentUser;
+    // String? orgId = user?.uid;
+
     _donationsStream = firebaseService.getAllDonations(organizationId);
+    notifyListeners();
+  }
+
+  void fetchDonationDrives(String organizationId) { 
+
+    // User? user = FirebaseAuth.instance.currentUser;
+    // String? orgId = user?.uid;
+
+    _donationDriveStream = firebaseService.getAllDonationDrives(organizationId);
     notifyListeners();
   }
 
@@ -32,7 +49,7 @@ class OrgProvider with ChangeNotifier {
         name: name!, description: description!, organization: orgId,);
 
     String message =
-        await firebaseService.addDonationDrive(dDrive.toJson(dDrive));
+      await firebaseService.addDonationDrive(dDrive.toJson(dDrive));
     print(message);
     notifyListeners();
   }

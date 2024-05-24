@@ -2,6 +2,7 @@
 
 import 'package:app/firebase_options.dart';
 import 'package:app/pages/addDonationDrive.dart';
+import 'package:app/pages/donationDriveHome.dart';
 import 'package:app/pages/organizationHome.dart';
 import 'package:app/providers/organization_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -39,14 +40,15 @@ class RootWidget extends StatelessWidget {
       ),
       
       title: "Organization Name",
-      initialRoute: '/org_adddonationdrive',
+      initialRoute: '/org_donationDriveHomepage',
       routes: {
         '/': (context) => const SignInPage(),
         '/signup': (context) => const SignUpPage(),
         '/org_signup': (context) => const OrgSignUp(),
         '/admin_dashboard': (context) => AdminDashboard(),
         '/org_homepage': (context) => OrganizationHomePage(),
-        '/org_adddonationdrive': (context) => AddDonationDrive(),
+        '/org_addDonationDrive': (context) => AddDonationDrive(),
+        '/org_donationDriveHomepage': (context) => DonationDriveHomePage(),
       },
     );
   }
