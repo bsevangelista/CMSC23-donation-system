@@ -14,4 +14,14 @@ class FirebaseOrgAPI {
         .doc(donationId)
         .update({"status": newStatus});
   }
+
+  Future<String> addDonationDrive(Map<String, dynamic> dDrive) async {
+    try {
+      await db.collection("donationDrives").add(dDrive);
+
+      return "Successfully added!";
+    } on FirebaseException catch (e) {
+      return "Error in ${e.code}: ${e.message}";
+    }
+  }
 }

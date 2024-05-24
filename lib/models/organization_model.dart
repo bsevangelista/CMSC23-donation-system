@@ -8,11 +8,11 @@ class Organization {
   String approval;
 
   Organization({
-    this.id,
     required this.name,
     required this.description,
     required this.status,
     required this.approval,
+    this.id,
   });
 
   // Factory constructor to instantiate object from json format

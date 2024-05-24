@@ -1,3 +1,4 @@
+import 'package:app/providers/organization_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -84,22 +85,10 @@ class _addDonationDriveState extends State<AddDonationDrive> {
   Widget get submitButton => ElevatedButton(
       onPressed: () async {
         if (_formKey.currentState!.validate()) {
-          // _formKey.currentState!.save();
-          // await context
-          //     .read<UserAuthProvider>()
-          //     .authService
-          //     // .signUp(email!, password!, firstName!, lastName!);
-
-          // // check if the widget hasn't been disposed of after an asynchronous action
-          // if (mounted) Navigator.pop(context);
+          _formKey.currentState!.save();
+          context.read<OrgProvider>().addDonationDrive(name, description);
+          Navigator.pop(context);
         }
       },
       child: const Text("Submit"));
-
-  // Helper function to validate email format
-  bool isValidEmail(String value) {
-    final emailRegExp = RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-    return emailRegExp.hasMatch(value);
-  }
 }
