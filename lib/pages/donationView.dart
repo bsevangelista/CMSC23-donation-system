@@ -28,7 +28,7 @@ class _DonationViewState extends State<DonationView> {
   }
 
   void _saveChanges() {
-    final orgListProvider = Provider.of<OrgListProvider>(context, listen: false);
+    final orgListProvider = Provider.of<OrgProvider>(context, listen: false);
     orgListProvider.updateDonationStatus(widget.donation.id!, update);
     setState(() {
       isStatusChanged = false;

@@ -17,7 +17,7 @@ class OrganizationHomePage extends StatefulWidget {
 class _OrganizationHomePage extends State<OrganizationHomePage> {
   Widget listDonations(BuildContext context) {
     Stream<QuerySnapshot> donationsStream =
-        context.watch<OrgListProvider>().donations;
+        context.watch<OrgProvider>().donations;
 
     return StreamBuilder(
       stream: donationsStream,

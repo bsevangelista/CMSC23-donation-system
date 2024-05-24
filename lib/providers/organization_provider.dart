@@ -2,11 +2,11 @@ import 'package:app/api/firebase_organization_api.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class OrgListProvider with ChangeNotifier {
+class OrgProvider with ChangeNotifier {
   FirebaseOrgAPI firebaseService = FirebaseOrgAPI();
   late Stream<QuerySnapshot> _donationsStream;
 
-  OrgListProvider(String organizationId) {
+  OrgProvider(String organizationId) {
     fetchDonations(organizationId);
   }
   // getter
