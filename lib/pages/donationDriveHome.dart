@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:app/models/donationDrive_model.dart';
+import 'package:app/pages/addDonationDrive.dart';
+import 'package:app/pages/donationDriveView.dart';
 import 'package:app/providers/organization_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -79,12 +81,12 @@ class _DonationDriveHomePage extends State<DonationDriveHomePage> {
                           children: [
                             TextButton(
                               onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => DonationDriveView(dDrive), 
-                                //   ),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DonationDriveView(dDrive), 
+                                  ),
+                                );
                               },
                               child: Text(
                                 "View",
@@ -114,6 +116,11 @@ class _DonationDriveHomePage extends State<DonationDriveHomePage> {
           "Donation Drive List",
           style: TextStyle(color: Colors.white),
         ),
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(Icons.add), color: Colors.white, onPressed: () {}), IconButton(
+        //     icon: Icon(Icons.add), color: Colors.white, onPressed: () {})],
+            
         
       ),
       body: Center(
@@ -127,12 +134,18 @@ class _DonationDriveHomePage extends State<DonationDriveHomePage> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     Navigator.pushNamed(context, "/second");
-      //   },
-      //   child: Icon(Icons.person),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddDonationDrive(),
+            ),
+          );
+        },
+        child: Icon(Icons.add),
+        tooltip: 'Add donation drive',
+      ),
     );
   }
 }

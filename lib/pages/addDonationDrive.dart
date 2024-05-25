@@ -72,6 +72,7 @@ class _addDonationDriveState extends State<AddDonationDrive> {
             labelText: 'Description',
             hintText: 'Enter donation drive description',
           ),
+          maxLines: 5,
           onSaved: (value) => setState(() => description = value),
           validator: (value) {
             if (value == null || value.isEmpty) {
