@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:app/models/donation_model.dart';
-import 'package:app/pages/donationView.dart';
+import 'package:app/pages/org_DonationView.dart';
 import 'package:app/providers/organization_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -109,14 +109,6 @@ class _DonationListState extends State<OrgDonationList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // drawer: DrawerWidget(),
-      appBar: AppBar(
-        title: Text(
-          "Donation List",
-          style: TextStyle(color: Colors.white),
-        ),
-        
-      ),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,

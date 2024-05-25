@@ -8,14 +8,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class DonationDriveHomePage extends StatefulWidget {
-  const DonationDriveHomePage({super.key});
+class DonationDriveList extends StatefulWidget {
+  const DonationDriveList({super.key});
 
   @override
-  State<DonationDriveHomePage> createState() => _DonationDriveHomePage();
+  State<DonationDriveList> createState() => _DonationDriveState();
 }
 
-class _DonationDriveHomePage extends State<DonationDriveHomePage> {
+class _DonationDriveState extends State<DonationDriveList> {
   Widget listDonationDrives(BuildContext context) {
     Stream<QuerySnapshot> donationDriveStream =
         context.watch<OrgProvider>().donationDrives;
@@ -110,19 +110,6 @@ class _DonationDriveHomePage extends State<DonationDriveHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // drawer: DrawerWidget(),
-      appBar: AppBar(
-        title: Text(
-          "Donation Drive List",
-          style: TextStyle(color: Colors.white),
-        ),
-        // actions: [
-        //   IconButton(
-        //     icon: Icon(Icons.add), color: Colors.white, onPressed: () {}), IconButton(
-        //     icon: Icon(Icons.add), color: Colors.white, onPressed: () {})],
-            
-        
-      ),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
