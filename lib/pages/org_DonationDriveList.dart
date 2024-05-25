@@ -48,9 +48,8 @@ class _DonationDriveState extends State<DonationDriveList> {
         return ListView.builder(
           itemCount: donationDrives.length,
           itemBuilder: (BuildContext context, int index) {
-
             DonationDrive dDrive = DonationDrive.fromJson(
-              snapshot.data?.docs[index].data() as Map<String, dynamic>);
+                snapshot.data?.docs[index].data() as Map<String, dynamic>);
             dDrive.id = snapshot.data?.docs[index].id;
 
             return Card(
@@ -84,7 +83,8 @@ class _DonationDriveState extends State<DonationDriveList> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => DonationDriveView(dDrive), 
+                                    builder: (context) =>
+                                        DonationDriveView(dDrive),
                                   ),
                                 );
                               },
@@ -130,6 +130,8 @@ class _DonationDriveState extends State<DonationDriveList> {
             ),
           );
         },
+        backgroundColor: Colors.black, 
+        foregroundColor: Colors.white, 
         child: Icon(Icons.add),
         tooltip: 'Add donation drive',
       ),

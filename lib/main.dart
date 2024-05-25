@@ -40,7 +40,7 @@ class RootWidget extends StatelessWidget {
         ),
       ),
       
-      title: "Organization Name",
+      title: "CMSC Donation App",
       initialRoute: '/org_homepage',
       routes: {
         '/': (context) => const SignInPage(),

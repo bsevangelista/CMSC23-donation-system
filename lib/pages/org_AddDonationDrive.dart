@@ -17,8 +17,9 @@ class _addDonationDriveState extends State<AddDonationDrive> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      // drawer: Drawer(),
+      appBar: AppBar(
+        title: Text("Create Donation Drive", style: TextStyle(color: Colors.white),),
+        ),
       body: SingleChildScrollView(
         child: Container(
             margin: const EdgeInsets.all(30),
@@ -26,12 +27,7 @@ class _addDonationDriveState extends State<AddDonationDrive> {
               key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  heading,
-                  nameField,
-                  descriptionField,
-                  submitButton
-                ],
+                children: [heading, nameField, descriptionField, submitButton],
               ),
             )),
       ),
@@ -91,5 +87,9 @@ class _addDonationDriveState extends State<AddDonationDrive> {
           Navigator.pop(context);
         }
       },
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.white, 
+        backgroundColor: Colors.black,
+      ),
       child: const Text("Submit"));
 }

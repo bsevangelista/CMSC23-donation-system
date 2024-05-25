@@ -1,5 +1,9 @@
+// ignore_for_file: prefer_const_constructors, sort_child_properties_last
+
+import 'package:app/models/donationDrive_model.dart';
 import 'package:app/models/donation_model.dart';
 import 'package:app/providers/organization_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -14,33 +18,110 @@ class DonationView extends StatefulWidget {
 }
 
 class _DonationViewState extends State<DonationView> {
-  late String update;
+  late String update = '';
+  DonationDrive? donoDrive;
   bool isStatusChanged = false; // Track if the status has changed
 
   void _statusChange(String newStatus) {
     setState(() {
-      if (widget.donation.status == newStatus){
+      if (widget.donation.status == newStatus) {
         isStatusChanged = false;
       } else {
-        isStatusChanged = true; 
+        isStatusChanged = true;
       }
     });
   }
 
-  void _saveChanges() {
-    final orgListProvider = Provider.of<OrgProvider>(context, listen: false);
-    orgListProvider.updateDonationStatus(widget.donation.id!, update);
-    setState(() {
-      isStatusChanged = false;
-    });
-    Navigator.pop(context);
+void _saveChanges() {
+  final orgListProvider = Provider.of<OrgProvider>(context, listen: false);
+
+  if (widget.donation.status == 'Confirmed' && donoDrive == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Please select a donation drive.'),
+      ),
+    );
+    return; 
+  }
+
+  if (donoDrive != null) {
+    orgListProvider.updateDonationDriveDonations(donoDrive, widget.donation); 
+    orgListProvider.updateDonationStatus(widget.donation.id!, 'Complete');
+  }
+  update != ''
+      ? orgListProvider.updateDonationStatus(widget.donation.id!, update)
+      : null;
+  setState(() {
+    isStatusChanged = false;
+  });
+  Navigator.pop(context);
+}
+
+  Widget listDonationDrives(BuildContext context) {
+    Stream<QuerySnapshot> donationDriveStream =
+        context.watch<OrgProvider>().donationDrives;
+
+    return StreamBuilder(
+      stream: donationDriveStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (snapshot.hasError) {
+          return Center(
+            child: Text('Error: ${snapshot.error}'),
+          );
+        }
+
+        List<DocumentSnapshot> donationDrives = snapshot.data!.docs;
+
+        if (donationDrives.isEmpty) {
+          return Center(
+            child: Text(
+              'No donation drives yet.',
+              style: TextStyle(fontSize: 18),
+            ),
+          );
+        }
+
+        List<DonationDrive> driveList =
+            donationDrives.map((DocumentSnapshot document) {
+          DonationDrive dDrive =
+              DonationDrive.fromJson(document.data() as Map<String, dynamic>);
+          dDrive.id = document.id;
+          return dDrive;
+        }).toList();
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: driveList.map((DonationDrive drive) {
+            return RadioListTile<DonationDrive>(
+              title: Text(drive.name),
+              value: drive,
+              groupValue: donoDrive,
+              onChanged: (DonationDrive? value) {
+                setState(() {
+                  donoDrive = value;
+                  isStatusChanged = true;
+                });
+              },
+            );
+          }).toList(),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Donation Details', style: TextStyle(color: Colors.white),), // Display donation details in the app bar
+        title: Text(
+          'Donation Details',
+          style: TextStyle(color: Colors.white),
+        ), // Display donation details in the app bar
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -58,9 +139,22 @@ class _DonationViewState extends State<DonationView> {
               Text("Contact Number: ${widget.donation.contactNum}"),
             SizedBox(height: 20),
             DropdownButtonFormField<String>(
-              value: widget.donation.status,
-              items: ["Pending", "Confirmed", "Scheduled for Pick-up", "Complete", "Canceled"]
-                  .map((String value) {
+              value: [
+                "Pending",
+                "Scheduled for Pick-up",
+                "Confirmed",
+                "Complete",
+                "Canceled"
+              ].contains(widget.donation.status)
+                  ? widget.donation.status
+                  : "Pending",
+              items: [
+                "Pending",
+                "Scheduled for Pick-up",
+                "Confirmed",
+                "Complete",
+                "Canceled"
+              ].map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
@@ -77,6 +171,7 @@ class _DonationViewState extends State<DonationView> {
               ),
             ),
             SizedBox(height: 20),
+            widget.donation.status == 'Confirmed' ? listDonationDrives(context) : Container(),
           ],
         ),
       ),
