@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:app/models/donationDrive_model.dart';
-import 'package:app/pages/addDonationDrive.dart';
-import 'package:app/pages/donationDriveView.dart';
+import 'package:app/pages/org_AddDonationDrive.dart';
+import 'package:app/pages/org_DonationDriveView.dart';
 import 'package:app/providers/organization_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
