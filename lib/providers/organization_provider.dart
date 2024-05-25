@@ -1,5 +1,6 @@
 import 'package:app/api/firebase_organization_api.dart';
 import 'package:app/models/donationDrive_model.dart';
+import 'package:app/models/donation_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +20,7 @@ class OrgProvider with ChangeNotifier {
   Stream<QuerySnapshot> get donationDrives => _donationDriveStream;
 
   // remove parameter if auth is implemented
-  void fetchDonations(String organizationId) { 
-
+  void fetchDonations(String organizationId) {
     // User? user = FirebaseAuth.instance.currentUser;
     // String? orgId = user?.uid;
 
@@ -28,8 +28,7 @@ class OrgProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void fetchDonationDrives(String organizationId) { 
-
+  void fetchDonationDrives(String organizationId) {
     // User? user = FirebaseAuth.instance.currentUser;
     // String? orgId = user?.uid;
 
@@ -46,12 +45,23 @@ class OrgProvider with ChangeNotifier {
     String? orgId = user?.uid;
 
     DonationDrive dDrive = DonationDrive(
-        name: name!, description: description!, organization: orgId, donations: []);
+        name: name!,
+        description: description!,
+        organization: orgId,
+        donations: []);
 
     String message =
-      await firebaseService.addDonationDrive(dDrive.toJson(dDrive));
+        await firebaseService.addDonationDrive(dDrive.toJson(dDrive));
     print(message);
     notifyListeners();
+  }
+
+  void updateDonationDriveDonations(DonationDrive? donoDrive, Donation donation) {
+    if (donoDrive != null && donoDrive.id != null) {
+      firebaseService.updateDonationDriveDonations(donoDrive.id!, donation.id!);
+    } else {
+      print('DonationDrive or Donation is null');
+    }
   }
 
   // // uncomment if auth is implemented
