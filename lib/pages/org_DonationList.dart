@@ -7,14 +7,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class OrganizationHomePage extends StatefulWidget {
-  const OrganizationHomePage({super.key});
+class OrgDonationList extends StatefulWidget {
+  const OrgDonationList({super.key});
 
   @override
-  State<OrganizationHomePage> createState() => _OrganizationHomePage();
+  State<OrgDonationList> createState() => _DonationListState();
 }
 
-class _OrganizationHomePage extends State<OrganizationHomePage> {
+class _DonationListState extends State<OrgDonationList> {
   Widget listDonations(BuildContext context) {
     Stream<QuerySnapshot> donationsStream =
         context.watch<OrgProvider>().donations;

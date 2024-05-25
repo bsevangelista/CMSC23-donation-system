@@ -3,7 +3,7 @@
 import 'package:app/firebase_options.dart';
 import 'package:app/pages/addDonationDrive.dart';
 import 'package:app/pages/donationDriveHome.dart';
-import 'package:app/pages/organizationHome.dart';
+import 'package:app/pages/org_DonationList.dart';
 import 'package:app/providers/organization_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +46,7 @@ class RootWidget extends StatelessWidget {
         '/signup': (context) => const SignUpPage(),
         '/org_signup': (context) => const OrgSignUp(),
         '/admin_dashboard': (context) => AdminDashboard(),
-        '/org_homepage': (context) => OrganizationHomePage(),
+        '/org_homepage': (context) => OrgDonationList(),
         '/org_addDonationDrive': (context) => AddDonationDrive(),
         '/org_donationDriveHomepage': (context) => DonationDriveHomePage(),
       },
