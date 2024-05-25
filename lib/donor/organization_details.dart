@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import '/model/organization_model.dart';
 
 class OrganizationDetails extends StatelessWidget {
-  final List<String>? values;
-  const OrganizationDetails({this.values,super.key});
+  // final List<String>? values;
+  // const OrganizationDetails({this.values,super.key});
+  final Organization organization;
+  const OrganizationDetails(this.organization, {super.key});
 
   @override
   Widget build(BuildContext context) {

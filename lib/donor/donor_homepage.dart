@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import '/model/organization_model.dart';
-import '/provider/organization_list_provider.dart';
+// import '/model/organization_model.dart';
+// import '/provider/organization_list_provider.dart';
+// import '/donor/organization_details.dart';
+
+import '/model/donationDrive_model.dart';
+import '/provider/donationDrive_list_provider.dart';
+import '/donor/donation_drive_details.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -30,12 +35,12 @@ class _DonorHomepageState extends State<DonorHomepage> {
   @override
   Widget build(BuildContext context) {
 
-    Stream<QuerySnapshot> organizationsStream = context.watch<OrganizationListProvider>().organization;
+    Stream<QuerySnapshot> donationDrivesStream = context.watch<DonationDriveProvider>().donationDrive;
 
     // return const Placeholder();
     return Scaffold(
       body: StreamBuilder(
-        stream: organizationsStream,
+        stream: donationDrivesStream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -54,30 +59,44 @@ class _DonorHomepageState extends State<DonorHomepage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Icon(Icons.corporate_fare),
-                  Text("No organizations open for donations yet."),
+                  Text("No organization donation drive open for donations yet."),
                 ]
               )
             );
           }
 
+          List<DocumentSnapshot> donationDrivesList = snapshot.data!.docs;
+
+          if (donationDrivesList.isEmpty) {
+            return Center(
+              child: Text("No organization donation drive open for donations yet.")
+            );
+          }
+
+
+
           // kailangan ng condition to only show organizations with open status for donations
           return ListView.builder(
-            itemCount: snapshot.data?.docs.length,
+            itemCount: donationDrivesList.length,
             itemBuilder: ((context, index) {
-              Organization organization = Organization.fromJson(
+              DonationDrive donationDrive = DonationDrive.fromJson(
                 snapshot.data?.docs[index].data() as Map<String,dynamic>
               );
 
-              organization.id = snapshot.data?.docs[index].id;
+              donationDrive.id = snapshot.data?.docs[index].id;
 
               return Padding(
                 padding: EdgeInsets.all(10),
                 child: ListTile(
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5)),
                   tileColor: Color.fromARGB(184, 164, 162, 164),
-                  title: Text(organization.name),
+                  title: Text(donationDrive.name),
                   // trailing: FilledButton(onPressed: () {Navigator.pushNamed(context, "/second", arguments: snapshot.data?.docs[index]);} , child: Text("View Details", style: TextStyle(fontSize: 10))),
-                  trailing: FilledButton(onPressed: () {Navigator.pushNamed(context, "/second");} , child: Text("View Details", style: TextStyle(fontSize: 10))),
+                  trailing: FilledButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/second", arguments: donationDrive);
+                      } , 
+                    child: Text("View Details", style: TextStyle(fontSize: 10))),
                 )
               );
             }
