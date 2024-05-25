@@ -6,6 +6,7 @@ import '../api/firebase_auth_api.dart';
 class UserAuthProvider with ChangeNotifier {
   late FirebaseAuthAPI authService;
   late Stream<User?> _uStream;
+  String? _userRole;
 
   UserAuthProvider() {
     authService = FirebaseAuthAPI();
@@ -14,9 +15,10 @@ class UserAuthProvider with ChangeNotifier {
 
   Stream<User?> get userStream => _uStream;
   User? get user => authService.getUser();
+  String? get userRole => _userRole;
 
   void fetchAuthentication() {
-        _uStream = authService.userSignedIn();
+    _uStream = authService.userSignedIn();
     notifyListeners();
   }
 
@@ -29,7 +31,6 @@ class UserAuthProvider with ChangeNotifier {
       
       return snapshot.docs.isNotEmpty;
     } catch (e) {
-      // Handle error, e.g., log it or return false
       print('Error checking username: $e');
       return false;
     }
@@ -41,7 +42,7 @@ class UserAuthProvider with ChangeNotifier {
     required String name,
     required String address,
     required String contactNum,
-    required String email, // Add email parameter
+    required String email,
   }) async {
     await authService.userSignUp(
       username: username,
@@ -49,32 +50,33 @@ class UserAuthProvider with ChangeNotifier {
       name: name,
       address: address,
       contactNum: contactNum,
-      email: email, // Pass email to the sign-up method
+      email: email,
     );
     notifyListeners();
   }
 
-    Future<void> orgSignUp({
+  Future<void> orgSignUp({
     required String password,
     required String organizationName,
     required String description,
-    required String email, // Add email parameter
+    required String email,
   }) async {
     await authService.orgSignUp(
       organizationName: organizationName,
       password: password,
       email: email,
-      description: description, // Pass email to the sign-up method
+      description: description,
     );
     notifyListeners();
   }
 
-
-  Future<String?> signIn(String username, String password) async {
-    String? message = await authService.signIn(username, password);
+  Future<String?> signIn(String email, String password) async {
+    String? role = await authService.signIn(email, password);
+    if (role != null && role.isNotEmpty && role != 'unknown') {
+      _userRole = role;
+    }
     notifyListeners();
-
-    return message;
+    return role;
   }
 
   Future<void> signOut() async {

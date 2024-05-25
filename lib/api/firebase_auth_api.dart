@@ -12,22 +12,48 @@ class FirebaseAuthAPI {
     return auth.authStateChanges();
   }
 
-  Future<String?> signIn(String email, String password) async {
-    try {
-      await auth.signInWithEmailAndPassword(email: email, password: password);
-      return "";
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'invalid-email') {
-        //possible to return something more useful
-        //than just print an error message to improve UI/UX
-        return e.message;
-      } else if (e.code == 'invalid-credential') {
-        return e.message;
-      } else {
-        return "Failed at ${e.code}: ${e.message}";
-      }
+Future<String?> signIn(String email, String password) async {
+  try {
+    await auth.signInWithEmailAndPassword(email: email, password: password);
+    
+    // Fetch user role
+    User? user = auth.currentUser;
+    if (user != null) {
+      String role = await _fetchUserRole(user.uid);
+      return role;
+    } else {
+      return "User not found";
     }
-  } 
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'invalid-email') {
+      return e.message;
+    } else if (e.code == 'invalid-credential') {
+      return e.message;
+    } else {
+      return "Failed at ${e.code}: ${e.message}";
+    }
+  }
+}
+
+Future<String> _fetchUserRole(String uid) async {
+  DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+  if (userDoc.exists) {
+    return 'user';
+  }
+
+  DocumentSnapshot orgDoc = await FirebaseFirestore.instance.collection('organizations').doc(uid).get();
+  if (orgDoc.exists) {
+    return 'org';
+  }
+
+  DocumentSnapshot adminDoc = await FirebaseFirestore.instance.collection('admins').doc(uid).get();
+  if (adminDoc.exists) {
+    return 'admin';
+  }
+
+  return 'unknown';
+}
+
 
 Future<void> userSignUp({
   required String username,
