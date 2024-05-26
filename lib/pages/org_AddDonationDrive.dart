@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:app/providers/organization_provider.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddDonationDrive extends StatefulWidget {
@@ -13,13 +17,18 @@ class _addDonationDriveState extends State<AddDonationDrive> {
   final _formKey = GlobalKey<FormState>();
   String? name;
   String? description;
+  String imageUrl = '';
+  XFile? imgFile;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create Donation Drive", style: TextStyle(color: Colors.white),),
+        title: Text(
+          "Create Donation Drive",
+          style: TextStyle(color: Colors.white),
         ),
+      ),
       body: SingleChildScrollView(
         child: Container(
             margin: const EdgeInsets.all(30),
@@ -27,7 +36,14 @@ class _addDonationDriveState extends State<AddDonationDrive> {
               key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [heading, nameField, descriptionField, submitButton],
+                children: [
+                  heading,
+                  nameField,
+                  descriptionField,
+                  uploadButton,
+                  SizedBox(height: 20),
+                  submitButton
+                ],
               ),
             )),
       ),
@@ -80,16 +96,77 @@ class _addDonationDriveState extends State<AddDonationDrive> {
       );
 
   Widget get submitButton => ElevatedButton(
-      onPressed: () async {
-        if (_formKey.currentState!.validate()) {
-          _formKey.currentState!.save();
-          context.read<OrgProvider>().addDonationDrive(name, description);
-          Navigator.pop(context);
-        }
-      },
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.white, 
-        backgroundColor: Colors.black,
-      ),
-      child: const Text("Submit"));
+        onPressed: () async {
+          if (_formKey.currentState!.validate() && imgFile != null) {
+            _formKey.currentState!.save();
+
+            if (imgFile != null) {
+              String uniqueFileName =
+                  DateTime.now().millisecondsSinceEpoch.toString();
+              Reference referenceRoot = FirebaseStorage.instance.ref();
+              Reference referenceDirImages =
+                  referenceRoot.child('donationDrives');
+              Reference referenceImageToUpload =
+                  referenceDirImages.child(uniqueFileName);
+
+              try {
+                await referenceImageToUpload.putFile(File(imgFile!.path));
+                imageUrl = await referenceImageToUpload.getDownloadURL();
+              } catch (e) {
+                print('Image not uploaded!');
+                return;
+              }
+            }
+
+            if (imageUrl != '') {
+              context
+                  .read<OrgProvider>()
+                  .addDonationDrive(name, description, imageUrl);
+            }
+            Navigator.pop(context);
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Logo Required!')),
+            );
+          }
+        },
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.black,
+        ),
+        child: const Text("Submit"),
+      );
+
+  Widget get uploadButton => Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          imgFile != null ?
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Image.file(
+                File(imgFile!.path),
+                width: 150,
+                height: 150,
+                fit: BoxFit.cover,
+              ),
+            ) :
+          Expanded(
+            child: Text('Upload Logo'),
+          ),
+          IconButton(
+            onPressed: () async {
+              ImagePicker imagePicker = ImagePicker();
+              XFile? file =
+                  await imagePicker.pickImage(source: ImageSource.gallery);
+              print('${file?.path}');
+              if (file == null) return;
+              setState(() {
+                imgFile = file;
+              });
+            },
+            icon: Icon(Icons.upload_outlined),
+          ),
+          
+        ],
+      );
 }

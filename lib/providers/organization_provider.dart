@@ -40,7 +40,7 @@ class OrgProvider with ChangeNotifier {
     firebaseService.updateDonationStatus(donationId, newStatus);
   }
 
-  void addDonationDrive(String? name, String? description) async {
+  void addDonationDrive(String? name, String? description, String imageUrl) async {
     User? user = FirebaseAuth.instance.currentUser;
     String? orgId = user?.uid;
 
@@ -48,7 +48,8 @@ class OrgProvider with ChangeNotifier {
         name: name!,
         description: description!,
         organization: orgId,
-        donations: []);
+        donations: [],
+        logo: imageUrl);
 
     String message =
         await firebaseService.addDonationDrive(dDrive.toJson(dDrive));

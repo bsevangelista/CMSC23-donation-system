@@ -6,6 +6,7 @@ class DonationDrive {
   String description;
   List<String>? donations;
   String? organization;
+  String? logo;
 
   DonationDrive({
     this.id,
@@ -13,6 +14,7 @@ class DonationDrive {
     required this.description,
     this.donations,
     this.organization,
+    this.logo,
   });
 
   // Factory constructor to instantiate object from json format
@@ -23,6 +25,7 @@ class DonationDrive {
       description: json['description'],
       donations: List<String>.from(json['donations']),
       organization: json['organization'],
+      logo: json['logo'],
     );
   }
 
@@ -37,6 +40,7 @@ class DonationDrive {
       'description': drive.description,
       'donations': drive.donations,
       'organization': drive.organization,
+      'logo': drive.logo,
     };
   }
 }

@@ -32,30 +32,30 @@ class _DonationViewState extends State<DonationView> {
     });
   }
 
-void _saveChanges() {
-  final orgListProvider = Provider.of<OrgProvider>(context, listen: false);
+  void _saveChanges() {
+    final orgListProvider = Provider.of<OrgProvider>(context, listen: false);
 
-  if (widget.donation.status == 'Confirmed' && donoDrive == null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Please select a donation drive.'),
-      ),
-    );
-    return; 
-  }
+    if (widget.donation.status == 'Confirmed' && donoDrive == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please select a donation drive.'),
+        ),
+      );
+      return;
+    }
 
-  if (donoDrive != null) {
-    orgListProvider.updateDonationDriveDonations(donoDrive, widget.donation); 
-    orgListProvider.updateDonationStatus(widget.donation.id!, 'Complete');
+    if (donoDrive != null) {
+      orgListProvider.updateDonationDriveDonations(donoDrive, widget.donation);
+      orgListProvider.updateDonationStatus(widget.donation.id!, 'Complete');
+    }
+    update != ''
+        ? orgListProvider.updateDonationStatus(widget.donation.id!, update)
+        : null;
+    setState(() {
+      isStatusChanged = false;
+    });
+    Navigator.pop(context);
   }
-  update != ''
-      ? orgListProvider.updateDonationStatus(widget.donation.id!, update)
-      : null;
-  setState(() {
-    isStatusChanged = false;
-  });
-  Navigator.pop(context);
-}
 
   Widget listDonationDrives(BuildContext context) {
     Stream<QuerySnapshot> donationDriveStream =
@@ -171,7 +171,9 @@ void _saveChanges() {
               ),
             ),
             SizedBox(height: 20),
-            widget.donation.status == 'Confirmed' ? listDonationDrives(context) : Container(),
+            widget.donation.status == 'Confirmed'
+                ? listDonationDrives(context)
+                : Container(),
           ],
         ),
       ),
