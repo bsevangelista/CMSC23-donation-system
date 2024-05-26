@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Organization {
   String? id;
   String name;
@@ -23,6 +25,17 @@ class Organization {
       description: json['description'],
       status: json['status'],
       approval: json['approval'],
+    );
+  }
+
+  factory Organization.fromSnapshot(DocumentSnapshot snapshot) {
+    Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+    return Organization(
+      id: snapshot.id,
+      name: data['name'],
+      description: data['description'],
+      status: data['status'],
+      approval: data['approval'],
     );
   }
 

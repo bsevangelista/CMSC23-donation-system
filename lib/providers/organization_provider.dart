@@ -9,15 +9,23 @@ class OrgProvider with ChangeNotifier {
   FirebaseOrgAPI firebaseService = FirebaseOrgAPI();
   late Stream<QuerySnapshot> _donationsStream;
   late Stream<QuerySnapshot> _donationDriveStream;
+  late Future<DocumentSnapshot> _organizationFuture;
 
   // remove parameter if auth is implemented
   OrgProvider(String organizationId) {
     fetchDonations(organizationId);
     fetchDonationDrives(organizationId);
+    fetchOrg(organizationId);
   }
   // getter
   Stream<QuerySnapshot> get donations => _donationsStream;
   Stream<QuerySnapshot> get donationDrives => _donationDriveStream;
+  Future<DocumentSnapshot> get organizationFuture => _organizationFuture;
+
+  void fetchOrg(String organizationId){
+    _organizationFuture = firebaseService.getUserOrg(organizationId);
+    notifyListeners();
+  }
 
   // remove parameter if auth is implemented
   void fetchDonations(String organizationId) {
@@ -38,6 +46,11 @@ class OrgProvider with ChangeNotifier {
 
   void updateDonationStatus(String donationId, String newStatus) {
     firebaseService.updateDonationStatus(donationId, newStatus);
+  }
+  
+  void updateOrganizationStatus(String organizationId, String newStatus) {
+    firebaseService.updateOrganizationStatus(organizationId, newStatus);
+    notifyListeners();
   }
 
   void addDonationDrive(String? name, String? description, String imageUrl) async {

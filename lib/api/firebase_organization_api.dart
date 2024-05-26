@@ -7,8 +7,7 @@ class FirebaseOrgAPI {
     return db
         .collection("donations")
         .where("organization", isEqualTo: organizationId)
-        .where("status", whereNotIn: ["Complete", "Cancelled"])
-        .snapshots();
+        .where("status", whereNotIn: ["Complete", "Cancelled"]).snapshots();
   }
 
   Stream<QuerySnapshot> getAllDonationDrives(String organizationId) {
@@ -25,13 +24,18 @@ class FirebaseOrgAPI {
         .update({"status": newStatus});
   }
 
-  Future<void> updateDonationDriveDonations(String donationDriveId, String donationID) {
-    return db
-        .collection("donationDrives")
-        .doc(donationDriveId)
-        .update({
+  Future<void> updateDonationDriveDonations(
+      String donationDriveId, String donationID) {
+    return db.collection("donationDrives").doc(donationDriveId).update({
       "donations": FieldValue.arrayUnion([donationID])
     });
+  }
+
+  Future<void> updateOrganizationStatus(String organizationId, String newStatus) {
+    return db
+        .collection("organizations")
+        .doc(organizationId)
+        .update({"status": newStatus});
   }
 
   Future<String> addDonationDrive(Map<String, dynamic> dDrive) async {
@@ -42,5 +46,20 @@ class FirebaseOrgAPI {
     } on FirebaseException catch (e) {
       return "Error in ${e.code}: ${e.message}";
     }
+  }
+
+  // Stream<QuerySnapshot> getUserOrg(String organizationId) {
+  //   try {
+  //     CollectionReference collectionRef = db.collection('organizations');
+  //     return collectionRef.where('name', isEqualTo: '').snapshots();
+  //   } catch (error) {
+  //     // Handle any errors that occur during the operation
+  //     print('Error fetching organization: $error');
+  //     return null; // Return null to indicate failure
+  //   }
+  // }
+
+  Future<DocumentSnapshot> getUserOrg(String organizationId) {
+    return db.collection('organizations').doc(organizationId).get();
   }
 }

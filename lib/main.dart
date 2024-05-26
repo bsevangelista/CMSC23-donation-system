@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:app/firebase_options.dart';
+import 'package:app/pages/org_AboutPage.dart';
 import 'package:app/pages/org_AddDonationDrive.dart';
 import 'package:app/pages/org_DonationDriveList.dart';
 import 'package:app/pages/org_DonationList.dart';
@@ -41,7 +42,7 @@ class RootWidget extends StatelessWidget {
       ),
       
       title: "CMSC Donation App",
-      initialRoute: '/org_homepage',
+      initialRoute: '/org_AboutPage',
       routes: {
         '/': (context) => const SignInPage(),
         '/signup': (context) => const SignUpPage(),
@@ -50,6 +51,7 @@ class RootWidget extends StatelessWidget {
         '/org_homepage': (context) => OrgHomePage(),
         '/org_addDonationDrive': (context) => AddDonationDrive(),
         '/org_donationDriveHomepage': (context) => DonationDriveList(),
+        '/org_AboutPage': (context) => OrgAboutPage('PssGUv1edsDRb67AES9l'),
       },
     );
   }
