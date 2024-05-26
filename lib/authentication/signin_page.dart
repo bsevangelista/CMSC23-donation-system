@@ -53,7 +53,7 @@ class SignInPage extends StatelessWidget {
             SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
-                // Implement sign-in functionality here
+                Navigator.pushNamed(context, '/');
               },
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.black),
@@ -64,7 +64,7 @@ class SignInPage extends StatelessWidget {
             TextButton(
               onPressed: () {
                 // Navigate to sign-up page
-                Navigator.pushNamed(context, '/signup');
+                // Navigator.pushNamed(context, '/signup');
               },
               child: Text('Don\'t have an account? Sign Up', style: TextStyle(color: Colors.grey[500])),
             ),

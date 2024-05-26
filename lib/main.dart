@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-// import 'authentication/signin_page.dart';
+import 'authentication/signin_page.dart';
 // import 'authentication/signup_page.dart';
 import 'donor/donate_page.dart';
 import 'donor/donor_homepage.dart';
 import 'donor/organization_details.dart';
-import 'donor/donation_drive_details.dart';
+
 
 
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-// import '/provider/organization_list_provider.dart';
-import '/provider/donationDrive_list_provider.dart';
-
-import '/model/donationDrive_model.dart';
+import '/provider/organization_list_provider.dart';
+import '/model/organization_model.dart';
+// import '/provider/donationDrive_list_provider.dart';
+// import 'donor/donation_drive_details.dart';
+// import '/model/donationDrive_model.dart';
 
 // void main() {
 //   runApp(MyApp());
@@ -27,7 +28,7 @@ Future<void> main() async{
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: ((context) => DonationDriveProvider())),
+        ChangeNotifierProvider(create: ((context) => OrganizationProvider())),
       ],
       child: MyApp(),
     ),
@@ -60,10 +61,10 @@ class MyApp extends StatelessWidget {
         }
 
         if (settings.name == "/second"){
-          final args = settings.arguments as DonationDrive?;
+          final args = settings.arguments as Organization?;
           return MaterialPageRoute(
-            builder: (context) => DonationDriveDetails(
-              donationDrive: args,
+            builder: (context) => OrganizationDetails(
+              organization: args,
             )
           );
         }
@@ -71,6 +72,12 @@ class MyApp extends StatelessWidget {
         if (settings.name == "/"){
           return MaterialPageRoute(
             builder: (context) => DonorHomepage()
+          );
+        }
+
+        if (settings.name == "/signin") {
+          return MaterialPageRoute(
+            builder: (context) => SignInPage()
           );
         }    
       }

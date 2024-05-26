@@ -1,5 +1,55 @@
 import 'package:flutter/material.dart';
 
+////////////////////////////        other categories        ////////////////////////////
+class OtherCategories extends StatefulWidget {
+  final Function callback;
+  final TextEditingController _otherCategoriesStringController;
+  const OtherCategories(this._otherCategoriesStringController, this.callback, {super.key});
+
+  @override
+  State<OtherCategories> createState() => _OtherCategoriesState(_otherCategoriesStringController, callback);
+}
+
+class _OtherCategoriesState extends State<OtherCategories> {
+  _OtherCategoriesState(this._otherCategoriesStringController, this.callback);
+  final Function callback;
+  final TextEditingController _otherCategoriesStringController;
+
+  @override
+  void dispose() {
+    _otherCategoriesStringController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+              padding: const EdgeInsets.only(left: 48.0),
+              child:Row(
+                children: [
+                  Expanded(
+                    flex: 7,
+                    child: TextFormField(
+                      validator: (val) {
+                        if (val == null || val.isEmpty || val=="") return "Please enter some text";
+                      },
+                      controller: _otherCategoriesStringController,
+                      onChanged: (value) {
+                        widget.callback(_otherCategoriesStringController);
+                      }
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Container(),
+                  )
+                ]
+              ),
+            );
+  }
+}
+////////////////////////////        other categories        ////////////////////////////
+
 
 
 ////////////////////////////        address        ////////////////////////////
@@ -61,35 +111,54 @@ class _AddressState extends State<Address> {
 
 ////////////////////////////        contact no        ////////////////////////////
 class ContactNo extends StatefulWidget {
-  const ContactNo({super.key});
+  final Function callback;
+  final TextEditingController _contactNumController;
+  const ContactNo(this._contactNumController, this.callback, {super.key});
 
   @override
-  State<ContactNo> createState() => _ContactNoState();
+  State<ContactNo> createState() => _ContactNoState(_contactNumController, callback);
 }
 
 class _ContactNoState extends State<ContactNo> {
+  _ContactNoState(this._contactNumController, this.callback);
+  final Function callback;
+  final TextEditingController _contactNumController;
+
+  @override
+  void dispose(){
+    _contactNumController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-              padding: const EdgeInsets.only(left: 28.0),
-              child:Row(
-                children: [
-                  Expanded(
-                    flex: 7,
-                    child: TextFormField(
-                      onSaved: (String? value) {
-
-                      }
-                    ),
-                  ),
-
-                  Expanded(
-                    flex: 3,
-                    child: Container(),
-                  )
-                ]
-              ),
-            );
+      padding: const EdgeInsets.only(left: 28.0),
+      child:Row(
+        children: [
+           Expanded(
+            flex: 7,
+            child: TextFormField(
+              keyboardType: TextInputType.number,
+              validator: (val) {
+                if (val == null || val.isEmpty || val=="" || num.tryParse(val)==null) return "Please enter contact number";
+             },
+              controller: _contactNumController,
+              onChanged: (value) {
+               setState(() {
+                  widget.callback(_contactNumController.text);
+              });
+             },
+            decoration: InputDecoration(border: OutlineInputBorder())
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Container(),
+          )
+        ]
+      )
+    );
   }
 }
 ////////////////////////////        contact no        ////////////////////////////
@@ -225,3 +294,52 @@ class _GenerateQRState extends State<GenerateQR> {
 }
 
 ////////////////////////////        generate qr        ////////////////////////////
+
+
+
+////////////////////////////        weight        ////////////////////////////
+class Weight extends StatefulWidget {
+  final Function callback;
+  final TextEditingController _weightController;
+  const Weight(this._weightController, this.callback, {super.key});
+
+  @override
+  State<Weight> createState() => _WeightState(_weightController, callback);
+}
+
+class _WeightState extends State<Weight> {
+  _WeightState(this._weightController, this.callback);
+  final Function callback;
+  final TextEditingController _weightController;
+
+  @override
+  void dispose(){
+    _weightController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+        flex: 10,
+        child: TextFormField(
+          keyboardType: TextInputType.number,
+          validator: (val) {
+            if (val == null || val.isEmpty || val=="" || num.tryParse(val)==null) return "Please enter numerical weight of donation";
+          },
+          controller: _weightController,
+          onChanged: (value) {
+            setState(() {
+              widget.callback(_weightController.text);
+            });
+          },
+          decoration: InputDecoration(border: OutlineInputBorder())
+          ),
+        ),
+      ]
+    );
+  }
+}
+////////////////////////////        weight        ////////////////////////////
