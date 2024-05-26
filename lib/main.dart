@@ -23,7 +23,7 @@ void main() async {
   );
 
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: ((context) => OrgProvider("PssGUv1edsDRb67AES9l"))), //remove string if auth is implemented
+    ChangeNotifierProvider(create: ((context) => OrgProvider())), //remove string if auth is implemented
     ChangeNotifierProvider(create: ((context) => UserAuthProvider())),
   ], child: const RootWidget()));
 }
@@ -42,7 +42,7 @@ class RootWidget extends StatelessWidget {
       ),
       
       title: "CMSC Donation App",
-      initialRoute: '/org_AboutPage',
+      initialRoute: '/',
       routes: {
         '/': (context) => const SignInPage(),
         '/signup': (context) => const SignUpPage(),
@@ -51,7 +51,6 @@ class RootWidget extends StatelessWidget {
         '/org_homepage': (context) => OrgHomePage(),
         '/org_addDonationDrive': (context) => AddDonationDrive(),
         '/org_donationDriveHomepage': (context) => DonationDriveList(),
-        '/org_AboutPage': (context) => OrgAboutPage('PssGUv1edsDRb67AES9l'),
       },
     );
   }

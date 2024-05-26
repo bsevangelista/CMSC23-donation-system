@@ -11,36 +11,35 @@ class OrgProvider with ChangeNotifier {
   late Stream<QuerySnapshot> _donationDriveStream;
   late Future<DocumentSnapshot> _organizationFuture;
 
+  User? user = FirebaseAuth.instance.currentUser;
+
   // remove parameter if auth is implemented
-  OrgProvider(String organizationId) {
-    fetchDonations(organizationId);
-    fetchDonationDrives(organizationId);
-    fetchOrg(organizationId);
+  OrgProvider() {
+    fetchDonations();
+    fetchDonationDrives();
+    fetchOrg();
   }
   // getter
   Stream<QuerySnapshot> get donations => _donationsStream;
   Stream<QuerySnapshot> get donationDrives => _donationDriveStream;
   Future<DocumentSnapshot> get organizationFuture => _organizationFuture;
 
-  void fetchOrg(String organizationId){
-    _organizationFuture = firebaseService.getUserOrg(organizationId);
+  void fetchOrg(){
+    String? organizationId = user?.uid;
+    _organizationFuture = firebaseService.getUserOrg(organizationId!);
     notifyListeners();
   }
 
   // remove parameter if auth is implemented
-  void fetchDonations(String organizationId) {
-    // User? user = FirebaseAuth.instance.currentUser;
-    // String? orgId = user?.uid;
-
-    _donationsStream = firebaseService.getAllDonations(organizationId);
+  void fetchDonations() {
+    String? organizationId = user?.uid;
+    _donationsStream = firebaseService.getAllDonations(organizationId!);
     notifyListeners();
   }
 
-  void fetchDonationDrives(String organizationId) {
-    // User? user = FirebaseAuth.instance.currentUser;
-    // String? orgId = user?.uid;
-
-    _donationDriveStream = firebaseService.getAllDonationDrives(organizationId);
+  void fetchDonationDrives() {
+    String? organizationId = user?.uid;
+    _donationDriveStream = firebaseService.getAllDonationDrives(organizationId!);
     notifyListeners();
   }
 
