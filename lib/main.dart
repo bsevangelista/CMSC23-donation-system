@@ -12,6 +12,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 import '/provider/organization_list_provider.dart';
+import '/provider/donation_provider.dart';
 import '/model/organization_model.dart';
 // import '/provider/donationDrive_list_provider.dart';
 // import 'donor/donation_drive_details.dart';
@@ -29,6 +30,7 @@ Future<void> main() async{
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: ((context) => OrganizationProvider())),
+        ChangeNotifierProvider(create: ((context) => DonationProvider())),
       ],
       child: MyApp(),
     ),
@@ -55,8 +57,11 @@ class MyApp extends StatelessWidget {
       // },
       onGenerateRoute: (settings) {
         if (settings.name == "/third"){
+          final args = settings.arguments as Organization?;
           return MaterialPageRoute(
-            builder: (context) => DonatePage()
+            builder: (context) => DonatePage(
+              organization: args,
+            )
           );
         }
 

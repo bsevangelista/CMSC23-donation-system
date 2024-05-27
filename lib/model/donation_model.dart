@@ -11,6 +11,7 @@ class Donation {
   // photo
   // qr
   DateTime dateTime;
+  // Timestamp dateTime;
   List<String>? address;
   String? contactNum;
   String status;
@@ -43,6 +44,7 @@ class Donation {
       weightType: json['weightType'],
       // photo
       // qr
+      // dateTime: (json['dateTime'] as Timestamp),
       dateTime: (json['dateTime'] as Timestamp).toDate(),
       address: List<String>.from(json['address']),
       contactNum: json['contactNum'],
@@ -66,6 +68,7 @@ class Donation {
       // photo
       // qr
       'dateTime': dono.dateTime.toIso8601String(),
+      // 'dateTime': DateTime.fromMillisecondsSinceEpoch(dateTime.millisecondsSinceEpoch).toIso8601String(),
       'address': dono.address,
       'contactNum': dono.contactNum,
       'status': dono.status,

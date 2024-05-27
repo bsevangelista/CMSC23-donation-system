@@ -15,11 +15,11 @@ class _OtherCategoriesState extends State<OtherCategories> {
   final Function callback;
   final TextEditingController _otherCategoriesStringController;
 
-  @override
-  void dispose() {
-    _otherCategoriesStringController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _otherCategoriesStringController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +30,14 @@ class _OtherCategoriesState extends State<OtherCategories> {
                   Expanded(
                     flex: 7,
                     child: TextFormField(
+                      style: TextStyle(fontSize: 14),
+                      decoration: InputDecoration(border: OutlineInputBorder()),
                       validator: (val) {
                         if (val == null || val.isEmpty || val=="") return "Please enter some text";
                       },
                       controller: _otherCategoriesStringController,
                       onChanged: (value) {
-                        widget.callback(_otherCategoriesStringController);
+                        widget.callback(_otherCategoriesStringController.text);
                       }
                     ),
                   ),
@@ -54,13 +56,25 @@ class _OtherCategoriesState extends State<OtherCategories> {
 
 ////////////////////////////        address        ////////////////////////////
 class Address extends StatefulWidget {
-  const Address({super.key});
+  final Function callback;
+  final TextEditingController _addressStringController;
+  const Address(this._addressStringController, this.callback, {super.key});
 
   @override
-  State<Address> createState() => _AddressState();
+  State<Address> createState() => _AddressState(_addressStringController, callback);
 }
 
 class _AddressState extends State<Address> {
+  _AddressState(this._addressStringController, this.callback);
+  final Function callback;
+  final TextEditingController _addressStringController;
+
+  // @override
+  // void dispose() {
+  //   _addressStringController.dispose();
+  //   super.dispose();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -70,34 +84,39 @@ class _AddressState extends State<Address> {
                   Expanded(
                     flex: 7,
                     child: TextFormField(
-                      onSaved: (String? value) {
-
-                      }
+                      controller: _addressStringController,
+                      validator: (val) {
+                        if (val == null || val.isEmpty || val=="") return "Please enter some text";
+                      },                     
+                      onChanged: (value) {
+                        widget.callback(_addressStringController.text);
+                      },
+                      decoration: InputDecoration(border: OutlineInputBorder()),
                     ),
                   ),
 
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          onPressed: () {
+                  // Expanded(
+                  //   flex: 2,
+                  //   child: Column(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     crossAxisAlignment: CrossAxisAlignment.center,
+                  //     children: [
+                  //       IconButton(
+                  //         onPressed: () {
 
-                            setState(() {
+                  //           setState(() {
               
-                            });
-                          },
-                          icon: Icon(Icons.add),
+                  //           });
+                  //         },
+                  //         icon: Icon(Icons.add),
 
-                        )
-                      ]
-                    )
-                  ),
+                  //       )
+                  //     ]
+                  //   )
+                  // ),
 
                   Expanded(
-                    flex: 1,
+                    flex: 3,
                     child: Container(),
                   )
                 ]
@@ -124,11 +143,11 @@ class _ContactNoState extends State<ContactNo> {
   final Function callback;
   final TextEditingController _contactNumController;
 
-  @override
-  void dispose(){
-    _contactNumController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose(){
+  //   _contactNumController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
