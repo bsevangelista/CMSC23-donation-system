@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-//import 'package:provider/provider.dart';
-//import '../api/firebase_auth_api.dart'; 
+import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../providers/auth_provider.dart';
 
 class AdminDashboard extends StatelessWidget {
   @override
@@ -15,10 +16,8 @@ class AdminDashboard extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.logout),
               onPressed: () {
-                //Provider.of<FirebaseAuthAPI>(context, listen: false).signOut();
+                context.read<UserAuthProvider>().signOut();
                 Navigator.pushNamed(context, '/');
-                // Implement sign-out logic here
-                // For example, you can call a sign-out function from your authentication provider
               },
             ),
           ],
@@ -45,28 +44,34 @@ class AdminDashboard extends StatelessWidget {
 class OrganizationsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Dummy data for organizations
-    final List<Map<String, dynamic>> organizations = [
-      {'name': 'Org 1', 'isApproved': false},
-      {'name': 'Org 2', 'isApproved': true},
-      {'name': 'Org 3', 'isApproved': false},
-    ];
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('organizations').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Center(child: CircularProgressIndicator());
+        }
 
-    return ListView.builder(
-      itemCount: organizations.length,
-      itemBuilder: (context, index) {
-        final org = organizations[index];
-        return ListTile(
-          title: Text(org['name'] as String),
-          trailing: (org['isApproved'] as bool)
-              ? Icon(Icons.check, color: Colors.green)
-              : ElevatedButton(
-                  onPressed: () {
-                    // Dummy approve action
-                    organizations[index]['isApproved'] = true;
-                  },
-                  child: Text('Approve'),
-                ),
+        final organizations = snapshot.data!.docs;
+
+        return ListView.builder(
+          itemCount: organizations.length,
+          itemBuilder: (context, index) {
+            final org = organizations[index];
+            return ListTile(
+              title: Text(org['name']),
+              trailing: (org['approval'] == 'APPROVED')
+                  ? Icon(Icons.check, color: Colors.green)
+                  : ElevatedButton(
+                      onPressed: () {
+                        FirebaseFirestore.instance
+                            .collection('organizations')
+                            .doc(org.id)
+                            .update({'approval': 'APPROVED'});
+                      },
+                      child: Text('Approve'),
+                    ),
+            );
+          },
         );
       },
     );
@@ -76,20 +81,37 @@ class OrganizationsView extends StatelessWidget {
 class DonationsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Dummy data for donations
-    final List<Map<String, dynamic>> donations = [
-      {'id': '1', 'amount': 100.0},
-      {'id': '2', 'amount': 200.0},
-      {'id': '3', 'amount': 300.0},
-    ];
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('donations').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Center(child: CircularProgressIndicator());
+        }
 
-    return ListView.builder(
-      itemCount: donations.length,
-      itemBuilder: (context, index) {
-        final donation = donations[index];
-        return ListTile(
-          title: Text('Donation ID: ${donation['id']}'),
-          subtitle: Text('Amount: \$${donation['amount']}'),
+        final donations = snapshot.data!.docs;
+
+        return ListView.builder(
+          itemCount: donations.length,
+          itemBuilder: (context, index) {
+            final donation = donations[index];
+            return ListTile(
+              title: Text('Donation ID: ${donation.id}'),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Address: ${donation['address'] ?? 'null'}'),
+                  Text('Category: ${donation['category'].join(', ')}'),
+                  Text('Contact Number: ${donation['contactNum']}'),
+                  Text('Date: ${donation['dateTime']}'),
+                  Text('Delivery Mode: ${donation['deliveryMode']}'),
+                  Text('Organization ID: ${donation['organization']}'),
+                  Text('Status: ${donation['status']}'),
+                  Text('User ID: ${donation['user']}'),
+                  Text('Weight: ${donation['weight']} ${donation['weightType']}'),
+                ],
+              ),
+            );
+          },
         );
       },
     );
@@ -99,19 +121,23 @@ class DonationsView extends StatelessWidget {
 class DonorsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Dummy data for donors
-    final List<Map<String, dynamic>> donors = [
-      {'name': 'Donor 1'},
-      {'name': 'Donor 2'},
-      {'name': 'Donor 3'},
-    ];
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('donors').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Center(child: CircularProgressIndicator());
+        }
 
-    return ListView.builder(
-      itemCount: donors.length,
-      itemBuilder: (context, index) {
-        final donor = donors[index];
-        return ListTile(
-          title: Text(donor['name'] as String),
+        final donors = snapshot.data!.docs;
+
+        return ListView.builder(
+          itemCount: donors.length,
+          itemBuilder: (context, index) {
+            final donor = donors[index];
+            return ListTile(
+              title: Text(donor['name']),
+            );
+          },
         );
       },
     );

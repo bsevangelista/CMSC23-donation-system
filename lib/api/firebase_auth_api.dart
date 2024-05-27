@@ -14,17 +14,33 @@ class FirebaseAuthAPI {
 
 Future<String?> signIn(String email, String password) async {
   try {
+    // Sign in with email and password
     await auth.signInWithEmailAndPassword(email: email, password: password);
     
     // Fetch user role
     User? user = auth.currentUser;
     if (user != null) {
       String role = await _fetchUserRole(user.uid);
+      
+      // Check if the user is an organization and their account is approved
+      if (role == 'org') {
+        String approvalStatus = await _fetchOrgApprovalStatus(user.uid);
+        if (approvalStatus == 'APPROVED') {
+          return role;
+        } else if (approvalStatus == 'PENDING') {
+          return 'Your organization account is pending approval';
+        } else {
+          return 'Your organization account is not approved';
+        }
+      }
+      
+      // For other roles (user, admin), return the role directly
       return role;
     } else {
       return "User not found";
     }
   } on FirebaseAuthException catch (e) {
+    // Handle FirebaseAuth exceptions
     if (e.code == 'invalid-email') {
       return e.message;
     } else if (e.code == 'invalid-credential') {
@@ -34,6 +50,17 @@ Future<String?> signIn(String email, String password) async {
     }
   }
 }
+
+Future<String> _fetchOrgApprovalStatus(String uid) async {
+  // Fetch organization document from Firestore
+  DocumentSnapshot orgDoc = await FirebaseFirestore.instance.collection('organizations').doc(uid).get();
+  if (orgDoc.exists) {
+    return orgDoc['approval'];
+  } else {
+    return 'Organization details not found';
+  }
+}
+
 
 Future<String> _fetchUserRole(String uid) async {
   DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
@@ -101,7 +128,7 @@ Future<void> userSignUp({
 
       // Store additional user information in Firestore
       await FirebaseFirestore.instance.collection('organizations').doc(credential.user!.uid).set({
-        'approval': "APPROVED",
+        'approval': "PENDING",
         'description' : description,
         'email': email,
         'name': organizationName,
@@ -119,20 +146,6 @@ Future<void> userSignUp({
 
   Future<void> signOut() async {
     await auth.signOut();
-  }
-
-  Future<String?> _getEmailFromUsername(String username) async {
-    try {
-      DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('usernames').doc(username).get();
-      if (snapshot.exists) {
-        return snapshot['email'];
-      } else {
-        return null;
-      }
-    } catch (e) {
-      print(e);
-      return null;
-    }
   }
 
   String _handleAuthException(FirebaseAuthException e) {
