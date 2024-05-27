@@ -1,15 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../api/firebase_auth_api.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class UserAuthProvider with ChangeNotifier {
-  late FirebaseAuthAPI authService;
+  final FirebaseAuthAPI authService = FirebaseAuthAPI();
   late Stream<User?> _uStream;
   String? _userRole;
 
   UserAuthProvider() {
-    authService = FirebaseAuthAPI();
     fetchAuthentication();
   }
 
@@ -23,17 +21,7 @@ class UserAuthProvider with ChangeNotifier {
   }
 
   Future<bool> checkUsernameExists(String username) async {
-    try {
-      final snapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .where('username', isEqualTo: username)
-          .get();
-      
-      return snapshot.docs.isNotEmpty;
-    } catch (e) {
-      print('Error checking username: $e');
-      return false;
-    }
+    return await authService.checkUsernameExists(username);
   }
 
   Future<void> userSignUp({
@@ -81,6 +69,23 @@ class UserAuthProvider with ChangeNotifier {
 
   Future<void> signOut() async {
     await authService.signOut();
+    notifyListeners();
+  }
+
+  Future<List<Map<String, dynamic>>> getOrganizations() async {
+    return await authService.getOrganizations();
+  }
+
+  Future<List<Map<String, dynamic>>> getDonations() async {
+    return await authService.getDonations();
+  }
+
+  Future<List<Map<String, dynamic>>> getDonors() async {
+    return await authService.getDonors();
+  }
+
+  Future<void> approveOrganization(String orgId) async {
+    await authService.approveOrganization(orgId);
     notifyListeners();
   }
 }
