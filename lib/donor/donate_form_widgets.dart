@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:qr_flutter/qr_flutter.dart';
+
 ////////////////////////////        other categories        ////////////////////////////
 class OtherCategories extends StatefulWidget {
   final Function callback;
@@ -291,9 +293,14 @@ class _GenerateQRState extends State<GenerateQR> {
               style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
               onPressed: () {
 
-                setState(() {
+                // setState(() {
   
-                });
+                // });
+                // QrImageView(
+                //   data: '',
+                //   version: QrVersions.auto,
+                //   size: 200
+                // )
               },
               child:
                 Column(

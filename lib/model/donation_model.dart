@@ -6,9 +6,10 @@ class Donation {
   String? id;
   List<String> category;
   String deliveryMode;
-  double weight;
+  // double weight;
+  String weight;
   String weightType;
-  // photo
+  String? image;
   // qr
   DateTime dateTime;
   // Timestamp dateTime;
@@ -24,7 +25,7 @@ class Donation {
     required this.deliveryMode,
     required this.weight,
     required this.weightType,
-    // photo
+    this.image,
     // qr
     required this.dateTime,
     this.address,
@@ -42,7 +43,7 @@ class Donation {
       deliveryMode: json['deliveryMode'],
       weight: json['weight'],
       weightType: json['weightType'],
-      // photo
+      image: json['image'],
       // qr
       // dateTime: (json['dateTime'] as Timestamp),
       dateTime: (json['dateTime'] as Timestamp).toDate(),
@@ -65,7 +66,7 @@ class Donation {
       'deliveryMode': dono.deliveryMode,
       'weight': dono.weight,
       'weightType': dono.weightType,
-      // photo
+      'image': dono.image,
       // qr
       'dateTime': dono.dateTime.toIso8601String(),
       // 'dateTime': DateTime.fromMillisecondsSinceEpoch(dateTime.millisecondsSinceEpoch).toIso8601String(),

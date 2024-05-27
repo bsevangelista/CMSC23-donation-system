@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +8,9 @@ import 'donate_form_widgets.dart';
 import '/model/donation_model.dart';
 import '/provider/donation_provider.dart';
 import '/model/organization_model.dart';
+
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 // import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 // !!!!!!!!!! gagawan pa ng sariling classes ung mga nandito
@@ -50,6 +55,8 @@ class _DonatePageState extends State<DonatePage> {
   List<String> _address = [];
   String _contactNum = "";
 
+  String _imageUrl = "";
+
 
   // int timeHour = 0;
   // int timeMinute = 0;  
@@ -67,12 +74,12 @@ class _DonatePageState extends State<DonatePage> {
   Donation _tempDonation = Donation(
     category: [],
     deliveryMode: "Pickup",
-    weight: 0,
+    weight: "",
     weightType: "kg",
     // dateTime: dateTimetoTimestamp(DateTime.now()),
     dateTime: DateTime.now(),
     status: "Pending",
-    organization: "wFp9LhpbsOfCaKhHskPj1f7fay42",
+    organization: "",
     user: ""
   );
 
@@ -309,11 +316,33 @@ class _DonatePageState extends State<DonatePage> {
                         padding: const EdgeInsets.only(left: 28.0),
                           child: FilledButton(
                           style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
-                          onPressed: () {
+                          onPressed: () async {
 
                             // setState(() {
               
                             // });
+                            ImagePicker imagePicker = ImagePicker();
+                            XFile? file = await imagePicker.pickImage(source: ImageSource.camera);
+                            print('${file?.path}');
+
+
+                            if(file==null) return;
+                            String _uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+                            // imagePicker.pickImage(source: ImageSource.gallery);
+
+                            // /data/user/0/com.example.app/cache/d48e0afc-f7ac-4531-982a-a2546878569a8604006521332836381.jpg
+                            Reference referenceRoot = FirebaseStorage.instance.ref();
+                            Reference referenceDirImages = referenceRoot.child('donation');
+                            Reference referenceImageToUpload = referenceDirImages.child(_uniqueFileName);
+
+                            try{
+                              await referenceImageToUpload.putFile(File(file!.path));
+                              _imageUrl = await referenceImageToUpload.getDownloadURL();
+                            }catch(error){
+
+                            }
+
+                            referenceImageToUpload.putFile(File(file!.path));
                           },
                           child:
                             Column(
@@ -330,10 +359,6 @@ class _DonatePageState extends State<DonatePage> {
                       )      
                     ]
                   ),
-
-
-
-
 
                   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
                   donateDivider(),
@@ -384,7 +409,7 @@ class _DonatePageState extends State<DonatePage> {
                                   onPressed: () async {
                                     final TimeOfDay? timeOfDay = await showTimePicker(
                                       context: context,
-                                      initialTime: TimeOfDay.fromDateTime(_dateTime),
+                                      initialTime: TimeOfDay.fromDateTime(DateTime.now()),
                                       initialEntryMode: TimePickerEntryMode.dial
                                     );
                                     if (timeOfDay != null) {
@@ -455,7 +480,13 @@ class _DonatePageState extends State<DonatePage> {
                       FilledButton(
                         style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
+
+
+                          if (_dateTime.compareTo(DateTime.now())<0) {
+                            ScaffoldMessenger.of(context)
+                              .showSnackBar(SnackBar(content: Text("Please set delivery time in the future")));
+                          }
+                          else if (_formKey.currentState!.validate()) {
                             _formKey.currentState?.save();
                               
                               if (_others==true) {
@@ -472,24 +503,28 @@ class _DonatePageState extends State<DonatePage> {
                               _tempDonation.category=_category;
                               _tempDonation.organization=organization.id!;
                               _tempDonation.deliveryMode=_deliveryMode;
-                              _tempDonation.weight=double.parse(_weight);
+                              _tempDonation.weight=_weight;
+                              // _tempDonation.weight=double.parse(_weight);
                               _tempDonation.weightType=_weightType;
                               // _tempDonation.dateTime=dateTimetoTimestamp(_dateTime);
                               _tempDonation.dateTime=_dateTime;
                               //photo
 
+                              if (_imageUrl!="") {
+                                _tempDonation.image=_imageUrl;
+                              }
 
 
                             if (_deliveryMode=="Pickup") {
-                              setState(() {
+                              // setState(() {
                                 //address
                                 _tempDonation.contactNum=_contactNum;
-                            });
+                              // });
                             } else{
-                              setState(() {
+                              // setState(() {
                                 //qr
-                            });
-                          }
+                              // });
+                            }
 
                             
 
