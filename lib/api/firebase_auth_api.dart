@@ -63,7 +63,7 @@ class FirebaseAuthAPI {
       return 'org';
     }
 
-    DocumentSnapshot adminDoc = await FirebaseFirestore.instance.collection('admins').doc(uid).get();
+    DocumentSnapshot adminDoc = await FirebaseFirestore.instance.collection('administrator').doc(uid).get();
     if (adminDoc.exists) {
       return 'admin';
     }
