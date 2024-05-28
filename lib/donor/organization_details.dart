@@ -9,7 +9,7 @@ class OrganizationDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {Navigator.pushNamed(context, "/third", arguments: organization);},
+        onPressed: () {Navigator.pushNamed(context, "/donatepage", arguments: organization);},
         icon: Icon(Icons.volunteer_activism),
         label: Text("Donate"),
       ),

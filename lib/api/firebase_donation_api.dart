@@ -12,7 +12,11 @@ class FirebaseDonationAPI{
     }
   }
 
-  Stream<QuerySnapshot> getAllDonations() {
-return db.collection("donations").snapshots();
+  Stream<QuerySnapshot> getUserDonations(String user) {
+    return db.collection("donations").where("user",isEqualTo: user).snapshots();
   }
+  
+  //  Stream<QuerySnapshot> getDonationOrganization(String organization) {
+  //   return db.collection("organizations").where(snapshot.uid,isEqualTo: organization).snapshots();
+  // } 
 }

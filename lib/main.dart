@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'authentication/signin_page.dart';
 // import 'authentication/signup_page.dart';
 import 'donor/donate_page.dart';
 import 'donor/donor_homepage.dart';
+import 'donor/donor_profile.dart';
 import 'donor/organization_details.dart';
 
 
@@ -25,6 +27,8 @@ import 'package:app/provider/auth_provider.dart';
 //   runApp(MyApp());
 // }
 Future<void> main() async{
+  // User? user = FirebaseAuth.instance.currentUser;
+  
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -32,8 +36,12 @@ Future<void> main() async{
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: ((context) => OrganizationProvider())),
-        ChangeNotifierProvider(create: ((context) => DonationProvider())),
+        ChangeNotifierProvider(create: ((context) => OpenOrganizationProvider())),
+
+        ChangeNotifierProvider(create: ((context) => AllOrganizationProvider())),
+        // ChangeNotifierProvider(create: ((context) => DonationProvider())),
+        // ChangeNotifierProvider(create: ((context) => DonationProvider(user!.uid))),
+        ChangeNotifierProvider(create: ((context) => DonationProvider("bHFOC8lDAKTiXhFhSuPfLPR2Tm42"))),
         ChangeNotifierProvider(create: ((context) => UserAuthProvider())),
       ],
       child: MyApp(),
@@ -50,7 +58,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
+      initialRoute: '/donorprofile',
       // routes: {
       //   '/third': (context) => DonatePage(),
       //   '/second': (context) => DonationDriveDetails(),
@@ -60,7 +68,7 @@ class MyApp extends StatelessWidget {
       //   // '/donate': (context) => DonatePage(),
       // },
       onGenerateRoute: (settings) {
-        if (settings.name == "/third"){
+        if (settings.name == "donatepage"){
           final args = settings.arguments as Organization?;
           return MaterialPageRoute(
             builder: (context) => DonatePage(
@@ -69,7 +77,7 @@ class MyApp extends StatelessWidget {
           );
         }
 
-        if (settings.name == "/second"){
+        if (settings.name == "/oganizationdetails"){
           final args = settings.arguments as Organization?;
           return MaterialPageRoute(
             builder: (context) => OrganizationDetails(
@@ -78,11 +86,17 @@ class MyApp extends StatelessWidget {
           );
         }
 
-        if (settings.name == "/"){
+        if (settings.name == "/donorhomepage"){
           return MaterialPageRoute(
             builder: (context) => DonorHomepage()
           );
         }
+
+        if (settings.name == "/donorprofile") {
+          return MaterialPageRoute(
+            builder: (context) => DonorProfile()
+          );
+        } 
 
         if (settings.name == "/signin") {
           return MaterialPageRoute(

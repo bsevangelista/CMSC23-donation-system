@@ -26,7 +26,7 @@ class _DonorHomepageState extends State<DonorHomepage> {
   Widget build(BuildContext context) {
 
     // Stream<QuerySnapshot> donationDrivesStream = context.watch<DonationDriveProvider>().donationDrive;
-    Stream<QuerySnapshot> organizationsStream = context.watch<OrganizationProvider>().organization;
+    Stream<QuerySnapshot> organizationsStream = context.watch<OpenOrganizationProvider>().openOrganization;
 
     // return const Placeholder();
     return Scaffold(
@@ -86,7 +86,7 @@ class _DonorHomepageState extends State<DonorHomepage> {
                   // trailing: FilledButton(onPressed: () {Navigator.pushNamed(context, "/second", arguments: snapshot.data?.docs[index]);} , child: Text("View Details", style: TextStyle(fontSize: 10))),
                   trailing: FilledButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, "/second", arguments: organization);
+                      Navigator.pushNamed(context, "/organizationdetails", arguments: organization);
                       } , 
                     child: Text("View Details", style: TextStyle(fontSize: 10))),
                 )

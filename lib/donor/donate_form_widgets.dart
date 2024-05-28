@@ -162,7 +162,7 @@ class _ContactNoState extends State<ContactNo> {
             child: TextFormField(
               keyboardType: TextInputType.number,
               validator: (val) {
-                if (val == null || val.isEmpty || val=="" || num.tryParse(val)==null) return "Please enter contact number";
+                if (val == null || val.isEmpty || val=="" || num.tryParse(val)==null || val.length>11) return "Please enter appropriate contact number";
              },
               controller: _contactNumController,
               onChanged: (value) {
