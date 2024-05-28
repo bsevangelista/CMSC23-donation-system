@@ -4,23 +4,13 @@ import 'package:provider/provider.dart';
 
 import '/model/organization_model.dart';
 import '/provider/organization_list_provider.dart';
-import '/donor/organization_details.dart';
+// import '/donor/organization_details.dart';
 
 // import '/model/donationDrive_model.dart';
 // import '/provider/donationDrive_list_provider.dart';
 // import '/donor/donation_drive_details.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-
-
-// class AllOrgValues{
-//   static List<List<String>> _allOrgValues=[];
-// }
-
-// void valuesReceiver(List<String> values){
-//   AllOrgValues._allOrgValues.add(values);
-// }
 
 
 
@@ -60,7 +50,7 @@ class _DonorHomepageState extends State<DonorHomepage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Icon(Icons.corporate_fare),
-                  Text("No organization donation drive open for donations yet."),
+                  Text("No organization open for donations yet."),
                 ]
               )
             );
@@ -71,7 +61,7 @@ class _DonorHomepageState extends State<DonorHomepage> {
 
           if (organizationsList.isEmpty) {
             return Center(
-              child: Text("No organization donation drive open for donations yet.")
+              child: Text("No organization open for donations yet.")
             );
           }
 

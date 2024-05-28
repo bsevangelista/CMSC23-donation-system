@@ -10,14 +10,14 @@ class OrganizationProvider with ChangeNotifier {
 
   OrganizationProvider() {
     firebaseService = FirebaseOrganizationAPI();
-    fetchOrganizations();
+    fetchOpenOrganizations();
   }
 
 
   Stream<QuerySnapshot> get organization => _organizationsStream;
 
-  void fetchOrganizations() {
-    _organizationsStream = firebaseService.getAllOrganizations();
+  void fetchOpenOrganizations() {
+    _organizationsStream = firebaseService.getOpenOrganizations();
     notifyListeners();
   }
 }

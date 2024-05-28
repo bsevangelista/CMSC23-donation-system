@@ -14,6 +14,9 @@ import 'firebase_options.dart';
 import '/provider/organization_list_provider.dart';
 import '/provider/donation_provider.dart';
 import '/model/organization_model.dart';
+
+import 'package:app/provider/auth_provider.dart';
+
 // import '/provider/donationDrive_list_provider.dart';
 // import 'donor/donation_drive_details.dart';
 // import '/model/donationDrive_model.dart';
@@ -31,6 +34,7 @@ Future<void> main() async{
       providers: [
         ChangeNotifierProvider(create: ((context) => OrganizationProvider())),
         ChangeNotifierProvider(create: ((context) => DonationProvider())),
+        ChangeNotifierProvider(create: ((context) => UserAuthProvider())),
       ],
       child: MyApp(),
     ),

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,6 +9,7 @@ import 'donate_form_widgets.dart';
 import '/model/donation_model.dart';
 import '/provider/donation_provider.dart';
 import '/model/organization_model.dart';
+import '/provider/auth_provider.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -18,17 +20,16 @@ import 'package:firebase_storage/firebase_storage.dart';
 class DonatePage extends StatefulWidget {
   final Organization? organization;
   const DonatePage({required this.organization,super.key});
-  // final Organization? organizatioN;
-  // const DonatePage({this.organizatioN, super.key});
 
   @override
   State<DonatePage> createState() => _DonatePageState(organization!);
-  // State<DonatePage> createState() => _DonatePageState();
 }
 
 class _DonatePageState extends State<DonatePage> {
   _DonatePageState(this.organization);
   final Organization organization;
+
+  // User? user = FirebaseAuth.instance.currentUser;
 
 
   final _formKey = GlobalKey<FormState>();
@@ -66,8 +67,7 @@ class _DonatePageState extends State<DonatePage> {
 
   TextEditingController _weightController = TextEditingController(text: "");
   TextEditingController _contactNumController = TextEditingController(text: "");
-  TextEditingController _addressStringController = TextEditingController(text: "");
-  // TextEditingController _categoryController = TextEditingController(text: "");  
+  TextEditingController _addressStringController = TextEditingController(text: "");  
   TextEditingController _otherCategoriesStringController = TextEditingController(text: "");
 
   //user!!!!
@@ -293,11 +293,29 @@ class _DonatePageState extends State<DonatePage> {
                         padding: const EdgeInsets.only(left: 28.0),
                           child: FilledButton(
                           style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
-                          onPressed: () {
+                          onPressed: () async{
 
-                            // setState(() {
-              
-                            // });
+                            ImagePicker imagePicker = ImagePicker();
+                            XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
+                            print('${file?.path}');
+
+
+                            if(file==null) return;
+                            String _uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+
+                            // /data/user/0/com.example.app/cache/d48e0afc-f7ac-4531-982a-a2546878569a8604006521332836381.jpg
+                            Reference referenceRoot = FirebaseStorage.instance.ref();
+                            Reference referenceDirImages = referenceRoot.child('donation');
+                            Reference referenceImageToUpload = referenceDirImages.child(_uniqueFileName);
+
+                            try{
+                              await referenceImageToUpload.putFile(File(file!.path));
+                              _imageUrl = await referenceImageToUpload.getDownloadURL();
+                            }catch(error){
+
+                            }
+
+                            referenceImageToUpload.putFile(File(file!.path));
                           },
                           child:
                             Column(
@@ -318,9 +336,6 @@ class _DonatePageState extends State<DonatePage> {
                           style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
                           onPressed: () async {
 
-                            // setState(() {
-              
-                            // });
                             ImagePicker imagePicker = ImagePicker();
                             XFile? file = await imagePicker.pickImage(source: ImageSource.camera);
                             print('${file?.path}');
@@ -328,7 +343,6 @@ class _DonatePageState extends State<DonatePage> {
 
                             if(file==null) return;
                             String _uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
-                            // imagePicker.pickImage(source: ImageSource.gallery);
 
                             // /data/user/0/com.example.app/cache/d48e0afc-f7ac-4531-982a-a2546878569a8604006521332836381.jpg
                             Reference referenceRoot = FirebaseStorage.instance.ref();
@@ -429,22 +443,6 @@ class _DonatePageState extends State<DonatePage> {
                       )      
                     ]
                   ),      
-                  
-                  //             Row(
-                  //   children: [
-                  //     Padding(
-                  //       padding: const EdgeInsets.only(left: 28.0),
-                  //         child: FilledButton(
-                  //           style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
-                  //           onPressed: () async {
-                  //             dateTimePickerWidget(context);
-                  //           },
-                  //           child:
-                  //             const Text("Choose time", style: TextStyle(fontSize: 12, color: const Color.fromARGB(255, 0, 0, 0))),
-                  //         ),
-                  //     ),    
-                  //   ]
-                  // ),      
 
                   
           //////////////////////// for pickup only       
@@ -508,7 +506,7 @@ class _DonatePageState extends State<DonatePage> {
                               _tempDonation.weightType=_weightType;
                               // _tempDonation.dateTime=dateTimetoTimestamp(_dateTime);
                               _tempDonation.dateTime=_dateTime;
-                              //photo
+                              // _tempDonation.user=user!.uid;
 
                               if (_imageUrl!="") {
                                 _tempDonation.image=_imageUrl;
