@@ -230,7 +230,7 @@ class _OrgSignUpState extends State<OrgSignUp> {
               );
 
               // Navigate to next screen after successful sign-up
-              Navigator.pushNamed(context, '/admin_dashboard');
+              Navigator.pushNamed(context, '/org_homepage');
             } catch (e) {
               // Handle sign-up errors
               setState(() {

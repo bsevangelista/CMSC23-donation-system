@@ -129,7 +129,7 @@ class _SignInPageState extends State<SignInPage> {
           });
 
           if (!showSignInErrorMessage) {
-            Navigator.pushNamed(context, '/admin_dashboard');
+            Navigator.pushNamed(context, '/org_homepage');
           }
         }
       },
