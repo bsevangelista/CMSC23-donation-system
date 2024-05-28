@@ -6,7 +6,7 @@ class Donation {
   String? id;
   List<String> category;
   String deliveryMode;
-  int weight;
+  String weight;
   // photo
   DateTime dateTime;
   List<String> address;
