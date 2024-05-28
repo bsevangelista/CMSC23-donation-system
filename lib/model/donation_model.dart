@@ -68,7 +68,7 @@ class Donation {
       'weightType': dono.weightType,
       'image': dono.image,
       // qr
-      'dateTime': dono.dateTime.toIso8601String(),
+      'dateTime': Timestamp.fromDate(dono.dateTime),
       // 'dateTime': DateTime.fromMillisecondsSinceEpoch(dateTime.millisecondsSinceEpoch).toIso8601String(),
       'address': dono.address,
       'contactNum': dono.contactNum,
