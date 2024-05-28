@@ -50,7 +50,7 @@ class _DonatePageState extends State<DonatePage> {
   List<String> _weightTypeChoices = <String>["kg", "lb"];
   String _weightType = "kg"; 
 
-  DateTime _dateTime = DateTime.now();
+  DateTime _dateTime = DateTime.now().add(Duration(hours: 8));
 
   String _addressString = "";
   List<String> _address = [];
