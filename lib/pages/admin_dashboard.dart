@@ -60,6 +60,13 @@ class OrganizationsView extends StatelessWidget {
                 final org = organizations[index];
                 return ListTile(
                   title: Text(org['name']),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Email: ${org['email']}'),
+                      Text('Description: ${org['description']}'),
+                    ],
+                  ),
                   trailing: (org['approval'] == 'APPROVED')
                       ? Icon(Icons.check, color: Colors.green)
                       : ElevatedButton(
@@ -77,6 +84,7 @@ class OrganizationsView extends StatelessWidget {
     );
   }
 }
+
 
 class DonationsView extends StatelessWidget {
   @override
