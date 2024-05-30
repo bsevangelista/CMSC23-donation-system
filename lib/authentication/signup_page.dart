@@ -220,6 +220,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 if (!isNumeric(value)) {
                   return 'Please enter a valid contact number';
                 }
+                if (value.length < 11) {
+                return 'Contact number must be at least 11 characters';
+                }
                 return null;
               },
             ),
