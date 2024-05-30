@@ -1,7 +1,6 @@
 import 'package:app/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/auth_provider.dart';
 import 'signup_page.dart';
 
 class SignInPage extends StatefulWidget {
@@ -143,9 +142,9 @@ class _SignInPageState extends State<SignInPage> {
             if (role == 'admin') {
               Navigator.pushNamed(context, '/admin_dashboard');
             } else if (role == 'user') {
-              Navigator.pushNamed(context, '/admin_dashboard');
+              Navigator.pushNamed(context, '/donorhomepage');
             } else if (role == 'org') {
-              Navigator.pushNamed(context, '/admin_dashboard');
+              Navigator.pushNamed(context, '/org_homepage');
             } else {
               setState(() {
                 showSignInErrorMessage = true;
