@@ -1,5 +1,11 @@
+import 'dart:io';
+
 import 'package:app/models/donationDrive_model.dart';
+import 'package:app/providers/organization_provider.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class DonationDriveView extends StatefulWidget {
   final DonationDrive dDrive; // Receive Donation instance
@@ -11,7 +17,8 @@ class DonationDriveView extends StatefulWidget {
 }
 
 class _DonationDriveViewState extends State<DonationDriveView> {
-
+  String imageUrl = '';
+  XFile? imgFile;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,20 +28,74 @@ class _DonationDriveViewState extends State<DonationDriveView> {
           style: TextStyle(color: Colors.white),
         ), // Display donation details in the app bar
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 20),
-            // Display donation details
-            Text("Name: ${widget.dDrive.name}"),
-            Text("Description: ${widget.dDrive.description}"),
-            Text("Donations: ${widget.dDrive.donations?.length ?? 0}"),
-            SizedBox(height: 20),
-          ],
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 20),
+              // Display donation details
+              Text("Name: ${widget.dDrive.name}"),
+              SizedBox(height: 20),
+              Text("Description: ${widget.dDrive.description}"),
+              SizedBox(height: 20),
+              Text("Donations: ${widget.dDrive.donations?.length ?? 0}"),
+              SizedBox(height: 20),
+
+              widget.dDrive.proof != null
+                  ? Center(
+                      child: Column(
+                      children: [
+                        Text("Proof: "),
+                        Image.network(
+                          '${widget.dDrive.proof}',
+                          width: 250,
+                          height: 350,
+                          fit: BoxFit.contain,
+                        ),
+                      ],
+                    ))
+                  : Container(),
+            ],
+          ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(onPressed: () async {
+        ImagePicker imagePicker = ImagePicker();
+        XFile? file = await imagePicker.pickImage(source: ImageSource.camera);
+        print('${file?.path}');
+
+        if (file == null) return;
+
+        setState(() {
+          imgFile = file;
+        });
+
+        String uniqueFileName =
+            DateTime.now().millisecondsSinceEpoch.toString();
+
+        Reference referenceRoot = FirebaseStorage.instance.ref();
+        Reference referenceDirImages =
+            referenceRoot.child('donationDriveProof');
+
+        Reference referenceImageToUpload =
+            referenceDirImages.child(uniqueFileName);
+
+        try {
+          await referenceImageToUpload.putFile(File(imgFile!.path));
+          imageUrl = await referenceImageToUpload.getDownloadURL();
+          if (imageUrl != '') {
+            context
+                .read<OrgProvider>()
+                .updateProofDonationDrive(widget.dDrive.id, imageUrl);
+          }
+          Navigator.pop(context);
+        } catch (error) {
+          print('Img not uploaded!');
+        }
+      }),
     );
   }
 }

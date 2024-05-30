@@ -62,7 +62,7 @@ class OrgProvider with ChangeNotifier {
         organization: orgId,
         donations: [],
         logo: imageUrl,
-        proof: '');
+        );
 
     String message =
         await firebaseService.addDonationDrive(dDrive.toJson(dDrive));
@@ -77,17 +77,12 @@ class OrgProvider with ChangeNotifier {
       print('DonationDrive or Donation is null');
     }
   }
-
-  // // uncomment if auth is implemented
-  // void fetchDonations() async {
-  //   // Get the current user's ID
-  //   User? user = FirebaseAuth.instance.currentUser;
-  //   String? orgId = user?.uid;
-
-  //   if (orgId != null) {
-  //     // Fetch donations for the organization (using user ID as organization ID)
-  //     _donationsStream = firebaseService.getAllDonations(orgId);
-  //     notifyListeners();
-  //   }
-  // }
+  
+  void updateProofDonationDrive(String? donationDriveId, String imageUrl){
+    if (donationDriveId!.isNotEmpty && imageUrl.isNotEmpty) {
+      firebaseService.updateProofDonationDrive(donationDriveId, imageUrl);
+    } else {
+      print('Error updating proof;');
+    }
+  }
 }

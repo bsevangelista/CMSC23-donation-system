@@ -62,7 +62,7 @@ class _DonationDriveState extends State<DonationDriveList> {
                       children: [
                         Expanded(
                           child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               dDrive.logo != null
                                   ? Padding(
@@ -80,7 +80,7 @@ class _DonationDriveState extends State<DonationDriveList> {
                                   dDrive.name, //fix later
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 25,
+                                    fontSize: 20,
                                     color: Colors.white,
                                   ),
                                   textAlign: TextAlign.center,
