@@ -85,4 +85,13 @@ class OrgProvider with ChangeNotifier {
       print('Error updating proof;');
     }
   }
+
+  Future<bool> isDonationDriveNameExists(String name) async {
+    if (name.isNotEmpty) {
+      bool exists = await firebaseService.isDonationDriveNameExists(name);
+      return exists;
+    } else {
+      return false;
+    }
+  }
 }

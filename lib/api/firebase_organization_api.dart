@@ -55,6 +55,19 @@ class FirebaseOrgAPI {
     }
   }
 
+  Future<bool> isDonationDriveNameExists(String name) async {
+    try {
+      var querySnapshot = await db
+          .collection("donationDrives")
+          .where("name", isEqualTo: name)
+          .get();
+      return querySnapshot.docs.isNotEmpty;
+    } catch (e) {
+      print('Error checking donation drive name existence: $e');
+      return false;
+    }
+  }
+
   Future<DocumentSnapshot> getUserOrg(String organizationId) {
     return db.collection('organizations').doc(organizationId).get();
   }
