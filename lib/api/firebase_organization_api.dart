@@ -24,11 +24,26 @@ class FirebaseOrgAPI {
         .update({"status": newStatus});
   }
 
-  Future<void> updateDonationDriveDonations(
-      String donationDriveId, String donationID) {
-    return db.collection("donationDrives").doc(donationDriveId).update({
-      "donations": FieldValue.arrayUnion([donationID])
-    });
+  Future<void> updateDonationDriveDonations(String selectedDrive, String donationID) async {
+    try {
+      QuerySnapshot querySnapshot = await db
+          .collection("donationDrives")
+          .where("name", isEqualTo: selectedDrive)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
+        DocumentReference documentRef = documentSnapshot.reference;
+
+        await documentRef.update({
+          "donations": FieldValue.arrayUnion([donationID])
+        });
+      } else {
+        print('No donation drive found with the specified name.');
+      }
+    } catch (e) {
+      print('Error updating donation drive: $e');
+    }
   }
 
   Future<void> updateOrganizationStatus(String organizationId, String newStatus) {

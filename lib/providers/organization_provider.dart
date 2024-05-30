@@ -70,9 +70,9 @@ class OrgProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateDonationDriveDonations(DonationDrive? donoDrive, Donation donation) {
-    if (donoDrive != null && donoDrive.id != null) {
-      firebaseService.updateDonationDriveDonations(donoDrive.id!, donation.id!);
+  void updateDonationDriveDonations(String? selectedDrive, Donation donation) {
+    if (selectedDrive != null && selectedDrive.isNotEmpty) {
+      firebaseService.updateDonationDriveDonations(selectedDrive, donation.id!);
     } else {
       print('DonationDrive or Donation is null');
     }

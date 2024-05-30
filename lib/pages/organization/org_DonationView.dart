@@ -19,8 +19,8 @@ class DonationView extends StatefulWidget {
 
 class _DonationViewState extends State<DonationView> {
   late String update = '';
-  DonationDrive? donoDrive;
   bool isStatusChanged = false; // Track if the status has changed
+  String? selectedDrive;
 
   void _statusChange(String newStatus) {
     setState(() {
@@ -35,7 +35,7 @@ class _DonationViewState extends State<DonationView> {
   void _saveChanges() {
     final orgListProvider = Provider.of<OrgProvider>(context, listen: false);
 
-    if (widget.donation.status == 'Confirmed' && donoDrive == null) {
+    if (widget.donation.status == 'Confirmed' && selectedDrive == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Please select a donation drive.'),
@@ -44,8 +44,9 @@ class _DonationViewState extends State<DonationView> {
       return;
     }
 
-    if (donoDrive != null) {
-      orgListProvider.updateDonationDriveDonations(donoDrive, widget.donation);
+    if (selectedDrive != null && selectedDrive!.isNotEmpty) {
+      orgListProvider.updateDonationDriveDonations(
+          selectedDrive, widget.donation);
       orgListProvider.updateDonationStatus(widget.donation.id!, 'Complete');
     }
     update != ''
@@ -86,29 +87,31 @@ class _DonationViewState extends State<DonationView> {
           );
         }
 
-        List<DonationDrive> driveList =
+        // Extracting names of the donation drives
+        List<String> driveNames =
             donationDrives.map((DocumentSnapshot document) {
           DonationDrive dDrive =
               DonationDrive.fromJson(document.data() as Map<String, dynamic>);
-          dDrive.id = document.id;
-          return dDrive;
+          return dDrive.name;
         }).toList();
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: driveList.map((DonationDrive drive) {
-            return RadioListTile<DonationDrive>(
-              title: Text(drive.name),
-              value: drive,
-              groupValue: donoDrive,
-              onChanged: (DonationDrive? value) {
-                setState(() {
-                  donoDrive = value;
-                  isStatusChanged = true;
-                });
-              },
-            );
-          }).toList(),
+        return Center(
+          child: DropdownButton<String>(
+            value: selectedDrive,
+            hint: Text('Select a Donation Drive'),
+            items: driveNames.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                selectedDrive = newValue;
+                isStatusChanged = true;
+              });
+            },
+          ),
         );
       },
     );
