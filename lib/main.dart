@@ -1,7 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:app/firebase_options.dart';
-import 'package:app/pages/organizationHome.dart';
+import 'package:app/pages/org_AboutPage.dart';
+import 'package:app/pages/org_AddDonationDrive.dart';
+import 'package:app/pages/org_DonationDriveList.dart';
+import 'package:app/pages/org_DonationList.dart';
+import 'package:app/pages/org_HomePage.dart';
 import 'package:app/providers/organization_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +23,7 @@ void main() async {
   );
 
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: ((context) => OrgListProvider("PssGUv1edsDRb67AES9l"))), //remove string if auth is implemented
+    ChangeNotifierProvider(create: ((context) => OrgProvider())), //remove string if auth is implemented
     ChangeNotifierProvider(create: ((context) => UserAuthProvider())),
   ], child: const RootWidget()));
 }
@@ -37,14 +41,16 @@ class RootWidget extends StatelessWidget {
         ),
       ),
       
-      title: "Organization Name",
+      title: "CMSC Donation App",
       initialRoute: '/',
       routes: {
         '/': (context) => const SignInPage(),
         '/signup': (context) => const SignUpPage(),
         '/org_signup': (context) => const OrgSignUp(),
         '/admin_dashboard': (context) => AdminDashboard(),
-        '/org_homepage': (context) => OrganizationHomePage(),
+        '/org_homepage': (context) => OrgHomePage(),
+        '/org_addDonationDrive': (context) => AddDonationDrive(),
+        '/org_donationDriveHomepage': (context) => DonationDriveList(),
       },
     );
   }
