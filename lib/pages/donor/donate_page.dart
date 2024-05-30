@@ -391,15 +391,15 @@ class _DonatePageState extends State<DonatePage> {
                                 FilledButton(
                                   style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
                                   onPressed: () async {
-                                    final DateTime? dateChosen = await showDatePicker(
+                                    final DateTime? _dateChosen = await showDatePicker(
                                       context: context,
                                       initialDate: _dateTime,
                                       firstDate: DateTime.now(),
                                       lastDate: DateTime(3000),
                                     );
-                                    if (dateChosen != null) {
+                                    if (_dateChosen != null) {
                                       setState(() {
-                                        _dateTime = dateChosen;
+                                        _dateTime = DateTime(_dateChosen.year, _dateChosen.month, _dateChosen.day, _dateTime.hour, _dateTime.minute);
                                       });
                                     }
                                   },
