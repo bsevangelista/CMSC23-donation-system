@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-//import 'package:provider/provider.dart';
-//import '../api/firebase_auth_api.dart'; 
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 
 class AdminDashboard extends StatelessWidget {
   @override
@@ -15,10 +15,8 @@ class AdminDashboard extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.logout),
               onPressed: () {
-                //Provider.of<FirebaseAuthAPI>(context, listen: false).signOut();
+                context.read<UserAuthProvider>().signOut();
                 Navigator.pushNamed(context, '/');
-                // Implement sign-out logic here
-                // For example, you can call a sign-out function from your authentication provider
               },
             ),
           ],
@@ -45,51 +43,87 @@ class AdminDashboard extends StatelessWidget {
 class OrganizationsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Dummy data for organizations
-    final List<Map<String, dynamic>> organizations = [
-      {'name': 'Org 1', 'isApproved': false},
-      {'name': 'Org 2', 'isApproved': true},
-      {'name': 'Org 3', 'isApproved': false},
-    ];
+    return Consumer<UserAuthProvider>(
+      builder: (context, authProvider, child) {
+        return FutureBuilder<List<Map<String, dynamic>>>(
+          future: authProvider.getOrganizations(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
 
-    return ListView.builder(
-      itemCount: organizations.length,
-      itemBuilder: (context, index) {
-        final org = organizations[index];
-        return ListTile(
-          title: Text(org['name'] as String),
-          trailing: (org['isApproved'] as bool)
-              ? Icon(Icons.check, color: Colors.green)
-              : ElevatedButton(
-                  onPressed: () {
-                    // Dummy approve action
-                    organizations[index]['isApproved'] = true;
-                  },
-                  child: Text('Approve'),
-                ),
+            final organizations = snapshot.data!;
+
+            return ListView.builder(
+              itemCount: organizations.length,
+              itemBuilder: (context, index) {
+                final org = organizations[index];
+                return ListTile(
+                  title: Text(org['name']),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Email: ${org['email']}'),
+                      Text('Description: ${org['description']}'),
+                    ],
+                  ),
+                  trailing: (org['approval'] == 'APPROVED')
+                      ? Icon(Icons.check, color: Colors.green)
+                      : ElevatedButton(
+                          onPressed: () {
+                            authProvider.approveOrganization(org['id']);
+                          },
+                          child: Text('Approve'),
+                        ),
+                );
+              },
+            );
+          },
         );
       },
     );
   }
 }
 
+
 class DonationsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Dummy data for donations
-    final List<Map<String, dynamic>> donations = [
-      {'id': '1', 'amount': 100.0},
-      {'id': '2', 'amount': 200.0},
-      {'id': '3', 'amount': 300.0},
-    ];
+    return Consumer<UserAuthProvider>(
+      builder: (context, authProvider, child) {
+        return FutureBuilder<List<Map<String, dynamic>>>(
+          future: authProvider.getDonations(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
 
-    return ListView.builder(
-      itemCount: donations.length,
-      itemBuilder: (context, index) {
-        final donation = donations[index];
-        return ListTile(
-          title: Text('Donation ID: ${donation['id']}'),
-          subtitle: Text('Amount: \$${donation['amount']}'),
+            final donations = snapshot.data!;
+
+            return ListView.builder(
+              itemCount: donations.length,
+              itemBuilder: (context, index) {
+                final donation = donations[index];
+                return ListTile(
+                  title: Text('Donation ID: ${donation['id']}'),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Address: ${donation['address']}'),
+                      Text('Category: ${donation['category'].join(', ')}'),
+                      Text('Contact Number: ${donation['contactNum']}'),
+                      Text('Date: ${donation['dateTime']}'),
+                      Text('Delivery Mode: ${donation['deliveryMode']}'),
+                      Text('Organization ID: ${donation['organization']}'),
+                      Text('Status: ${donation['status']}'),
+                      Text('User ID: ${donation['user']}'),
+                      Text('Weight: ${donation['weight']} ${donation['weightType']}'),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
         );
       },
     );
@@ -99,21 +133,37 @@ class DonationsView extends StatelessWidget {
 class DonorsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Dummy data for donors
-    final List<Map<String, dynamic>> donors = [
-      {'name': 'Donor 1'},
-      {'name': 'Donor 2'},
-      {'name': 'Donor 3'},
-    ];
+    return Consumer<UserAuthProvider>(
+      builder: (context, authProvider, child) {
+        return FutureBuilder<List<Map<String, dynamic>>>(
+          future: authProvider.getDonors(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
 
-    return ListView.builder(
-      itemCount: donors.length,
-      itemBuilder: (context, index) {
-        final donor = donors[index];
-        return ListTile(
-          title: Text(donor['name'] as String),
+            final donors = snapshot.data!;
+
+            return ListView.builder(
+              itemCount: donors.length,
+              itemBuilder: (context, index) {
+                final donor = donors[index];
+                return ListTile(
+                  title: Text(donor['name']),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Address: ${donor['address']}'),
+                      Text('Contact Number: ${donor['contactNum']}'),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
         );
       },
     );
   }
 }
+
