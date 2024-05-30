@@ -135,7 +135,7 @@ class _DonationViewState extends State<DonationView> {
             Text("Date: ${DateFormat().format(widget.donation.dateTime)}"),
             if (widget.donation.address!.isNotEmpty)
               Text("Address: ${widget.donation.address?.join(', ')}"),
-            if (widget.donation.contactNum!.isNotEmpty)
+            if (widget.donation.contactNum != null)
               Text("Contact Number: ${widget.donation.contactNum}"),
             SizedBox(height: 20),
             DropdownButtonFormField<String>(
