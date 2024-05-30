@@ -116,7 +116,7 @@ class FirebaseAuthAPI {
         'description': description,
         'email': email,
         'name': organizationName,
-        'status': "OPEN",
+        'status': "CLOSED",
       });
     } on FirebaseAuthException catch (e) {
       print(_handleAuthException(e));
