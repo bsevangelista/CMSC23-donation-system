@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:app/provider/auth_provider.dart';
+import '../providers/auth_provider.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -220,6 +220,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 if (!isNumeric(value)) {
                   return 'Please enter a valid contact number';
                 }
+                if (value.length < 11) {
+                return 'Contact number must be at least 11 characters';
+                }
                 return null;
               },
             ),
@@ -312,3 +315,4 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       );
 }
+
