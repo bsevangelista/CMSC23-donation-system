@@ -10,7 +10,7 @@ class AdminDashboard extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false, // Remove back arrow
-          title: Text('Admin Dashboard'),
+          title: Text('Admin Dashboard', style: TextStyle(color: Colors.white),),
           actions: [
             IconButton(
               icon: Icon(Icons.logout),
@@ -64,7 +64,7 @@ class OrganizationsView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Email: ${org['email']}'),
-                      Text('Description: ${org['description']}'),
+                      // Text('Description: ${org['description']}'),
                     ],
                   ),
                   trailing: (org['approval'] == 'APPROVED')
