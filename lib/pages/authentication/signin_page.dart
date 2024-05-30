@@ -1,4 +1,4 @@
-import 'package:app/provider/auth_provider.dart';
+import 'package:app/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'signup_page.dart';

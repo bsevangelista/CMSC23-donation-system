@@ -1,5 +1,5 @@
+import 'package:app/models/donationDrive_model.dart';
 import 'package:flutter/material.dart';
-import '/model/donationDrive_model.dart';
 
 class DonationDriveDetails extends StatelessWidget {
   final DonationDrive? donationDrive;

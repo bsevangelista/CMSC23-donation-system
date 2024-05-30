@@ -1,27 +1,27 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:app/models/donationDrive_model.dart';
-import 'package:app/pages/org_AddDonationDrive.dart';
-import 'package:app/pages/org_DonationDriveView.dart';
+
+import 'package:app/models/donation_model.dart';
+import 'package:app/pages/organization/org_DonationView.dart';
 import 'package:app/providers/organization_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class DonationDriveList extends StatefulWidget {
-  const DonationDriveList({super.key});
+class OrgDonationList extends StatefulWidget {
+  const OrgDonationList({super.key});
 
   @override
-  State<DonationDriveList> createState() => _DonationDriveState();
+  State<OrgDonationList> createState() => _DonationListState();
 }
 
-class _DonationDriveState extends State<DonationDriveList> {
-  Widget listDonationDrives(BuildContext context) {
-    Stream<QuerySnapshot> donationDriveStream =
-        context.watch<OrgProvider>().donationDrives;
+class _DonationListState extends State<OrgDonationList> {
+  Widget listDonations(BuildContext context) {
+    Stream<QuerySnapshot> donationsStream =
+        context.watch<OrgProvider>().donations;
 
     return StreamBuilder(
-      stream: donationDriveStream,
+      stream: donationsStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
@@ -34,23 +34,24 @@ class _DonationDriveState extends State<DonationDriveList> {
           );
         }
 
-        List<DocumentSnapshot> donationDrives = snapshot.data!.docs;
+        List<DocumentSnapshot> donations = snapshot.data!.docs;
 
-        if (donationDrives.isEmpty) {
+        if (donations.isEmpty) {
           return Center(
             child: Text(
-              'No donation drives yet.',
+              'No donations yet.',
               style: TextStyle(fontSize: 18),
             ),
           );
         }
 
         return ListView.builder(
-          itemCount: donationDrives.length,
+          itemCount: donations.length,
           itemBuilder: (BuildContext context, int index) {
-            DonationDrive dDrive = DonationDrive.fromJson(
-                snapshot.data?.docs[index].data() as Map<String, dynamic>);
-            dDrive.id = snapshot.data?.docs[index].id;
+
+            Donation dono = Donation.fromJson(
+              snapshot.data?.docs[index].data() as Map<String, dynamic>);
+            dono.id = snapshot.data?.docs[index].id;
 
             return Card(
               color: Colors.black,
@@ -65,7 +66,7 @@ class _DonationDriveState extends State<DonationDriveList> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                dDrive.name, //fix later
+                                dono.category.join(', '), //fix later
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15,
@@ -83,8 +84,7 @@ class _DonationDriveState extends State<DonationDriveList> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        DonationDriveView(dDrive),
+                                    builder: (context) => DonationView(dono), 
                                   ),
                                 );
                               },
@@ -116,25 +116,17 @@ class _DonationDriveState extends State<DonationDriveList> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
-              child: listDonationDrives(context),
+              child: listDonations(context),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddDonationDrive(),
-            ),
-          );
-        },
-        backgroundColor: Colors.black, 
-        foregroundColor: Colors.white, 
-        child: Icon(Icons.add),
-        tooltip: 'Add donation drive',
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.pushNamed(context, "/second");
+      //   },
+      //   child: Icon(Icons.person),
+      // ),
     );
   }
 }

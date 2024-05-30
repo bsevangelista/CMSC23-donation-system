@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '/model/donation_model.dart';
+import '../models/donation_model.dart';
 
 import'../api/firebase_donation_api.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

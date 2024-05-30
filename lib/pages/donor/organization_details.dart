@@ -1,5 +1,5 @@
+import 'package:app/models/organization_model.dart';
 import 'package:flutter/material.dart';
-import '/model/organization_model.dart';
 
 class OrganizationDetails extends StatelessWidget {
   final Organization? organization;

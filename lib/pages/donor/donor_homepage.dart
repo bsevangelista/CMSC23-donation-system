@@ -1,9 +1,7 @@
+import 'package:app/models/organization_model.dart';
+import 'package:app/providers/organization_list_provider.dart';
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
-
-import '/model/organization_model.dart';
-import '/provider/organization_list_provider.dart';
 // import '/donor/organization_details.dart';
 
 // import '/model/donationDrive_model.dart';

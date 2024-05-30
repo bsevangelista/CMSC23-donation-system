@@ -8,13 +8,15 @@ class Organization {
   String description;
   String status;
   String approval;
+  String email;
 
   Organization({
+    this.id,
     required this.name,
     required this.description,
     required this.status,
     required this.approval,
-    this.id,
+    required this.email
   });
 
   // Factory constructor to instantiate object from json format
@@ -25,6 +27,7 @@ class Organization {
       description: json['description'],
       status: json['status'],
       approval: json['approval'],
+      email: json['email'],
     );
   }
 
@@ -36,6 +39,7 @@ class Organization {
       description: data['description'],
       status: data['status'],
       approval: data['approval'],
+      email: data['email'],
     );
   }
 
@@ -50,6 +54,7 @@ class Organization {
       'description': org.description,
       'status': org.status,
       'approval': org.approval,
+      'email': org.email,
     };
   }
 }

@@ -6,11 +6,15 @@ class Donation {
   String? id;
   List<String> category;
   String deliveryMode;
+  // double weight;
   String weight;
-  // photo
+  String weightType;
+  String? image;
+  // qr
   DateTime dateTime;
-  List<String> address;
-  String contactNum;
+  // Timestamp dateTime;
+  List<String>? address;
+  String? contactNum;
   String status;
   String organization;
   String user;
@@ -20,9 +24,12 @@ class Donation {
     required this.category,
     required this.deliveryMode,
     required this.weight,
+    required this.weightType,
+    this.image,
+    // qr
     required this.dateTime,
-    required this.address,
-    required this.contactNum,
+    this.address,
+    this.contactNum,
     required this.status,
     required this.organization,
     required this.user,
@@ -35,6 +42,10 @@ class Donation {
       category: List<String>.from(json['category']),
       deliveryMode: json['deliveryMode'],
       weight: json['weight'],
+      weightType: json['weightType'],
+      image: json['image'],
+      // qr
+      // dateTime: (json['dateTime'] as Timestamp),
       dateTime: (json['dateTime'] as Timestamp).toDate(),
       address: List<String>.from(json['address']),
       contactNum: json['contactNum'],
@@ -54,7 +65,11 @@ class Donation {
       'category': dono.category,
       'deliveryMode': dono.deliveryMode,
       'weight': dono.weight,
-      'dateTime': dono.dateTime.toIso8601String(),
+      'weightType': dono.weightType,
+      'image': dono.image,
+      // qr
+      'dateTime': Timestamp.fromDate(dono.dateTime),
+      // 'dateTime': DateTime.fromMillisecondsSinceEpoch(dateTime.millisecondsSinceEpoch).toIso8601String(),
       'address': dono.address,
       'contactNum': dono.contactNum,
       'status': dono.status,

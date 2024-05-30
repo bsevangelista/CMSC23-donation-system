@@ -1,10 +1,10 @@
-import 'package:app/model/organization_model.dart';
-import 'package:app/provider/donation_provider.dart';
-import 'package:app/provider/organization_list_provider.dart';
+import 'package:app/models/donation_model.dart';
+import 'package:app/models/organization_model.dart';
+import 'package:app/providers/donation_provider.dart';
+import 'package:app/providers/organization_list_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '/model/donation_model.dart';
 
 // bHFOC8lDAKTiXhFhSuPfLPR2Tm42
 
