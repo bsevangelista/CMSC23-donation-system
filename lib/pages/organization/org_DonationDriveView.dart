@@ -19,6 +19,40 @@ class DonationDriveView extends StatefulWidget {
 class _DonationDriveViewState extends State<DonationDriveView> {
   String imageUrl = '';
   XFile? imgFile;
+
+  void _showDeleteConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Confirm Delete"),
+          content: Text("Are you sure you want to delete this donation drive?"),
+          actions: <Widget>[
+            TextButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(
+                "Delete",
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () {
+                context
+                    .read<OrgProvider>()
+                    .deleteDonationDrive(widget.dDrive.id);
+                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +60,16 @@ class _DonationDriveViewState extends State<DonationDriveView> {
         title: Text(
           "${widget.dDrive.name}",
           style: TextStyle(color: Colors.white),
-        ), // Display donation details in the app bar
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.delete_outline_rounded),
+            onPressed: () {
+              _showDeleteConfirmationDialog(context);
+              print(widget.dDrive.id);
+            },
+          )
+        ], // Display donation details in the app bar
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -62,40 +105,49 @@ class _DonationDriveViewState extends State<DonationDriveView> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () async {
-        ImagePicker imagePicker = ImagePicker();
-        XFile? file = await imagePicker.pickImage(source: ImageSource.camera);
-        print('${file?.path}');
+      floatingActionButton: widget.dDrive.donations!.isNotEmpty
+          ? FloatingActionButton(
+              onPressed: () async {
+                ImagePicker imagePicker = ImagePicker();
+                XFile? file =
+                    await imagePicker.pickImage(source: ImageSource.camera);
+                print('${file?.path}');
 
-        if (file == null) return;
+                if (file == null) return;
 
-        setState(() {
-          imgFile = file;
-        });
+                setState(() {
+                  imgFile = file;
+                });
 
-        String uniqueFileName =
-            DateTime.now().millisecondsSinceEpoch.toString();
+                String uniqueFileName =
+                    DateTime.now().millisecondsSinceEpoch.toString();
 
-        Reference referenceRoot = FirebaseStorage.instance.ref();
-        Reference referenceDirImages =
-            referenceRoot.child('donationDriveProof');
+                Reference referenceRoot = FirebaseStorage.instance.ref();
+                Reference referenceDirImages =
+                    referenceRoot.child('donationDriveProof');
 
-        Reference referenceImageToUpload =
-            referenceDirImages.child(uniqueFileName);
+                Reference referenceImageToUpload =
+                    referenceDirImages.child(uniqueFileName);
 
-        try {
-          await referenceImageToUpload.putFile(File(imgFile!.path));
-          imageUrl = await referenceImageToUpload.getDownloadURL();
-          if (imageUrl != '') {
-            context
-                .read<OrgProvider>()
-                .updateProofDonationDrive(widget.dDrive.id, imageUrl);
-          }
-          Navigator.pop(context);
-        } catch (error) {
-          print('Img not uploaded!');
-        }
-      }),
+                try {
+                  await referenceImageToUpload.putFile(File(imgFile!.path));
+                  imageUrl = await referenceImageToUpload.getDownloadURL();
+                  if (imageUrl != '') {
+                    context
+                        .read<OrgProvider>()
+                        .updateProofDonationDrive(widget.dDrive.id, imageUrl);
+                  }
+                  Navigator.of(context).pop();
+                } catch (error) {
+                  print('Img not uploaded!');
+                }
+              },
+              backgroundColor: Colors.black,
+              foregroundColor: Colors.white,
+              child: Icon(Icons.camera_alt_outlined),
+              tooltip: 'Add/Edit Proof of Donation',
+            )
+          : null,
     );
   }
 }

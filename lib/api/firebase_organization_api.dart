@@ -70,6 +70,15 @@ class FirebaseOrgAPI {
     }
   }
 
+  Future<void> deleteDonationDrive(String donationDriveId) async {
+    try {
+      await db.collection("donationDrives").doc(donationDriveId).delete();
+    } catch (e) {
+      print('Error deleting donation drive: $e');
+      throw e;
+    }
+  }
+
   Future<bool> isDonationDriveNameExists(String name) async {
     try {
       var querySnapshot = await db

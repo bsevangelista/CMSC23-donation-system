@@ -86,6 +86,14 @@ class OrgProvider with ChangeNotifier {
     }
   }
 
+  void deleteDonationDrive(String? donationDriveId) {
+    if (donationDriveId != null && donationDriveId.isNotEmpty) {
+      firebaseService.deleteDonationDrive(donationDriveId);
+    } else {
+      print('Faile to Delete Donation Drive');
+    }
+  }
+
   Future<bool> isDonationDriveNameExists(String name) async {
     if (name.isNotEmpty) {
       bool exists = await firebaseService.isDonationDriveNameExists(name);
