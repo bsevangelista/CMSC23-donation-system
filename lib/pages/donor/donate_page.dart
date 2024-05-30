@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:app/models/donation_model.dart';
 import 'package:app/models/organization_model.dart';
 import 'package:app/providers/donation_provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +28,7 @@ class _DonatePageState extends State<DonatePage> {
   _DonatePageState(this.organization);
   final Organization organization;
 
-  // User? user = FirebaseAuth.instance.currentUser;
+  User? user = FirebaseAuth.instance.currentUser;
 
 
   final _formKey = GlobalKey<FormState>();
@@ -415,8 +415,11 @@ class _DonatePageState extends State<DonatePage> {
                           child: Center(
                             child: Column(
                               children: <Widget> [
-                                if (_dateTime.minute>=10) Text("${_dateTime.hour}:${_dateTime.minute}", style: TextStyle(fontSize: 24)),
-                                if (_dateTime.minute<10) Text("${_dateTime.hour}:0${_dateTime.minute}", style: TextStyle(fontSize: 24)),
+                                if (_dateTime.minute>=10 && _dateTime.hour >=10) Text("${_dateTime.hour}:${_dateTime.minute}", style: TextStyle(fontSize: 24)),
+                                if (_dateTime.minute>=10 && _dateTime.hour <10) Text("0${_dateTime.hour}:${_dateTime.minute}", style: TextStyle(fontSize: 24)),
+
+                                if (_dateTime.minute<10 && _dateTime.hour >=10) Text("${_dateTime.hour}:0${_dateTime.minute}", style: TextStyle(fontSize: 24)),
+                                if (_dateTime.minute<10 && _dateTime.hour <10) Text("0${_dateTime.hour}:0${_dateTime.minute}", style: TextStyle(fontSize: 24)),
                                 FilledButton(
                                   style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
                                   onPressed: () async {
@@ -505,7 +508,7 @@ class _DonatePageState extends State<DonatePage> {
                               _tempDonation.weightType=_weightType;
                               // _tempDonation.dateTime=dateTimetoTimestamp(_dateTime);
                               _tempDonation.dateTime=_dateTime;
-                              // _tempDonation.user=user!.uid;
+                              _tempDonation.user=user!.uid;
 
                               if (_imageUrl!="") {
                                 _tempDonation.image=_imageUrl;

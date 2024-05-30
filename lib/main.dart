@@ -35,9 +35,7 @@ void main() async {
     ChangeNotifierProvider(create: ((context) => UserAuthProvider())),
     ChangeNotifierProvider(create: ((context) => OpenOrganizationProvider())),
     ChangeNotifierProvider(create: ((context) => AllOrganizationProvider())),
-    // ChangeNotifierProvider(create: ((context) => DonationProvider())),
-    // ChangeNotifierProvider(create: ((context) => DonationProvider(user!.uid))),
-    ChangeNotifierProvider(create: ((context) => DonationProvider("bHFOC8lDAKTiXhFhSuPfLPR2Tm42"))),
+    ChangeNotifierProvider(create: ((context) => DonationProvider())),
     ChangeNotifierProvider(create: ((context) => OrgProvider())), 
   ], child: const RootWidget()));
 }
@@ -67,7 +65,7 @@ class RootWidget extends StatelessWidget {
         '/donorprofile': (context) => DonorProfile(),
       },
       onGenerateRoute: (settings) {
-        if (settings.name == "donatepage"){
+        if (settings.name == "/donatepage"){
           final args = settings.arguments as Organization?;
           return MaterialPageRoute(
             builder: (context) => DonatePage(
@@ -76,7 +74,7 @@ class RootWidget extends StatelessWidget {
           );
         }
 
-        if (settings.name == "/oganizationdetails"){
+        if (settings.name == "/organizationdetails"){
           final args = settings.arguments as Organization?;
           return MaterialPageRoute(
             builder: (context) => OrganizationDetails(

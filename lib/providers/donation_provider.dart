@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/donation_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import'../api/firebase_donation_api.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,10 +8,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class DonationProvider with ChangeNotifier{
   late FirebaseDonationAPI firebaseService;
   late Stream<QuerySnapshot> _donationsStream;
+  User? user = FirebaseAuth.instance.currentUser;
 
-  DonationProvider(String user) {
+  DonationProvider() {
     firebaseService = FirebaseDonationAPI();
-    fetchUserDonations(user);
+    fetchUserDonations(user!.uid);
   }
 
   Stream<QuerySnapshot> get userDonation => _donationsStream;
