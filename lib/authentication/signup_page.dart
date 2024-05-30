@@ -264,7 +264,7 @@ class _SignUpPageState extends State<SignUpPage> {
             );
 
             // Navigate to next screen after successful sign-up
-            Navigator.pushNamed(context, '/');
+            Navigator.pushNamed(context, '/donorhomepage');
           } catch (e) {
             // Handle sign-up errors
             setState(() {
