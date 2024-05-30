@@ -128,7 +128,7 @@ class FirebaseAuthAPI {
   Future<void> signOut() async {
     await auth.signOut();
   }
-
+  
   String _handleAuthException(FirebaseAuthException e) {
     if (e.code == 'user-not-found') {
       return 'No user found for that email.';

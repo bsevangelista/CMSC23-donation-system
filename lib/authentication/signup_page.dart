@@ -264,7 +264,7 @@ class _SignUpPageState extends State<SignUpPage> {
             );
 
             // Navigate to next screen after successful sign-up
-            Navigator.pushNamed(context, '/admin_dashboard');
+            Navigator.pushNamed(context, '/');
           } catch (e) {
             // Handle sign-up errors
             setState(() {

@@ -1,3 +1,4 @@
+
 // ignore_for_file: prefer_const_constructors
 
 import 'package:app/firebase_options.dart';
@@ -11,6 +12,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'authentication/signin_page.dart';
+
 import 'authentication/signup_page.dart';
 import 'authentication/orgsignup_page.dart';
 import 'providers/auth_provider.dart';
@@ -23,6 +25,13 @@ void main() async {
   );
 
   runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: ((context) => OpenOrganizationProvider())),
+
+    ChangeNotifierProvider(create: ((context) => AllOrganizationProvider())),
+    // ChangeNotifierProvider(create: ((context) => DonationProvider())),
+    // ChangeNotifierProvider(create: ((context) => DonationProvider(user!.uid))),
+    ChangeNotifierProvider(create: ((context) => DonationProvider("bHFOC8lDAKTiXhFhSuPfLPR2Tm42"))),
+    ChangeNotifierProvider(create: ((context) => UserAuthProvider())),
     ChangeNotifierProvider(create: ((context) => OrgProvider())), //remove string if auth is implemented
     ChangeNotifierProvider(create: ((context) => UserAuthProvider())),
   ], child: const RootWidget()));
@@ -30,7 +39,6 @@ void main() async {
 
 class RootWidget extends StatelessWidget {
   const RootWidget({super.key});
-
   @override
   Widget build(BuildContext) {
     return MaterialApp(
@@ -40,7 +48,6 @@ class RootWidget extends StatelessWidget {
           iconTheme: IconThemeData(color: Colors.white),
         ),
       ),
-      
       title: "CMSC Donation App",
       initialRoute: '/',
       routes: {
@@ -51,7 +58,29 @@ class RootWidget extends StatelessWidget {
         '/org_homepage': (context) => OrgHomePage(),
         '/org_addDonationDrive': (context) => AddDonationDrive(),
         '/org_donationDriveHomepage': (context) => DonationDriveList(),
+        '/donorhomepage': (context) => DonorHomepage(),
+        '/donorprofile': (context) => DonorProfile(),
+        '/signin': (context) => SignInPage(),
       },
+      onGenerateRoute: (settings) {
+        if (settings.name == "donatepage"){
+          final args = settings.arguments as Organization?;
+          return MaterialPageRoute(
+            builder: (context) => DonatePage(
+              organization: args,
+            )
+          );
+        }
+
+        if (settings.name == "/oganizationdetails"){
+          final args = settings.arguments as Organization?;
+          return MaterialPageRoute(
+            builder: (context) => OrganizationDetails(
+              organization: args,
+            )
+          );
+        }
+      }
     );
   }
 }
