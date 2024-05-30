@@ -62,15 +62,29 @@ class _DonationListState extends State<OrgDonationList> {
                     Row(
                       children: [
                         Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                dono.category.join(', '), //fix later
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                  color: Colors.white,
+                              dono.image != null
+                                  ? Padding(
+                                      padding: EdgeInsets.only(right: 8),
+                                      child: Image.network(
+                                        '${dono.image}',
+                                        width: 50,
+                                        height: 50,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    )
+                                  : Container(),
+                              Expanded(
+                                child: Text(
+                                  dono.category.join(', '), //fix later
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
                             ],
