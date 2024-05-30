@@ -61,7 +61,8 @@ class OrgProvider with ChangeNotifier {
         description: description!,
         organization: orgId,
         donations: [],
-        logo: imageUrl);
+        logo: imageUrl,
+        proof: '');
 
     String message =
         await firebaseService.addDonationDrive(dDrive.toJson(dDrive));
