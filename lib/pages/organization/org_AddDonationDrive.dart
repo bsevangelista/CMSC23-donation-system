@@ -100,6 +100,17 @@ class _addDonationDriveState extends State<AddDonationDrive> {
           if (_formKey.currentState!.validate() && imgFile != null) {
             _formKey.currentState!.save();
 
+            // Check if the donation drive name already exists
+            bool nameExists = await context
+                .read<OrgProvider>()
+                .isDonationDriveNameExists(name!);
+            if (nameExists) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('A donation drive with this name already exists!')),
+              );
+              return;
+            }
+
             if (imgFile != null) {
               String uniqueFileName =
                   DateTime.now().millisecondsSinceEpoch.toString();

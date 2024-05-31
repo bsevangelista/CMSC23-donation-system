@@ -48,12 +48,14 @@ class UserAuthProvider with ChangeNotifier {
     required String organizationName,
     required String description,
     required String email,
+    required String logo,
   }) async {
     await authService.orgSignUp(
       organizationName: organizationName,
       password: password,
       email: email,
       description: description,
+      logo: logo,
     );
     notifyListeners();
   }

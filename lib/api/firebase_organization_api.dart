@@ -24,11 +24,26 @@ class FirebaseOrgAPI {
         .update({"status": newStatus});
   }
 
-  Future<void> updateDonationDriveDonations(
-      String donationDriveId, String donationID) {
-    return db.collection("donationDrives").doc(donationDriveId).update({
-      "donations": FieldValue.arrayUnion([donationID])
-    });
+  Future<void> updateDonationDriveDonations(String selectedDrive, String donationID) async {
+    try {
+      QuerySnapshot querySnapshot = await db
+          .collection("donationDrives")
+          .where("name", isEqualTo: selectedDrive)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
+        DocumentReference documentRef = documentSnapshot.reference;
+
+        await documentRef.update({
+          "donations": FieldValue.arrayUnion([donationID])
+        });
+      } else {
+        print('No donation drive found with the specified name.');
+      }
+    } catch (e) {
+      print('Error updating donation drive: $e');
+    }
   }
 
   Future<void> updateOrganizationStatus(String organizationId, String newStatus) {
@@ -36,6 +51,13 @@ class FirebaseOrgAPI {
         .collection("organizations")
         .doc(organizationId)
         .update({"status": newStatus});
+  }
+
+  Future<void> updateProofDonationDrive(String donationDriveId, String imageUrl) {
+    return db
+        .collection("donationDrives")
+        .doc(donationDriveId)
+        .update({"proof": imageUrl});
   }
 
   Future<String> addDonationDrive(Map<String, dynamic> dDrive) async {
@@ -48,16 +70,27 @@ class FirebaseOrgAPI {
     }
   }
 
-  // Stream<QuerySnapshot> getUserOrg(String organizationId) {
-  //   try {
-  //     CollectionReference collectionRef = db.collection('organizations');
-  //     return collectionRef.where('name', isEqualTo: '').snapshots();
-  //   } catch (error) {
-  //     // Handle any errors that occur during the operation
-  //     print('Error fetching organization: $error');
-  //     return null; // Return null to indicate failure
-  //   }
-  // }
+  Future<void> deleteDonationDrive(String donationDriveId) async {
+    try {
+      await db.collection("donationDrives").doc(donationDriveId).delete();
+    } catch (e) {
+      print('Error deleting donation drive: $e');
+      throw e;
+    }
+  }
+
+  Future<bool> isDonationDriveNameExists(String name) async {
+    try {
+      var querySnapshot = await db
+          .collection("donationDrives")
+          .where("name", isEqualTo: name)
+          .get();
+      return querySnapshot.docs.isNotEmpty;
+    } catch (e) {
+      print('Error checking donation drive name existence: $e');
+      return false;
+    }
+  }
 
   Future<DocumentSnapshot> getUserOrg(String organizationId) {
     return db.collection('organizations').doc(organizationId).get();
