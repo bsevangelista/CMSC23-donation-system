@@ -33,7 +33,21 @@ class _OrgSignUpState extends State<OrgSignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false, // Remove back arrow
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.favorite,
+              color: Colors.white,
+            ),
+            SizedBox(width: 8),
+            Text(
+              'Elbi Donate',
+              style: TextStyle(color: Colors.white),
+            ),
+          ],
+        ),
+        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: Container(

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'signup_page.dart';
 
 class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+  const SignInPage({Key? key}) : super(key: key);
 
   @override
   State<SignInPage> createState() => _SignInPageState();
@@ -20,6 +20,20 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.favorite, // You can choose any icon from the Icons class
+              color: Colors.white,
+            ),
+            SizedBox(width: 8), // Add some space between the icon and the text
+            Text(
+              'Elbi Donate',
+              style: TextStyle(color: Colors.white),
+            ),
+          ],
+        ),
         automaticallyImplyLeading: false, // Remove back arrow
       ),
       body: SingleChildScrollView(
@@ -45,15 +59,15 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  Widget get heading => const Padding(
-        padding: EdgeInsets.only(bottom: 30),
-        child: Center(
-          child: Text(
-            "Sign In",
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-          ),
-        ),
-      );
+  Widget get heading => Padding(
+    padding: const EdgeInsets.only(bottom: 30),
+    child: Center(
+      child: Text(
+        "Sign In",
+        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+      ),
+    ),
+  );
 
   Widget get emailField => Padding(
         padding: const EdgeInsets.only(bottom: 30),
@@ -184,5 +198,19 @@ class _SignInPageState extends State<SignInPage> {
                     Text("Sign Up", style: TextStyle(color: Colors.grey[700])))
           ],
         ),
-      );
+        TextButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SignUpPage()),
+            );
+          },
+          child: Text(
+            "Sign Up",
+            style: TextStyle(color: Colors.grey[700]),
+          ),
+        )
+      ],
+    ),
+  );
 }

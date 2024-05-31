@@ -1,3 +1,4 @@
+import 'package:app/providers/admin_provider.dart';
 import 'package:app/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -43,10 +44,10 @@ class AdminDashboard extends StatelessWidget {
 class OrganizationsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserAuthProvider>(
-      builder: (context, authProvider, child) {
+    return Consumer<AdminProvider>(
+      builder: (context, adminProvider, child) {
         return FutureBuilder<List<Map<String, dynamic>>>(
-          future: authProvider.getOrganizations(),
+          future: adminProvider.getOrganizations(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
@@ -71,10 +72,14 @@ class OrganizationsView extends StatelessWidget {
                       ? Icon(Icons.check, color: Colors.green)
                       : ElevatedButton(
                           onPressed: () {
-                            authProvider.approveOrganization(org['id']);
+                            adminProvider.approveOrganization(org['id']);
                           },
                           child: Text('Approve'),
                         ),
+                  onTap: () {
+                    // Navigate to organization details page
+                    Navigator.pushNamed(context, '/image_admin_dashboard');
+                  },
                 );
               },
             );
@@ -89,10 +94,10 @@ class OrganizationsView extends StatelessWidget {
 class DonationsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserAuthProvider>(
-      builder: (context, authProvider, child) {
+    return Consumer<AdminProvider>(
+      builder: (context, adminProvider, child) {
         return FutureBuilder<List<Map<String, dynamic>>>(
-          future: authProvider.getDonations(),
+          future: adminProvider.getDonations(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
@@ -133,10 +138,10 @@ class DonationsView extends StatelessWidget {
 class DonorsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserAuthProvider>(
-      builder: (context, authProvider, child) {
+    return Consumer<AdminProvider>(
+      builder: (context, adminProvider, child) {
         return FutureBuilder<List<Map<String, dynamic>>>(
-          future: authProvider.getDonors(),
+          future: adminProvider.getDonors(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
