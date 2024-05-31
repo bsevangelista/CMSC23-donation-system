@@ -86,7 +86,7 @@ class _DonorProfileState extends State<DonorProfile> {
               return Column(
                 children: [
                   SizedBox(
-                    height: 60,
+                    height: 10,
                   ),
                   Header(),
 
@@ -97,10 +97,13 @@ class _DonorProfileState extends State<DonorProfile> {
                   // ),
                 
 
-                  // Expanded(
+                  Expanded(
+                    // flex: 7,
                   ////////////////////
 
-                  Container(
+                  // Container(
+                    // clipBehavior: Clip.hardEdge,
+                    // height: 460,
 
                 /////////////
                 // height: 200.0,
@@ -144,19 +147,23 @@ class _DonorProfileState extends State<DonorProfile> {
 
                           return Padding(
                             padding: EdgeInsets.all(10),
-                            child: ListTile(
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5)),
-                              tileColor: Color.fromARGB(184, 164, 162, 164),
-                              // title: Text(donation.id),
-                              // title: Text(donation.organization),
-                              title: Text(_donationOrganization),
-                              // trailing: FilledButton(onPressed: () {Navigator.pushNamed(context, "/second", arguments: snapshot.data?.docs[index]);} , child: Text("View Details", style: TextStyle(fontSize: 10))),
-                              trailing: FilledButton(
-                                onPressed: () {
-                                  // Navigator.pushNamed(context, "/organizationdetails", arguments: organization);
-                                  } , 
-                                child: Text("View Details", style: TextStyle(fontSize: 10))),
-                            )
+                            child: 
+                              // Card(
+                                // child:
+                                  ListTile(
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5)),
+                                    tileColor: Color.fromARGB(184, 164, 162, 164),
+                                    // title: Text(donation.id),
+                                    // title: Text(donation.organization),
+                                    title: Text(_donationOrganization),
+                                    // trailing: FilledButton(onPressed: () {Navigator.pushNamed(context, "/second", arguments: snapshot.data?.docs[index]);} , child: Text("View Details", style: TextStyle(fontSize: 10))),
+                                    trailing: FilledButton(
+                                      onPressed: () {
+                                        // Navigator.pushNamed(context, "/organizationdetails", arguments: organization);
+                                        } , 
+                                      child: Text("View Details", style: TextStyle(fontSize: 10))),
+                                  )
+                              // )
                           );
                         }) 
                       )

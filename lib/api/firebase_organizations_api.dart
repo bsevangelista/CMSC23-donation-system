@@ -6,6 +6,9 @@ class FirebaseOpenOrganizationAPI{
   Stream<QuerySnapshot> getOpenOrganizations() {
     // return db.collection("organizations").snapshots();
     return db.collection("organizations").where("status",isEqualTo: "OPEN").snapshots();
+
+    //pang check lang if tama donor view pag wala pang organization open for donation
+    // return db.collection("organizations").where("status",isEqualTo: "asdcszd").snapshots();
   }
 }
 

@@ -1,13 +1,11 @@
+import 'package:app/models/donor_model.dart';
 import 'package:app/models/organization_model.dart';
+import 'package:app/pages/donor/donor_profile.dart';
+import 'package:app/providers/auth_provider.dart';
+import 'package:app/providers/donation_provider.dart';
 import 'package:app/providers/organization_list_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// import '/donor/organization_details.dart';
-
-// import '/model/donationDrive_model.dart';
-// import '/provider/donationDrive_list_provider.dart';
-// import '/donor/donation_drive_details.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 
@@ -20,13 +18,71 @@ class DonorHomepage extends StatefulWidget {
 }
 
 class _DonorHomepageState extends State<DonorHomepage> {
+  Donor? _donor;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserInfo();
+  }
+
+  void fetchUserInfo() async {
+    DocumentSnapshot userInfoSnapshot = await Provider.of<DonationProvider>(context, listen: false).userInfoFuture;
+    setState(() {
+      _donor = Donor.fromSnapshot(userInfoSnapshot);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) { 
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text("${_donor?.username}", style: TextStyle(color: Colors.white)),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () {
+                context.read<UserAuthProvider>().signOut();
+                Navigator.pushNamed(context, '/');
+              }
+            )
+          ],
+          bottom: TabBar(
+            tabs: [
+              Tab(text: 'Donate'),
+              Tab(text: 'Profile')
+            ]
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            DonorOrganizationsView(),
+            DonorProfile(),
+          ]
+        )
+      )
+    );
+  }
+}
+
+
+
+class DonorOrganizationsView extends StatefulWidget {
+  const DonorOrganizationsView({super.key});
+
+  @override
+  State<DonorOrganizationsView> createState() => _DonorOrganizationsViewState();
+}
+
+class _DonorOrganizationsViewState extends State<DonorOrganizationsView> {
   @override
   Widget build(BuildContext context) {
 
-    // Stream<QuerySnapshot> donationDrivesStream = context.watch<DonationDriveProvider>().donationDrive;
-    Stream<QuerySnapshot> organizationsStream = context.watch<OpenOrganizationProvider>().openOrganization;
+ Stream<QuerySnapshot> organizationsStream = context.watch<OpenOrganizationProvider>().openOrganization;
 
-    // return const Placeholder();
     return Scaffold(
       body: StreamBuilder(
         stream: organizationsStream,
@@ -41,60 +97,67 @@ class _DonorHomepageState extends State<DonorHomepage> {
               child: CircularProgressIndicator(),
             );
           }  
-          else if (!snapshot.hasData) {
+
+
+          // else if (!snapshot.hasData) {
+          //   return Center(
+          //     child: Column(
+          //       mainAxisAlignment: MainAxisAlignment.center,
+          //       crossAxisAlignment: CrossAxisAlignment.center,
+          //       children: [
+          //         Icon(Icons.corporate_fare),
+          //         Text("No organization open for donations yet."),
+          //       ]
+          //     )
+          //   );
+          // }
+
+          List<DocumentSnapshot> organizationsList = snapshot.data!.docs;
+
+          if (organizationsList.isEmpty) {
             return Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Icon(Icons.corporate_fare),
-                  Text("No organization open for donations yet."),
+                  Text("No organization open for donations yet.")
                 ]
               )
             );
           }
 
-          List<DocumentSnapshot> organizationsList = snapshot.data!.docs;
-          //ung list ng donation drives
-
-          if (organizationsList.isEmpty) {
-            return Center(
-              child: Text("No organization open for donations yet.")
-            );
-          }
 
 
-
-          // kailangan ng condition to only show organizations with open status for donations
           return ListView.builder(
-            itemCount: organizationsList.length,
-            itemBuilder: ((context, index) {
-              Organization organization = Organization.fromJson(
-                snapshot.data?.docs[index].data() as Map<String,dynamic>
-              );
+              itemCount: organizationsList.length,
+              itemBuilder: ((context, index) {
+                Organization organization = Organization.fromJson(
+                  snapshot.data?.docs[index].data() as Map<String,dynamic>
+                );
 
-              organization.id = snapshot.data?.docs[index].id;
+                organization.id = snapshot.data?.docs[index].id;
 
-              return Padding(
-                padding: EdgeInsets.all(10),
-                child: ListTile(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5)),
-                  tileColor: Color.fromARGB(184, 164, 162, 164),
-                  title: Text(organization.name),
-                  // trailing: FilledButton(onPressed: () {Navigator.pushNamed(context, "/second", arguments: snapshot.data?.docs[index]);} , child: Text("View Details", style: TextStyle(fontSize: 10))),
-                  trailing: FilledButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/organizationdetails", arguments: organization);
-                      } , 
-                    child: Text("View Details", style: TextStyle(fontSize: 10))),
-                )
-              );
-            }
-
+                return Padding(
+                  padding: EdgeInsets.all(10),
+                  child: ListTile(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5)),
+                    tileColor: Color.fromARGB(184, 164, 162, 164),
+                    title: Text(organization.name),
+                    // trailing: FilledButton(onPressed: () {Navigator.pushNamed(context, "/second", arguments: snapshot.data?.docs[index]);} , child: Text("View Details", style: TextStyle(fontSize: 10))),
+                    trailing: FilledButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/organizationdetails", arguments: organization);
+                        } , 
+                      child: Text("View Details", style: TextStyle(fontSize: 10))),
+                  )
+                );
+              }
             ) 
-          );         
+          );        
         }
       )
     );
   }
 }
+
+
+

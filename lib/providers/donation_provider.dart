@@ -9,16 +9,25 @@ class DonationProvider with ChangeNotifier{
   late FirebaseDonationAPI firebaseService;
   late Stream<QuerySnapshot> _donationsStream;
   User? user = FirebaseAuth.instance.currentUser;
+  late Future<DocumentSnapshot> _userInfoFuture;
 
   DonationProvider() {
     firebaseService = FirebaseDonationAPI();
     fetchUserDonations(user!.uid);
+    fetchUserInfo(user!.uid);
   }
 
   Stream<QuerySnapshot> get userDonation => _donationsStream;
+  Future<DocumentSnapshot> get userInfoFuture => _userInfoFuture;
+
 
   void fetchUserDonations(String user) {
     _donationsStream = firebaseService.getUserDonations(user);
+    notifyListeners();
+  }
+
+  void fetchUserInfo(String user) {
+    _userInfoFuture = firebaseService.getUserInfo(user);
     notifyListeners();
   }
 

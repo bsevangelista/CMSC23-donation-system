@@ -19,4 +19,8 @@ class FirebaseDonationAPI{
   //  Stream<QuerySnapshot> getDonationOrganization(String organization) {
   //   return db.collection("organizations").where(snapshot.uid,isEqualTo: organization).snapshots();
   // } 
+
+  Future<DocumentSnapshot> getUserInfo(String user) {
+    return db.collection("users").doc(user).get();
+  }
 }
