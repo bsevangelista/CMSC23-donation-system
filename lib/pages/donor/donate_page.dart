@@ -30,8 +30,8 @@ class _DonatePageState extends State<DonatePage> {
 
   User? user = FirebaseAuth.instance.currentUser;
 
-
   final _formKey = GlobalKey<FormState>();
+  int _categoryCounter = 0;
 
   bool _food = false;
   bool _clothes = false;
@@ -121,8 +121,10 @@ class _DonatePageState extends State<DonatePage> {
 
                                   if (_food == true) {
                                     _category.add("food");
+                                    _categoryCounter++;
                                   } else {
                                     _category.remove("food");
+                                    _categoryCounter--;
                                   }
                                 });
                               },
@@ -141,8 +143,10 @@ class _DonatePageState extends State<DonatePage> {
 
                                   if (_clothes == true) {
                                     _category.add("clothes");
+                                    _categoryCounter++;
                                   } else {
                                     _category.remove("clothes");
+                                    _categoryCounter--;
                                   }
                                 });
                               },
@@ -161,8 +165,10 @@ class _DonatePageState extends State<DonatePage> {
 
                                   if (_cash == true) {
                                     _category.add("cash");
+                                    _categoryCounter++;
                                   } else {
                                     _category.remove("cash");
+                                    _categoryCounter--;
                                   }
                                 });
                               },
@@ -181,8 +187,10 @@ class _DonatePageState extends State<DonatePage> {
 
                                   if (_food == true) {
                                     _category.add("necessities");
+                                    _categoryCounter++;
                                   } else {
                                     _category.remove("necessities");
+                                    _categoryCounter--;
                                   }
                                 });
                               },
@@ -199,6 +207,12 @@ class _DonatePageState extends State<DonatePage> {
                                 setState(() {
                                   _others = value!;
                                 });
+
+                                if (_others == true) {
+                                  _categoryCounter++;
+                                } else {
+                                  _categoryCounter--;
+                                }
                               },
                             ),
                             Text("Others"),
@@ -485,6 +499,9 @@ class _DonatePageState extends State<DonatePage> {
                           if (_dateTime.compareTo(DateTime.now())<0) {
                             ScaffoldMessenger.of(context)
                               .showSnackBar(SnackBar(content: Text("Please set delivery time in the future")));
+                          } else if (_categoryCounter==0) {
+                            ScaffoldMessenger.of(context)
+                              .showSnackBar(SnackBar(content: Text("Please choose/enter at least one donation category")));
                           }
                           else if (_formKey.currentState!.validate()) {
                             _formKey.currentState?.save();
