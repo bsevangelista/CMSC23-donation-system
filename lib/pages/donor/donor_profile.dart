@@ -109,100 +109,61 @@ class _DonorProfileState extends State<DonorProfile> {
 
               // return Row(
 
-              return Column(
-                children: [
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Header(_donor!),
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Header(_donor!),
+                    Container(
+                      height: (80*userDonationsList.length.toDouble()),
+                      child:
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          padding: EdgeInsets.zero,
+                          itemCount: userDonationsList.length,
+                          itemBuilder: ((context, index) {
+                            Donation donation = Donation.fromJson(
+                              snapshot2.data?.docs[index].data() as Map<String,dynamic>
+                            );
 
-                  ////////////////////
-                  // Expanded(
-                  //   flex: 3,
-                  //   child: Header()
-                  // ),
-                
+                            donation.id = snapshot2.data?.docs[index].id;
 
-                  Expanded(
-                    // flex: 7,
-                  ////////////////////
+                            String _donationOrganization = "";
 
-                  // Container(
-                    // clipBehavior: Clip.hardEdge,
-                    // height: 460,
+                            for (int i = 0; i < organizationsList.length; i++) {
+                              if (donation.organization==snapshot1.data?.docs[i].id) {
+                                Organization organization = Organization.fromJson(
+                                  snapshot1.data?.docs[i].data() as Map<String,dynamic>
+                                );
 
-                /////////////
-                // height: 200.0,
-                    // flex: 7,
-                /////////////
+                                _donationOrganization = organization.name;
+                              }
+                            } 
+                                        
+                          
 
-                    ////// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    //  decoration: BoxDecoration(
-                    //   border: Border.all(color: Colors.blueAccent)
-                    // ),
-                    ////// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    child:
-
-                    ///////////
-                    // children: [
-                    ///////////
-                      ListView.builder(
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        itemCount: userDonationsList.length,
-                        itemBuilder: ((context, index) {
-                          Donation donation = Donation.fromJson(
-                            snapshot2.data?.docs[index].data() as Map<String,dynamic>
-                          );
-
-                          donation.id = snapshot2.data?.docs[index].id;
-
-                          String _donationOrganization = "";
-
-                          for (int i = 0; i < organizationsList.length; i++) {
-                            if (donation.organization==snapshot1.data?.docs[i].id) {
-                              Organization organization = Organization.fromJson(
-                                snapshot1.data?.docs[i].data() as Map<String,dynamic>
-                              );
-
-                              _donationOrganization = organization.name;
-                            }
-                          } 
-                                      
-                        
-
-                          return Padding(
-                            padding: EdgeInsets.all(10),
-                            child: 
-                              // Card(
-                                // child:
-                                  ListTile(
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5)),
-                                    tileColor: Color.fromARGB(184, 164, 162, 164),
-                                    // title: Text(donation.id),
-                                    // title: Text(donation.organization),
-                                    title: Text(_donationOrganization),
-                                    // trailing: FilledButton(onPressed: () {Navigator.pushNamed(context, "/second", arguments: snapshot.data?.docs[index]);} , child: Text("View Details", style: TextStyle(fontSize: 10))),
-                                    trailing: FilledButton(
-                                      onPressed: () {
-                                        // Navigator.pushNamed(context, "/donationdetails", arguments: {donation, _donationOrganization});
-                                        Navigator.pushNamed(context, "/donationdetails", arguments: DonationArguments(donation, _donationOrganization));
-                                        } , 
-                                      child: Text("View Details", style: TextStyle(fontSize: 10))),
-                                  )
-                              // )
-                          );
-                        }) 
-                      )
-                    // ]
-                  ),
-                  ////////////////////
-                  // Expanded(
-                  //   flex: 1,
-                  //   child: Container(),
-                  // )
-                  ////////////////////
-                ]
+                            return Padding(
+                              padding: EdgeInsets.all(10),
+                              child: 
+                                    ListTile(
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5)),
+                                      tileColor: Color.fromARGB(184, 164, 162, 164),
+                                      title: Text(_donationOrganization),
+                                      trailing: FilledButton(
+                                        onPressed: () {
+                                          Navigator.pushNamed(context, "/donationdetails", arguments: DonationArguments(donation, _donationOrganization));
+                                          } , 
+                                        child: Text("View Details", style: TextStyle(fontSize: 10))),
+                                    )
+                            );
+                          }) 
+                        )
+                    ),
+                  ]
+                )
               ); 
             }
           );

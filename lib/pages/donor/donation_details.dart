@@ -56,9 +56,9 @@ class DonationDetails extends StatelessWidget {
                       ]
                     ),
 
-                    if (donation!.image != null) donateDivider(),
-                    if (donation!.image != null) headingDisplay("Photo of Donated Items"),
-                    if (donation!.image != null) displayImage(donation!.image!),
+                    if (donation!.image != "") donateDivider(),
+                    if (donation!.image != "") headingDisplay("Photo of Donated Items"),
+                    if (donation!.image != "") displayImage(donation!.image!),
 
                     donateDivider(),
                     headingDisplay("Date and Time of Delivery"),
@@ -79,7 +79,7 @@ class DonationDetails extends StatelessWidget {
                     ),   
 
                     if (donation!.deliveryMode == "Pickup") donateDivider(),
-                    if (donation!.deliveryMode == "Pickup") headingDisplay("Address"),
+                    if (donation!.deliveryMode == "Pickup") headingDisplay("Address/es"),
                     //listview ng addresses
                     if (donation!.deliveryMode == "Pickup") displayList(donation!.address!),
 

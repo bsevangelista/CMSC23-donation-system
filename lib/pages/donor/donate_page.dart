@@ -66,7 +66,8 @@ class _DonatePageState extends State<DonatePage> {
   List<String> _weightTypeChoices = <String>["kg", "lb"];
   String _weightType = "kg"; 
 
-  DateTime _dateTime = DateTime.now().add(Duration(hours: 8));
+  // DateTime _dateTime = DateTime.now().add(Duration(hours: 8));
+  DateTime _dateTime = DateTime.now();
 
   String _addressString = "";
   List<String> _address = [];
@@ -92,8 +93,11 @@ class _DonatePageState extends State<DonatePage> {
     deliveryMode: "Pickup",
     weight: "",
     weightType: "kg",
+    image: "",
     // dateTime: dateTimetoTimestamp(DateTime.now()),
     dateTime: DateTime.now(),
+    contactNum: "",
+    address: [],
     status: "Pending",
     organization: "",
     user: ""
@@ -481,7 +485,7 @@ class _DonatePageState extends State<DonatePage> {
           //////////////////////// for pickup only       
                   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
                   if (_deliveryMode=="Pickup") donateDivider(),
-                  if (_deliveryMode=="Pickup") Row(children: [titleStyle("Address"), Text(" (separate using semicolons only)", style: TextStyle(fontSize: 12, color: Color.fromRGBO(120, 117, 117, 1))),]),
+                  if (_deliveryMode=="Pickup") Row(children: [titleStyle("Address/es"), Text(" (separate using semicolons only)", style: TextStyle(fontSize: 12, color: Color.fromRGBO(120, 117, 117, 1))),]),
 
                   if (_deliveryMode=="Pickup") Address(_addressStringController, (String val) => _addressString = val),
                   if (_deliveryMode=="Pickup") Padding(
@@ -511,7 +515,7 @@ class _DonatePageState extends State<DonatePage> {
 
                   if (_deliveryMode=="Pickup") ContactNo(_contactNumController, (String val) => _contactNum = val),
                   if (_deliveryMode=="Pickup") Padding(
-                                                padding: const EdgeInsets.only(left: 65.0),
+                                                padding: const EdgeInsets.only(left: 45.0),
                                                 child: TextButton(
                                                   style: TextButton.styleFrom(
                                                     backgroundColor: Color.fromARGB(184, 208, 208, 208),
@@ -524,18 +528,8 @@ class _DonatePageState extends State<DonatePage> {
                                               ),
                   
           //////////////////////// for pickup only       
-          
-
-          //////////////////////// for dropoff only
-                  if (_deliveryMode=="Dropoff") donateDivider(),
-                  if (_deliveryMode=="Dropoff") titleStyle("Generate QR"),
-
-                  if (_deliveryMode=="Dropoff") GenerateQR(),
-
-          
-          //////////////////////// for dropoff only   
+            
                   donateDivider(),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -576,15 +570,14 @@ class _DonatePageState extends State<DonatePage> {
                                 _tempDonation.image=_imageUrl;
                               }
 
-
-                            if (_deliveryMode=="Pickup") {
-                              _address = _addressString.split(";").map((x) => x.trim()).where((element)=>element.isNotEmpty).toList();
+                            // if (_deliveryMode=="Pickup") {
+                              _address = _addressStringController.text.split(";").map((x) => x.trim()).where((element)=>element.isNotEmpty).toList();
                               _tempDonation.address = _address;
-
-                              _tempDonation.contactNum=_contactNum;
-                            } else{
-                                //qr
-                            }
+                                  
+                              _tempDonation.contactNum = _contactNumController.text;
+                            // } else{
+                              // qr
+                            // }
 
                             
 
@@ -610,8 +603,26 @@ class _DonatePageState extends State<DonatePage> {
                           // Text("Generate QR", style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)))
                       ),
                     ]
-                  )
+                  ),
 
+          //////////////////////// for dropoff only
+                  if (_deliveryMode=="Dropoff") donateDivider(),
+                  if (_deliveryMode=="Dropoff") titleStyle("Generate QR"),
+
+                  
+                            // Reference referenceDonationDocumentToUpload = reference
+                            // try{
+                            //   await referenceImageToUpload.putFile(File(file!.path));
+                            //   _imageUrl = await referenceImageToUpload.getDownloadURL();
+                            // }catch(error){
+
+                            // }
+                            // final docRef = Firestore.instance.collection();
+
+                  if (_deliveryMode=="Dropoff") GenerateQR(),
+
+          
+          //////////////////////// for dropoff only 
 
 
                   ] // children
