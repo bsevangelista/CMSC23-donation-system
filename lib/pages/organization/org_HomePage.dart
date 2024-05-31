@@ -44,8 +44,8 @@ class OrgHomePage extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.exit_to_app_rounded),
               onPressed: () {
-                Provider.of<UserAuthProvider>(context, listen: false).signOut();
-                Navigator.of(context).pushReplacementNamed('/');
+                context.read<UserAuthProvider>().signOut();
+                Navigator.pop(context);
               },
             ),
           ],

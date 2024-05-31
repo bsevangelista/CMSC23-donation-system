@@ -27,7 +27,9 @@ class _OrgAboutPageState extends State<OrgAboutPage> {
   }
 
   void fetchOrganizationDetails() async {
-    DocumentSnapshot snapshot = await Provider.of<OrgProvider>(context, listen: false).organizationFuture;
+    DocumentSnapshot snapshot =
+        await Provider.of<OrgProvider>(context, listen: false)
+            .organizationFuture;
     setState(() {
       _organization = Organization.fromSnapshot(snapshot);
       _isOpen = _organization?.status == 'OPEN';
@@ -38,14 +40,32 @@ class _OrgAboutPageState extends State<OrgAboutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${_organization?.name}', style: TextStyle(color: Colors.white),),
+        title: Text(
+          '${_organization?.name}',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: _organization == null
           ? Center(child: CircularProgressIndicator())
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                _organization?.logo != null
+                    ? Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 8),
+                          child: Image.network(
+                            _organization!.logo.toString(),
+                            width: 250,
+                            height: 250,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      )
+                    : Container(),
+                SizedBox(height: 20),
                 Text('Description: ${_organization?.description}'),
+                SizedBox(height: 20),
                 Row(
                   children: [
                     Text('Status: '),
@@ -56,7 +76,8 @@ class _OrgAboutPageState extends State<OrgAboutPage> {
                           _isOpen = value;
                           String newStatus = value ? 'OPEN' : 'CLOSED';
                           Provider.of<OrgProvider>(context, listen: false)
-                              .updateOrganizationStatus(_organization!.id!, newStatus);
+                              .updateOrganizationStatus(
+                                  _organization!.id!, newStatus);
                         });
                       },
                     ),
