@@ -276,7 +276,7 @@ class _OrgSignUpState extends State<OrgSignUp> {
                   );
 
               // Navigate to next screen after successful sign-up
-              Navigator.pushNamed(context, '/org_homepage');
+              Navigator.pushNamed(context, '/');
             } catch (e) {
               // Handle sign-up errors
               setState(() {

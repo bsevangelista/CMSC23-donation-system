@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 class OrgHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    User? user = FirebaseAuth.instance.currentUser;
+    User? user = context.read<UserAuthProvider>().user;
     String? orgId = user?.uid;
 
     return DefaultTabController(
@@ -44,8 +44,8 @@ class OrgHomePage extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.exit_to_app_rounded),
               onPressed: () {
-                Provider.of<UserAuthProvider>(context, listen: false).signOut();
-                Navigator.of(context).pushReplacementNamed('/');
+                context.read<UserAuthProvider>().signOut();
+                Navigator.of(context).pop();
               },
             ),
           ],

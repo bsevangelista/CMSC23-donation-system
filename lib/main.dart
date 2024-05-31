@@ -6,6 +6,7 @@
 import 'package:app/firebase_options.dart';
 import 'package:app/models/organization_model.dart';
 import 'package:app/pages/admin/admin_dashboard.dart';
+import 'package:app/pages/authentication/home_page.dart';
 import 'package:app/pages/authentication/orgsignup_page.dart';
 import 'package:app/pages/authentication/signin_page.dart';
 import 'package:app/pages/authentication/signup_page.dart';
@@ -20,6 +21,7 @@ import 'package:app/providers/auth_provider.dart';
 import 'package:app/providers/donation_provider.dart';
 import 'package:app/providers/organization_list_provider.dart';
 import 'package:app/providers/organization_provider.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +32,12 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  // Initialize Firebase App Check
+  FirebaseAppCheck.instance.activate(
+    // webRecaptchaSiteKey: 'your-web-recaptcha-site-key', // Replace with your reCAPTCHA site key for web
+    androidProvider: AndroidProvider.playIntegrity,
+    appleProvider: AppleProvider.deviceCheck,
+  );
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: ((context) => UserAuthProvider())),
@@ -56,7 +64,8 @@ class RootWidget extends StatelessWidget {
       title: "CMSC Donation App",
       initialRoute: '/',
       routes: {
-        '/': (context) => const SignInPage(),
+        '/': (context) => const HomePage(),
+        '/signin': (context) => const SignInPage(),
         '/signup': (context) => const SignUpPage(),
         '/org_signup': (context) => const OrgSignUp(),
         '/admin_dashboard': (context) => AdminDashboard(),
