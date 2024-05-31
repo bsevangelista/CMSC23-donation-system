@@ -135,12 +135,6 @@ class _DonationListState extends State<OrgDonationList> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     Navigator.pushNamed(context, "/second");
-      //   },
-      //   child: Icon(Icons.person),
-      // ),
     );
   }
 }
