@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:qr_flutter/qr_flutter.dart';
 
 ////////////////////////////        other categories        ////////////////////////////
@@ -276,50 +275,51 @@ class _TimePickerState extends State<TimePicker> {
 
 
 
-////////////////////////////        generate qr        ////////////////////////////
-class GenerateQR extends StatefulWidget {
-  const GenerateQR({super.key});
 
-  @override
-  State<GenerateQR> createState() => _GenerateQRState();
-}
+// ////////////////////////////        generate qr        ////////////////////////////
+// class GenerateQR extends StatefulWidget {
+//   final String _docID;
+//   const GenerateQR(this._docID, {super.key});
 
-class _GenerateQRState extends State<GenerateQR> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-              padding: const EdgeInsets.only(left: 28.0),
-              child:             FilledButton(
-              style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
-              onPressed: () {
+//   @override
+//   State<GenerateQR> createState() => _GenerateQRState(_docID);
+// }
 
-                // setState(() {
-  
-                // });
-                // QrImageView(
-                //   data: '',
-                //   version: QrVersions.auto,
-                //   size: 200
-                // )
-              },
-              child:
-                Column(
-                  children: [
-                    Icon(
-                      Icons.qr_code,
-                      color: Colors.grey.shade700,
-                      // semanticLabel: "QR Generator",
-                      size: 40,
-                    ),
-                    const Text("Generate QR", style: TextStyle(fontSize: 12, color: const Color.fromARGB(255, 0, 0, 0))) 
-                  ]
-                ) 
-              ),
-            );
-  }
-}
+// class _GenerateQRState extends State<GenerateQR> {
+//   _GenerateQRState(this._docID);
+//   final String _docID;
 
-////////////////////////////        generate qr        ////////////////////////////
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//               padding: const EdgeInsets.only(left: 28.0),
+//               child:             FilledButton(
+//               style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
+//               onPressed: () {
+//                 QrImageView(
+//                   data: _docID,
+//                   version: QrVersions.auto,
+//                   size: 200,
+//                 );
+//               },
+//               child:
+//                 Column(
+//                   children: [
+//                     Icon(
+//                       Icons.qr_code,
+//                       color: Colors.grey.shade700,
+//                       // semanticLabel: "QR Generator",
+//                       size: 40,
+//                     ),
+//                     const Text("Generate QR", style: TextStyle(fontSize: 12, color: const Color.fromARGB(255, 0, 0, 0))) 
+//                   ]
+//                 ) 
+//               ),
+//             );
+//   }
+// }
+
+// ////////////////////////////        generate qr        ////////////////////////////
 
 
 

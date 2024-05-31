@@ -2,6 +2,11 @@ import 'package:ELBIdonate/models/donation_model.dart';
 import 'package:ELBIdonate/providers/donation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+// import 'package:app/models/donation_model.dart';
+// import 'package:app/pages/donor/donor_profile.dart';
+// import 'package:app/providers/donation_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DonationDetails extends StatelessWidget {
   final Donation? donation;
@@ -17,12 +22,12 @@ class DonationDetails extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(184, 164, 162, 164),
+        backgroundColor: Color.fromARGB(184, 0, 0, 0),
         title: Text(
           "${orgName!}",
           // args.orgName!,
           // "Temp Org Name",
-          style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
+          style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
         ),
       ),
       body: 
@@ -165,7 +170,7 @@ Widget cancelButton(BuildContext context, Donation donation){
 
 Widget displayList(List<String> list){
   return Container(
-    height: (25*list.length.toDouble()),
+    height: (26*list.length.toDouble()),
     child: 
       ListView.builder(
         physics: const NeverScrollableScrollPhysics(),

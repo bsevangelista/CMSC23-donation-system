@@ -21,16 +21,25 @@ class OrganizationDetails extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: Column(
-          children: [
-              SizedBox(height: 20.0),
-              Text("${organization!.name}", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
-              Text("${organization!.email}", style: TextStyle(fontSize: 14, color: const Color.fromARGB(255, 67, 67, 67), fontWeight: FontWeight.bold)),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                  child: Text("${organization!.description}"),
-              ),
-          ]
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+                // SizedBox(height: 20.0),
+                Container(
+                  height: 300,
+                  child: Expanded(
+                    child: Image.network(organization!.logo!)
+                  )
+                ),
+                Text("${organization!.name}", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
+                Text("${organization!.email}", style: TextStyle(fontSize: 14, color: const Color.fromARGB(255, 67, 67, 67), fontWeight: FontWeight.bold)),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                    child: Text("${organization!.description}"),
+                ),
+                SizedBox(height: 60.0),
+            ]
+          )
         )
       )
     );

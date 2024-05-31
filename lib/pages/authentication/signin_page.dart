@@ -24,7 +24,7 @@ class _SignInPageState extends State<SignInPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              Icons.favorite, // You can choose any icon from the Icons class
+              Icons.volunteer_activism, // You can choose any icon from the Icons class
               color: Colors.white,
             ),
             SizedBox(width: 8), // Add some space between the icon and the text
