@@ -78,7 +78,7 @@ class DonationDetails extends StatelessWidget {
                     ),
 
                     if (donation!.image != null) donateDivider(),
-                    headingDisplay("Photo of Donated Items"),
+                    if (donation!.image != null) headingDisplay("Photo of Donated Items"),
                     if (donation!.image != null) displayImage(donation!.image!),
 
                     donateDivider(),
@@ -116,12 +116,12 @@ class DonationDetails extends StatelessWidget {
                     valueDisplay(donation!.status), 
 
                     donateDivider(),
-                    if (donation!.status != "Canceled") cancelButton(context, donation!)
+                    if (donation!.status != "Canceled" && donation!.status != "Complete") cancelButton(context, donation!)
                   ]
                 )
               )
             ]
-          )
+          ) 
         )
       );
     // );
