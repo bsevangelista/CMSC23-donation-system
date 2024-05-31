@@ -73,7 +73,7 @@ class DonationDetails extends StatelessWidget {
                       children: [
                         valueDisplay(donation!.weight),
                         Text(" "),
-                        Text("${donation!.weightType}")
+                        Text("${donation!.weightType}", style: TextStyle(fontSize: 18))
                       ]
                     ),
 
@@ -83,7 +83,21 @@ class DonationDetails extends StatelessWidget {
 
                     donateDivider(),
                     headingDisplay("Date and Time of Delivery"),
-                    //display date and time
+                    Row(
+                      children: [
+                        if (donation!.dateTime.month>=10 && donation!.dateTime.day>=10) valueDisplay("${donation!.dateTime.year}-${donation!.dateTime.month}-${donation!.dateTime.day}"),
+                        if (donation!.dateTime.month<10 && donation!.dateTime.day<10) valueDisplay("${donation!.dateTime.year}-0${donation!.dateTime.month}-0${donation!.dateTime.day}"),
+                        if (donation!.dateTime.month<10 && donation!.dateTime.day>=10) valueDisplay("${donation!.dateTime.year}-0${donation!.dateTime.month}-${donation!.dateTime.day}"),
+                        if (donation!.dateTime.month>=10 && donation!.dateTime.day<10) valueDisplay("${donation!.dateTime.year}-${donation!.dateTime.month}-0${donation!.dateTime.day}"),
+
+                        Text(" ", style: TextStyle(fontSize: 18)),
+
+                        if (donation!.dateTime.minute>=10 && donation!.dateTime.hour >=10) Text("${donation!.dateTime.hour}:${donation!.dateTime.minute}", style: TextStyle(fontSize: 18)),
+                        if (donation!.dateTime.minute>=10 && donation!.dateTime.hour <10) Text("0${donation!.dateTime.hour}:${donation!.dateTime.minute}", style: TextStyle(fontSize: 18)),
+                        if (donation!.dateTime.minute<10 && donation!.dateTime.hour >=10) Text("${donation!.dateTime.hour}:0${donation!.dateTime.minute}", style: TextStyle(fontSize: 18)),
+                        if (donation!.dateTime.minute<10 && donation!.dateTime.hour <10) Text("0${donation!.dateTime.hour}:0${donation!.dateTime.minute}", style: TextStyle(fontSize: 18)), 
+                      ]
+                    ),   
 
                     if (donation!.deliveryMode == "Pickup") donateDivider(),
                     if (donation!.deliveryMode == "Pickup") headingDisplay("Address"),
@@ -98,25 +112,11 @@ class DonationDetails extends StatelessWidget {
                     //qr image            
 
                     donateDivider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children:[
-                         FilledButton(
-                          style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
-                          onPressed: () {
-                            //set donation status to canceled
-                            Donation _canceledDonation = donation!;
-                            _canceledDonation.status = "Canceled";
+                    headingDisplay("Status"),
+                    valueDisplay(donation!.status), 
 
-                            context
-                              .read<DonationProvider>()
-                              .cancelDonation(donation!.id!, _canceledDonation);
-                            Navigator.pop(context);
-                          },
-                          child: const Text("Cancel", style: TextStyle(fontSize: 20, color: const Color.fromARGB(255, 0, 0, 0)))
-                        )
-                      ]
-                    )
+                    donateDivider(),
+                    if (donation!.status != "Canceled") cancelButton(context, donation!)
                   ]
                 )
               )
@@ -155,10 +155,32 @@ Widget headingDisplay(String heading){
 Widget valueDisplay(String? value){
   return Padding(
     padding: const EdgeInsets.only(left: 28.0),
-    child: Text(value!)
+    child: Text(value!, style: TextStyle(fontSize: 18))
   );
 }
 
 Widget displayImage(String image){
   return Image.network(image);
+}
+
+Widget cancelButton(BuildContext context, Donation donation){
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children:[
+                         FilledButton(
+                          style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
+                          onPressed: () {
+                            //set donation status to canceled
+                            Donation _canceledDonation = donation!;
+                            _canceledDonation.status = "Canceled";
+
+                            context
+                              .read<DonationProvider>()
+                              .cancelDonation(donation!.id!, _canceledDonation);
+                            Navigator.pop(context);
+                          },
+                          child: const Text("Cancel", style: TextStyle(fontSize: 20, color: const Color.fromARGB(255, 0, 0, 0)))
+                        )
+                      ]
+                    );
 }
