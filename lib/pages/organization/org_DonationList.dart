@@ -65,7 +65,7 @@ class _DonationListState extends State<OrgDonationList> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              dono.image != null
+                              dono.image != '' 
                                   ? Padding(
                                       padding: EdgeInsets.only(right: 8),
                                       child: Image.network(
