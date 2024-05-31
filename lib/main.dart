@@ -6,7 +6,6 @@
 import 'package:app/firebase_options.dart';
 import 'package:app/models/organization_model.dart';
 import 'package:app/pages/admin/admin_dashboard.dart';
-import 'package:app/pages/admin/image_admin_dashboard.dart';
 import 'package:app/pages/authentication/home_page.dart';
 import 'package:app/pages/authentication/orgsignup_page.dart';
 import 'package:app/pages/authentication/signin_page.dart';
@@ -64,7 +63,6 @@ class RootWidget extends StatelessWidget {
         '/signup': (context) => const SignUpPage(),
         '/org_signup': (context) => const OrgSignUp(),
         '/admin_dashboard': (context) => AdminDashboard(),
-        '/image_admin_dashboard': (context) => ImageAdminDashboard(),
         '/org_homepage': (context) => OrgHomePage(),
         '/org_addDonationDrive': (context) => AddDonationDrive(),
         '/org_donationDriveHomepage': (context) => DonationDriveList(),

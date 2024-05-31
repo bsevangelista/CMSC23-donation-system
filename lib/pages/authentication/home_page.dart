@@ -52,7 +52,6 @@ class _HomePageState extends State<HomePage> {
           } else if (userRole == 'admin') {
             return AdminDashboard();
           }
-          // if user is logged in, display the scaffold containing the streambuilder for the todos
           return const SignInPage();
         });
   }

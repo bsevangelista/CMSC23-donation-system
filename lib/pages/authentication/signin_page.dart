@@ -60,14 +60,14 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Widget get heading => Padding(
-    padding: const EdgeInsets.only(bottom: 30),
-    child: Center(
-      child: Text(
-        "Sign In",
-        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-      ),
-    ),
-  );
+        padding: const EdgeInsets.only(bottom: 30),
+        child: Center(
+          child: Text(
+            "Sign In",
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
 
   Widget get emailField => Padding(
         padding: const EdgeInsets.only(bottom: 30),
@@ -198,19 +198,5 @@ class _SignInPageState extends State<SignInPage> {
                     Text("Sign Up", style: TextStyle(color: Colors.grey[700])))
           ],
         ),
-        TextButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const SignUpPage()),
-            );
-          },
-          child: Text(
-            "Sign Up",
-            style: TextStyle(color: Colors.grey[700]),
-          ),
-        )
-      ],
-    ),
-  );
+      );
 }
