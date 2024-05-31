@@ -11,7 +11,10 @@ class AdminDashboard extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false, // Remove back arrow
-          title: Text('Admin Dashboard', style: TextStyle(color: Colors.white),),
+          title: Text(
+            'Admin Dashboard',
+            style: TextStyle(color: Colors.white),
+          ),
           actions: [
             IconButton(
               icon: Icon(Icons.logout),
@@ -77,8 +80,8 @@ class OrganizationsView extends StatelessWidget {
                           child: Text('Approve'),
                         ),
                   onTap: () {
-                    // Navigate to organization details page
-                    Navigator.pushNamed(context, '/image_admin_dashboard');
+                    // Pass org object to _showImage method
+                    _showImage(context, org);
                   },
                 );
               },
@@ -88,8 +91,27 @@ class OrganizationsView extends StatelessWidget {
       },
     );
   }
-}
 
+  void _showImage(BuildContext context, Map<String, dynamic> org) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Proof of Legitimacy"),
+          content: Padding(
+            padding: EdgeInsets.only(right: 8),
+            child: Image.network(
+              org['logo'].toString(),
+              width: 250,
+              height: 250,
+              fit: BoxFit.cover,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
 
 class DonationsView extends StatelessWidget {
   @override
@@ -122,7 +144,8 @@ class DonationsView extends StatelessWidget {
                       Text('Organization ID: ${donation['organization']}'),
                       Text('Status: ${donation['status']}'),
                       Text('User ID: ${donation['user']}'),
-                      Text('Weight: ${donation['weight']} ${donation['weightType']}'),
+                      Text(
+                          'Weight: ${donation['weight']} ${donation['weightType']}'),
                     ],
                   ),
                 );
@@ -171,4 +194,3 @@ class DonorsView extends StatelessWidget {
     );
   }
 }
-
