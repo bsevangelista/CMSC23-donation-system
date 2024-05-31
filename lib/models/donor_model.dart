@@ -36,8 +36,8 @@ class Donor {
       id: snapshot.id,
       address: data['address'],
       contactNum: data['contactNum'],
-      email: data['email'],
-      name: data['data'],
+      email: data['email'], 
+      name: data['name'],
       username: data['username'],
     );
   }
@@ -49,7 +49,7 @@ class Donor {
 
   Map<String, dynamic> toJson(Donor donor) {
     return {
-      'address': donor.name,
+      'address': donor.address,
       'contactNum': donor.contactNum,
       'email': donor.email,
       'name': donor.name,

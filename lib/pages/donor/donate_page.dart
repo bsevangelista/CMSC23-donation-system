@@ -212,7 +212,7 @@ class _DonatePageState extends State<DonatePage> {
                   // OtherCategories(_otherCategoriesStringController, (String val) => _otherCategoriesString = val),
                   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
                   donateDivider(),
-                  Text("Delivery Type", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
+                  Text("Delivery Mode", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
 
 
                   Padding(

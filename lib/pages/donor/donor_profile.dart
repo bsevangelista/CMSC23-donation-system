@@ -1,4 +1,5 @@
 import 'package:app/models/donation_model.dart';
+import 'package:app/models/donor_model.dart';
 import 'package:app/models/organization_model.dart';
 import 'package:app/providers/donation_provider.dart';
 import 'package:app/providers/organization_list_provider.dart';
@@ -6,7 +7,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-// bHFOC8lDAKTiXhFhSuPfLPR2Tm42
 
 
 class DonorProfile extends StatefulWidget {
@@ -17,6 +17,21 @@ class DonorProfile extends StatefulWidget {
 }
 
 class _DonorProfileState extends State<DonorProfile> {
+  Donor? _donor;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserInfo();
+  }
+
+  void fetchUserInfo() async {
+    DocumentSnapshot userInfoSnapshot = await Provider.of<DonationProvider>(context, listen: false).userInfoFuture;
+    setState(() {
+      _donor = Donor.fromSnapshot(userInfoSnapshot);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -88,7 +103,7 @@ class _DonorProfileState extends State<DonorProfile> {
                   SizedBox(
                     height: 10,
                   ),
-                  Header(),
+                  Header(_donor!),
 
                   ////////////////////
                   // Expanded(
@@ -159,7 +174,8 @@ class _DonorProfileState extends State<DonorProfile> {
                                     // trailing: FilledButton(onPressed: () {Navigator.pushNamed(context, "/second", arguments: snapshot.data?.docs[index]);} , child: Text("View Details", style: TextStyle(fontSize: 10))),
                                     trailing: FilledButton(
                                       onPressed: () {
-                                        // Navigator.pushNamed(context, "/organizationdetails", arguments: organization);
+                                        // Navigator.pushNamed(context, "/donationdetails", arguments: {donation, _donationOrganization});
+                                        Navigator.pushNamed(context, "/donationdetails", arguments: DonationArguments(donation, _donationOrganization));
                                         } , 
                                       child: Text("View Details", style: TextStyle(fontSize: 10))),
                                   )
@@ -186,7 +202,7 @@ class _DonorProfileState extends State<DonorProfile> {
 }
 
 
-Widget Header(){
+Widget Header(Donor donor){
   return Padding(
     // padding: const EdgeInsets.all(20),
     padding: EdgeInsets.only(left: 20, top: 20, right: 20),
@@ -198,15 +214,18 @@ Widget Header(){
           children: [
             CircleAvatar(
               radius: 40,
-              backgroundImage: Image.network('https://docs.flutter.dev/assets/images/dash/dash-fainting.gif').image,
+              // backgroundImage: Image.network('https://docs.flutter.dev/assets/images/dash/dash-fainting.gif').image,
+              // backgroundColor: Colors.blue.shade300,
+              backgroundColor: const Color.fromARGB(255, 99, 99, 99),
+              child: Text("${donor.username.substring(0,1)}", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
             ),
             SizedBox(width: 20),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children:[
-                Text("Temp Donor Name", style: TextStyle(fontSize: 24, color: Colors.black, fontWeight: FontWeight.bold)),
-                Text("tempdonor@email.com"),
+                Text("${donor.name}", style: TextStyle(fontSize: 24, color: Colors.black, fontWeight: FontWeight.bold)),
+                Text("${donor.email}"),
               ]
             )
           ]
@@ -227,7 +246,10 @@ Widget Header(){
 
 
 
+class DonationArguments{
+  final Donation? donation;
+  final String? orgName;
 
-
-
+  DonationArguments(this.donation, this.orgName);
+}
 

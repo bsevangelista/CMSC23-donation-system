@@ -4,12 +4,14 @@
 
 
 import 'package:app/firebase_options.dart';
+import 'package:app/models/donation_model.dart';
 import 'package:app/models/organization_model.dart';
 import 'package:app/pages/admin/admin_dashboard.dart';
 import 'package:app/pages/authentication/orgsignup_page.dart';
 import 'package:app/pages/authentication/signin_page.dart';
 import 'package:app/pages/authentication/signup_page.dart';
 import 'package:app/pages/donor/donate_page.dart';
+import 'package:app/pages/donor/donation_details.dart';
 import 'package:app/pages/donor/donor_homepage.dart';
 import 'package:app/pages/donor/donor_profile.dart';
 import 'package:app/pages/donor/organization_details.dart';
@@ -79,6 +81,17 @@ class RootWidget extends StatelessWidget {
           return MaterialPageRoute(
             builder: (context) => OrganizationDetails(
               organization: args,
+            )
+          );
+        }
+
+        if (settings.name == "/donationdetails"){
+          final args = settings.arguments as DonationArguments;
+          // final args2 = settings.arguments as String?;
+          return MaterialPageRoute(
+            builder: (context) => DonationDetails(
+              donation: args.donation,
+              orgName: args.orgName
             )
           );
         }
