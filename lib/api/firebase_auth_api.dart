@@ -70,34 +70,35 @@ class FirebaseAuthAPI {
 
     return 'unknown';
   }
-
+  
   Future<void> userSignUp({
-    required String username,
-    required String name,
-    required String address,
-    required String contactNum,
-    required String password,
-    required String email,
-  }) async {
-    try {
-      UserCredential credential = await auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      required String username,
+      required String name,
+      required List<String> address,
+      required String contactNum,
+      required String password,
+      required String email,
+    }) async {
+      try {
+        UserCredential credential = await auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
 
-      await FirebaseFirestore.instance.collection('users').doc(credential.user!.uid).set({
-        'username': username,
-        'email': email,
-        'name': name,
-        'address': address,
-        'contactNum': contactNum,
-      });
-    } on FirebaseAuthException catch (e) {
-      print(_handleAuthException(e));
-    } catch (e) {
-      print(e);
+        await FirebaseFirestore.instance.collection('users').doc(credential.user!.uid).set({
+          'username': username,
+          'email': email,
+          'name': name,
+          'address': address,
+          'contactNum': contactNum,
+        });
+      } on FirebaseAuthException catch (e) {
+        print(_handleAuthException(e));
+      } catch (e) {
+        print(e);
+      }
     }
-  }
+
 
   Future<void> orgSignUp({
     required String password,

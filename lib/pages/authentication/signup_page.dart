@@ -69,7 +69,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  
+
   Widget get heading => const Padding(
         padding: EdgeInsets.only(bottom: 20),
         child: Center(
@@ -198,15 +198,25 @@ class _SignUpPageState extends State<SignUpPage> {
             controller: addressController,
             decoration: const InputDecoration(
               border: InputBorder.none,
-              labelText: 'Address',
+              labelText: 'Address (Use (\" ; \") if multiple)',
               prefixIcon: Icon(Icons.home),
-              contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your address';
               }
               return null;
+            },
+            onSaved: (value) {
+              // Split address string into an array and save
+              List<String> addressArray = value!
+                  .split(";")
+                  .map((x) => x.trim())
+                  .where((element) => element.isNotEmpty)
+                  .toList();
+              // Use addressArray as needed
             },
           ),
         ),
@@ -272,7 +282,7 @@ class _SignUpPageState extends State<SignUpPage> {
             await context.read<UserAuthProvider>().userSignUp(
               username: usernameController.text,
               name: nameController.text,
-              address: addressController.text,
+              address: addressController.text.split(';').map((address) => address.trim()).where((address) => address.isNotEmpty).toList(),
               contactNum: contactNumberController.text,
               password: passwordController.text,
               email: emailController.text,

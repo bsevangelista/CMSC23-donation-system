@@ -28,7 +28,7 @@ class UserAuthProvider with ChangeNotifier {
     required String username,
     required String password,
     required String name,
-    required String address,
+    required List<String> address, // Change the parameter type to List<String>
     required String contactNum,
     required String email,
   }) async {
@@ -36,12 +36,13 @@ class UserAuthProvider with ChangeNotifier {
       username: username,
       password: password,
       name: name,
-      address: address,
+      address: address, // Pass the address array directly
       contactNum: contactNum,
       email: email,
     );
     notifyListeners();
   }
+
 
   Future<void> orgSignUp({
     required String password,
