@@ -1,3 +1,4 @@
+import 'package:app/providers/admin_provider.dart';
 import 'package:app/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +44,7 @@ class AdminDashboard extends StatelessWidget {
 class OrganizationsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserAuthProvider>(
+    return Consumer<AdminProvider>(
       builder: (context, authProvider, child) {
         return FutureBuilder<List<Map<String, dynamic>>>(
           future: authProvider.getOrganizations(),
@@ -75,6 +76,10 @@ class OrganizationsView extends StatelessWidget {
                           },
                           child: Text('Approve'),
                         ),
+                  onTap: () {
+                    // Navigate to organization details page
+                    Navigator.pushNamed(context, '/image_admin_dashboard');
+                  },
                 );
               },
             );
@@ -89,7 +94,7 @@ class OrganizationsView extends StatelessWidget {
 class DonationsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserAuthProvider>(
+    return Consumer<AdminProvider>(
       builder: (context, authProvider, child) {
         return FutureBuilder<List<Map<String, dynamic>>>(
           future: authProvider.getDonations(),
@@ -133,7 +138,7 @@ class DonationsView extends StatelessWidget {
 class DonorsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserAuthProvider>(
+    return Consumer<AdminProvider>(
       builder: (context, authProvider, child) {
         return FutureBuilder<List<Map<String, dynamic>>>(
           future: authProvider.getDonors(),

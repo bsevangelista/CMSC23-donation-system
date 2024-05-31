@@ -69,23 +69,7 @@ class UserAuthProvider with ChangeNotifier {
 
   Future<void> signOut() async {
     await authService.signOut();
-    notifyListeners();
-  }
-
-  Future<List<Map<String, dynamic>>> getOrganizations() async {
-    return await authService.getOrganizations();
-  }
-
-  Future<List<Map<String, dynamic>>> getDonations() async {
-    return await authService.getDonations();
-  }
-
-  Future<List<Map<String, dynamic>>> getDonors() async {
-    return await authService.getDonors();
-  }
-
-  Future<void> approveOrganization(String orgId) async {
-    await authService.approveOrganization(orgId);
+    _userRole = null;
     notifyListeners();
   }
 }

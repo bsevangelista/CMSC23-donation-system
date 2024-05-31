@@ -6,6 +6,7 @@
 import 'package:app/firebase_options.dart';
 import 'package:app/models/organization_model.dart';
 import 'package:app/pages/admin/admin_dashboard.dart';
+import 'package:app/pages/admin/image_admin_dashboard.dart';
 import 'package:app/pages/authentication/orgsignup_page.dart';
 import 'package:app/pages/authentication/signin_page.dart';
 import 'package:app/pages/authentication/signup_page.dart';
@@ -17,6 +18,7 @@ import 'package:app/pages/organization/org_AddDonationDrive.dart';
 import 'package:app/pages/organization/org_DonationDriveList.dart';
 import 'package:app/pages/organization/org_HomePage.dart';
 import 'package:app/providers/auth_provider.dart';
+import 'package:app/providers/admin_provider.dart';
 import 'package:app/providers/donation_provider.dart';
 import 'package:app/providers/organization_list_provider.dart';
 import 'package:app/providers/organization_provider.dart';
@@ -35,6 +37,7 @@ void main() async {
     ChangeNotifierProvider(create: ((context) => UserAuthProvider())),
     ChangeNotifierProvider(create: ((context) => OpenOrganizationProvider())),
     ChangeNotifierProvider(create: ((context) => AllOrganizationProvider())),
+    ChangeNotifierProvider(create: ((context) => AdminProvider())),
     // ChangeNotifierProvider(create: ((context) => DonationProvider())),
     // ChangeNotifierProvider(create: ((context) => DonationProvider(user!.uid))),
     ChangeNotifierProvider(create: ((context) => DonationProvider("bHFOC8lDAKTiXhFhSuPfLPR2Tm42"))),
@@ -60,6 +63,7 @@ class RootWidget extends StatelessWidget {
         '/signup': (context) => const SignUpPage(),
         '/org_signup': (context) => const OrgSignUp(),
         '/admin_dashboard': (context) => AdminDashboard(),
+        '/image_admin_dashboard': (context) => ImageAdminDashboard(),
         '/org_homepage': (context) => OrgHomePage(),
         '/org_addDonationDrive': (context) => AddDonationDrive(),
         '/org_donationDriveHomepage': (context) => DonationDriveList(),
