@@ -40,28 +40,7 @@ class DonationDetails extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,                  
                   children: [
                     headingDisplay("Donation Type"),
-                    //listview ng categories
-
-                    // Column(
-                    //   children: [
-                    //     Container(
-                    //       child: ListView.builder(
-                    //         itemCount: donation!.category.length,
-                    //         itemBuilder: ((context, index) {
-
-                    //           return Padding(
-                    //             padding: EdgeInsets.all(10),
-                    //             child: ListTile(
-                    //               tileColor: Color.fromARGB(184, 164, 162, 164),
-                    //               title: Text(donation!.address![index])
-                    //             )
-                    //           );
-
-                    //         })
-                    //       ),
-                    //     ),
-                    //   ]
-                    // ),
+                    displayList(donation!.category),
 
                     donateDivider(),
                     headingDisplay("Delivery Mode"),
@@ -102,6 +81,7 @@ class DonationDetails extends StatelessWidget {
                     if (donation!.deliveryMode == "Pickup") donateDivider(),
                     if (donation!.deliveryMode == "Pickup") headingDisplay("Address"),
                     //listview ng addresses
+                    if (donation!.deliveryMode == "Pickup") displayList(donation!.address!),
 
                     if (donation!.deliveryMode == "Pickup") donateDivider(),
                     if (donation!.deliveryMode == "Pickup") headingDisplay("Contact Number"),
@@ -164,23 +144,39 @@ Widget displayImage(String image){
 }
 
 Widget cancelButton(BuildContext context, Donation donation){
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children:[
-                         FilledButton(
-                          style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
-                          onPressed: () {
-                            //set donation status to canceled
-                            Donation _canceledDonation = donation!;
-                            _canceledDonation.status = "Canceled";
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children:[
+      FilledButton(
+        style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
+        onPressed: () {
+          Donation _canceledDonation = donation!;
+          _canceledDonation.status = "Canceled";
 
-                            context
-                              .read<DonationProvider>()
-                              .cancelDonation(donation!.id!, _canceledDonation);
-                            Navigator.pop(context);
-                          },
-                          child: const Text("Cancel", style: TextStyle(fontSize: 20, color: const Color.fromARGB(255, 0, 0, 0)))
-                        )
-                      ]
-                    );
+          context
+            .read<DonationProvider>()
+            .cancelDonation(donation!.id!, _canceledDonation);
+          Navigator.pop(context);
+        },
+        child: const Text("Cancel", style: TextStyle(fontSize: 20, color: const Color.fromARGB(255, 0, 0, 0)))
+      )
+    ]
+  );
+}
+
+Widget displayList(List<String> list){
+  return Container(
+    height: (50*list.length.toDouble()),
+    child: 
+      ListView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: list.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: valueDisplay(list[index])
+          );
+        }
+      ),
+  );
 }
