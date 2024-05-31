@@ -36,7 +36,7 @@ class _OrgSignUpState extends State<OrgSignUp> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              Icons.favorite,
+              Icons.volunteer_activism,
               color: Colors.white,
             ),
             SizedBox(width: 8),

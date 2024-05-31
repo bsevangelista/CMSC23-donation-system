@@ -53,7 +53,8 @@ class _DonorHomepageState extends State<DonorHomepage> {
             )
           ],
           bottom: TabBar(
-            // labelColor: Colors.white,
+            labelColor: Colors.white,
+            indicatorColor: Colors.grey,
             // unselectedLabelColor: Colors.grey,
             tabs: [
               Tab(text: 'Donate'),

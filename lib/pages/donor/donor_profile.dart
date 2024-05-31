@@ -151,6 +151,9 @@ class _DonorProfileState extends State<DonorProfile> {
                               child: 
                                     ListTile(
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5)),
+                                      // if (donation.image!="") {
+                                      //   leading: Image.network(donation.image),
+                                      // };
                                       tileColor: Color.fromARGB(184, 0, 0, 0),
                                       title: Text(_donationOrganization, style: TextStyle(color: Colors.white)),
                                       trailing: TextButton(

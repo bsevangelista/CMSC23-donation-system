@@ -29,7 +29,7 @@ class _SignUpPageState extends State<SignUpPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              Icons.favorite,
+              Icons.volunteer_activism,
               color: Colors.white,
             ),
             SizedBox(width: 8),
