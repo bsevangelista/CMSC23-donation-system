@@ -47,44 +47,47 @@ class _OrgAboutPageState extends State<OrgAboutPage> {
           ? Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _organization?.logo != null
-                      ? Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(right: 8),
-                            child: Image.network(
-                              _organization!.logo.toString(),
-                              width: 250,
-                              height: 250,
-                              fit: BoxFit.cover,
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _organization?.logo != null
+                        ? Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(right: 8),
+                              child: Image.network(
+                                _organization!.logo.toString(),
+                                width: 250,
+                                height: 250,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
-                        )
-                      : Container(),
-                  SizedBox(height: 20),
-                  Text('Description: ${_organization?.description}'),
-                  SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Text('Status: '),
-                      Switch(
-                        value: _isOpen,
-                        onChanged: (value) {
-                          setState(() {
-                            _isOpen = value;
-                            String newStatus = value ? 'OPEN' : 'CLOSED';
-                            Provider.of<OrgProvider>(context, listen: false)
-                                .updateOrganizationStatus(
-                                    _organization!.id!, newStatus);
-                          });
-                        },
-                      ),
-                      Text(_isOpen ? 'OPEN' : 'CLOSED'),
-                    ],
-                  ),
-                ],
+                          )
+                        : Container(),
+                    SizedBox(height: 20),
+                    Text('Description: ${_organization?.description}', style: TextStyle(fontSize: 15),),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Text('Status: ' , style: TextStyle(fontSize: 20),),
+                        Switch(
+                          value: _isOpen,
+                          onChanged: (value) {
+                            setState(() {
+                              _isOpen = value;
+                              String newStatus = value ? 'OPEN' : 'CLOSED';
+                              Provider.of<OrgProvider>(context, listen: false)
+                                  .updateOrganizationStatus(
+                                      _organization!.id!, newStatus);
+                            });
+                          },
+                        ),
+                        Text(_isOpen ? 'OPEN' : 'CLOSED'),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
     );

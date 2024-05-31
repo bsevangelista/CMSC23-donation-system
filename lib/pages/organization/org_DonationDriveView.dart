@@ -79,10 +79,7 @@ class _DonationDriveViewState extends State<DonationDriveView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 20),
-              // Display donation details
-              Text("Name: ${widget.dDrive.name}"),
-              SizedBox(height: 20),
-              Text("Description: ${widget.dDrive.description}"),
+              Text("Description: ${widget.dDrive.description}", style: TextStyle(fontSize: 15) ),
               SizedBox(height: 20),
               Text("Donations: ${widget.dDrive.donations?.length ?? 0}"),
               SizedBox(height: 20),
