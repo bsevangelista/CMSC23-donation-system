@@ -1,6 +1,8 @@
 import 'package:app/models/donation_model.dart';
 import 'package:app/pages/donor/donor_profile.dart';
+import 'package:app/providers/donation_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DonationDetails extends StatelessWidget {
   final Donation? donation;
@@ -24,18 +26,42 @@ class DonationDetails extends StatelessWidget {
           style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
         ),
       ),
-      body: Center(
-        child: SingleChildScrollView(
+      body: 
+      // Center(
+      //   child: 
+        SingleChildScrollView(
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(30.0),
+                // padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30),
+                padding: const EdgeInsets.all(30),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,                  
                   children: [
                     headingDisplay("Donation Type"),
                     //listview ng categories
+
+                    // Column(
+                    //   children: [
+                    //     Container(
+                    //       child: ListView.builder(
+                    //         itemCount: donation!.category.length,
+                    //         itemBuilder: ((context, index) {
+
+                    //           return Padding(
+                    //             padding: EdgeInsets.all(10),
+                    //             child: ListTile(
+                    //               tileColor: Color.fromARGB(184, 164, 162, 164),
+                    //               title: Text(donation!.address![index])
+                    //             )
+                    //           );
+
+                    //         })
+                    //       ),
+                    //     ),
+                    //   ]
+                    // ),
 
                     donateDivider(),
                     headingDisplay("Delivery Mode"),
@@ -77,7 +103,12 @@ class DonationDetails extends StatelessWidget {
                           style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
                           onPressed: () {
                             //set donation status to canceled
+                            Donation _canceledDonation = donation!;
+                            _canceledDonation.status = "Canceled";
 
+                            context
+                              .read<DonationProvider>()
+                              .cancelDonation(donation!.id!, _canceledDonation);
                             Navigator.pop(context);
                           },
                           child: const Text("Cancel", style: TextStyle(fontSize: 20, color: const Color.fromARGB(255, 0, 0, 0)))
@@ -90,8 +121,8 @@ class DonationDetails extends StatelessWidget {
             ]
           )
         )
-      )
-    );
+      );
+    // );
   }
 }
 

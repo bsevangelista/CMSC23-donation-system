@@ -96,6 +96,17 @@ class _DonorProfileState extends State<DonorProfile> {
 
               List<DocumentSnapshot> userDonationsList = snapshot2.data!.docs;
 
+              if (userDonationsList.isEmpty) {
+                return Center(
+                  child: Column(
+                    children: [
+                      Icon(Icons.volunteer_activism),
+                      Text("No donations made yet.")
+                    ]
+                  )
+                );
+              }
+
               // return Row(
 
               return Column(

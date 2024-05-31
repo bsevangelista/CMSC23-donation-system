@@ -37,6 +37,12 @@ class DonationProvider with ChangeNotifier{
     notifyListeners();
   }
 
+  void cancelDonation(String id, Donation donation) async{
+    String message = await firebaseService.cancelDonation(id, donation.toJson(donation));
+    print(message);
+    notifyListeners();
+  }
+
   // void getDonationOrganization(String organization) async{
   //   String message = await firebaseService.getDonationOrganization(organization);
   //   print(message);
