@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class DonationDriveView extends StatefulWidget {
-  final DonationDrive dDrive; // Receive Donation instance
+  final DonationDrive dDrive;
 
   const DonationDriveView(this.dDrive, {super.key});
 
@@ -79,24 +79,41 @@ class _DonationDriveViewState extends State<DonationDriveView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 20),
-              Text("Description: ${widget.dDrive.description}", style: TextStyle(fontSize: 15) ),
+              Text(
+                "Description: ${widget.dDrive.description}",
+                style: TextStyle(fontSize: 15),
+              ),
               SizedBox(height: 20),
               Text("Donations: ${widget.dDrive.donations?.length ?? 0}"),
               SizedBox(height: 20),
-
-              widget.dDrive.proof != null
-                  ? Center(
-                      child: Column(
+              widget.dDrive.proof != null && widget.dDrive.proof!.isNotEmpty
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Proof: "),
-                        Image.network(
-                          '${widget.dDrive.proof}',
-                          width: 250,
-                          height: 350,
-                          fit: BoxFit.contain,
+                        Text("Proof: ",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold)),
+                        SizedBox(height: 10),
+                        Container(
+                          height: 250,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: widget.dDrive.proof!.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.network(
+                                  widget.dDrive.proof![index],
+                                  width: 250,
+                                  height: 250,
+                                  fit: BoxFit.cover,
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ],
-                    ))
+                    )
                   : Container(),
             ],
           ),
@@ -142,7 +159,7 @@ class _DonationDriveViewState extends State<DonationDriveView> {
               backgroundColor: Colors.black,
               foregroundColor: Colors.white,
               child: Icon(Icons.camera_alt_outlined),
-              tooltip: 'Add/Edit Proof of Donation',
+              tooltip: 'Add Proof of Donation',
             )
           : null,
     );

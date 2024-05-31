@@ -7,7 +7,7 @@ class DonationDrive {
   List<String>? donations;
   String? organization;
   String? logo;
-  String? proof;
+  List<String>? proof;
 
   DonationDrive({
     this.id,
@@ -28,7 +28,7 @@ class DonationDrive {
       donations: List<String>.from(json['donations']),
       organization: json['organization'],
       logo: json['logo'],
-      proof: json['proof'],
+      proof: List<String>.from(json['proof']),
     );
   }
 
