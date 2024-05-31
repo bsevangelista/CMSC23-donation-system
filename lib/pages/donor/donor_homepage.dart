@@ -39,6 +39,7 @@ class _DonorHomepageState extends State<DonorHomepage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.black,
           automaticallyImplyLeading: false,
           title: Text("${_donor?.username}", style: TextStyle(color: Colors.white)),
           actions: [
@@ -51,6 +52,8 @@ class _DonorHomepageState extends State<DonorHomepage> {
             )
           ],
           bottom: TabBar(
+            // labelColor: Colors.white,
+            // unselectedLabelColor: Colors.grey,
             tabs: [
               Tab(text: 'Donate'),
               Tab(text: 'Profile')
@@ -140,14 +143,14 @@ class _DonorOrganizationsViewState extends State<DonorOrganizationsView> {
                   padding: EdgeInsets.all(10),
                   child: ListTile(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5)),
-                    tileColor: Color.fromARGB(184, 164, 162, 164),
-                    title: Text(organization.name),
+                    tileColor: Color.fromARGB(184, 7, 7, 7),
+                    title: Text(organization.name, style: TextStyle(color: Colors.white)),
                     // trailing: FilledButton(onPressed: () {Navigator.pushNamed(context, "/second", arguments: snapshot.data?.docs[index]);} , child: Text("View Details", style: TextStyle(fontSize: 10))),
-                    trailing: FilledButton(
+                    trailing: TextButton(
                       onPressed: () {
                         Navigator.pushNamed(context, "/organizationdetails", arguments: organization);
                         } , 
-                      child: Text("View Details", style: TextStyle(fontSize: 10))),
+                      child: Text("View Details", style: TextStyle(fontSize: 10, color: Colors.white))),
                   )
                 );
               }

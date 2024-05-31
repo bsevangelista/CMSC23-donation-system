@@ -108,10 +108,10 @@ class _DonatePageState extends State<DonatePage> {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
         appBar: AppBar(
-          backgroundColor: Color.fromARGB(184, 164, 162, 164),
+          backgroundColor: Color.fromARGB(184, 0, 0, 0),
           title: Text(
             "Donate",
-            style: TextStyle(color: Color.fromARGB(255, 0, 0, 0))
+            style: TextStyle(color: Color.fromARGB(255, 235, 235, 235))
           ),
         ),
       body:  SingleChildScrollView(
@@ -623,7 +623,6 @@ class _DonatePageState extends State<DonatePage> {
 
           
           //////////////////////// for dropoff only 
-
 
                   ] // children
                 )

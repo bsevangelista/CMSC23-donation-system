@@ -150,13 +150,13 @@ class _DonorProfileState extends State<DonorProfile> {
                               child: 
                                     ListTile(
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5)),
-                                      tileColor: Color.fromARGB(184, 164, 162, 164),
-                                      title: Text(_donationOrganization),
-                                      trailing: FilledButton(
+                                      tileColor: Color.fromARGB(184, 0, 0, 0),
+                                      title: Text(_donationOrganization, style: TextStyle(color: Colors.white)),
+                                      trailing: TextButton(
                                         onPressed: () {
                                           Navigator.pushNamed(context, "/donationdetails", arguments: DonationArguments(donation, _donationOrganization));
                                           } , 
-                                        child: Text("View Details", style: TextStyle(fontSize: 10))),
+                                        child: Text("View Details", style: TextStyle(fontSize: 10, color: Colors.white))),
                                     )
                             );
                           }) 
@@ -188,7 +188,7 @@ Widget Header(Donor donor){
               radius: 40,
               // backgroundImage: Image.network('https://docs.flutter.dev/assets/images/dash/dash-fainting.gif').image,
               // backgroundColor: Colors.blue.shade300,
-              backgroundColor: const Color.fromARGB(255, 99, 99, 99),
+              backgroundColor: Color.fromARGB(255, 0, 0, 0),
               child: Text("${donor.username.substring(0,1)}", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
             ),
             SizedBox(width: 20),

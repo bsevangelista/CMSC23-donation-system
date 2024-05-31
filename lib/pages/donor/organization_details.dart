@@ -14,10 +14,10 @@ class OrganizationDetails extends StatelessWidget {
         label: Text("Donate"),
       ),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(184, 164, 162, 164),
+        backgroundColor: Color.fromARGB(184, 0, 0, 0),
         title: Text(
           "${organization!.name}",
-          style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
+          style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
         ),
       ),
       body: Center(
