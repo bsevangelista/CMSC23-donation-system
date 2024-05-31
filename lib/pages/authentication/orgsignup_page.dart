@@ -268,7 +268,7 @@ class _OrgSignUpState extends State<OrgSignUp> {
                     DateTime.now().millisecondsSinceEpoch.toString();
                 Reference referenceRoot = FirebaseStorage.instance.ref();
                 Reference referenceDirImages =
-                    referenceRoot.child('donationDrives');
+                    referenceRoot.child('organizationLogo');
                 Reference referenceImageToUpload =
                     referenceDirImages.child(uniqueFileName);
 
@@ -290,7 +290,7 @@ class _OrgSignUpState extends State<OrgSignUp> {
                   );
 
               // Navigate to next screen after successful sign-up
-              Navigator.pushNamed(context, '/org_homepage');
+              Navigator.pushNamed(context, '/');
             } catch (e) {
               // Handle sign-up errors
               setState(() {
