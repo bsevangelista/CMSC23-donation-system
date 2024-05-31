@@ -254,7 +254,7 @@ class _OrgSignUpState extends State<OrgSignUp> {
                     DateTime.now().millisecondsSinceEpoch.toString();
                 Reference referenceRoot = FirebaseStorage.instance.ref();
                 Reference referenceDirImages =
-                    referenceRoot.child('donationDrives');
+                    referenceRoot.child('organizationLogo');
                 Reference referenceImageToUpload =
                     referenceDirImages.child(uniqueFileName);
 
