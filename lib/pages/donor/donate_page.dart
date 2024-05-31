@@ -7,6 +7,7 @@ import 'package:ELBIdonate/providers/donation_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import 'donate_form_widgets.dart';
 
@@ -48,6 +49,8 @@ class _DonatePageState extends State<DonatePage> {
   final _formKey = GlobalKey<FormState>();
   int _categoryCounter = 0;
 
+
+
   bool _food = false;
   bool _clothes = false;
   bool _cash = false;
@@ -73,12 +76,6 @@ class _DonatePageState extends State<DonatePage> {
 
   String _imageUrl = "";
 
-
-  // int timeHour = 0;
-  // int timeMinute = 0;  
-
-  // List<String> timePeriodChoices = <String>['AM', 'PM'];
-  // String timePeriod = 'AM';
 
   TextEditingController _weightController = TextEditingController(text: "");
   TextEditingController _contactNumController = TextEditingController(text: "");
@@ -335,7 +332,6 @@ class _DonatePageState extends State<DonatePage> {
                             if(file==null) return;
                             String _uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
 
-                            // /data/user/0/com.example.app/cache/d48e0afc-f7ac-4531-982a-a2546878569a8604006521332836381.jpg
                             Reference referenceRoot = FirebaseStorage.instance.ref();
                             Reference referenceDirImages = referenceRoot.child('donation');
                             Reference referenceImageToUpload = referenceDirImages.child(_uniqueFileName);
@@ -376,7 +372,6 @@ class _DonatePageState extends State<DonatePage> {
                             if(file==null) return;
                             String _uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
 
-                            // /data/user/0/com.example.app/cache/d48e0afc-f7ac-4531-982a-a2546878569a8604006521332836381.jpg
                             Reference referenceRoot = FirebaseStorage.instance.ref();
                             Reference referenceDirImages = referenceRoot.child('donation');
                             Reference referenceImageToUpload = referenceDirImages.child(_uniqueFileName);
@@ -385,7 +380,8 @@ class _DonatePageState extends State<DonatePage> {
                               await referenceImageToUpload.putFile(File(file!.path));
                               _imageUrl = await referenceImageToUpload.getDownloadURL();
                             }catch(error){
-
+                              await referenceImageToUpload.putFile(File(file!.path));
+                              _imageUrl = await referenceImageToUpload.getDownloadURL();
                             }
 
                             referenceImageToUpload.putFile(File(file!.path));
@@ -463,8 +459,6 @@ class _DonatePageState extends State<DonatePage> {
                                     );
                                     if (timeOfDay != null) {
                                       setState(() {
-                                        // timeChoice = timeOfDay;
-
                                         _dateTime = DateTime(_dateTime.year, _dateTime.month, _dateTime.day, timeOfDay.hour, timeOfDay.minute);
                                       });
                                     }
@@ -525,7 +519,22 @@ class _DonatePageState extends State<DonatePage> {
                                                 ),
                                               ),
                   
-          //////////////////////// for pickup only       
+          //////////////////////// for pickup only   
+
+
+
+          //////////////////////// for dropoff only
+                  if (_deliveryMode=="Dropoff") donateDivider(),
+                  if (_deliveryMode=="Dropoff") titleStyle("Generated QR"),
+
+                  if (_deliveryMode=="Dropoff") QrImageView(
+                                                  data: _donor!.id!+DateTime.now().toString(),
+                                                  version: QrVersions.auto,
+                                                  size: 200,
+                                                ),
+
+          
+          //////////////////////// for dropoff only     
             
                   donateDivider(),
                   Row(
@@ -533,7 +542,7 @@ class _DonatePageState extends State<DonatePage> {
                     children: [
                       FilledButton(
                         style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
-                        onPressed: () {
+                        onPressed: () async {
 
 
                           if (_dateTime.compareTo(DateTime.now())<0) {
@@ -557,31 +566,34 @@ class _DonatePageState extends State<DonatePage> {
                               _tempDonation.organization=organization.id!;
                               _tempDonation.deliveryMode=_deliveryMode;
                               _tempDonation.weight=_weight;
-                              // _tempDonation.weight=double.parse(_weight);
                               _tempDonation.weightType=_weightType;
-                              // _tempDonation.dateTime=dateTimetoTimestamp(_dateTime);
                               _tempDonation.dateTime=_dateTime;
-                              // _tempDonation.user=user!.uid;
                               _tempDonation.user=_donor!.id!;
 
                               if (_imageUrl!="") {
                                 _tempDonation.image=_imageUrl;
                               }
 
-                            // if (_deliveryMode=="Pickup") {
                               _address = _addressStringController.text.split(";").map((x) => x.trim()).where((element)=>element.isNotEmpty).toList();
                               _tempDonation.address = _address;
                                   
                               _tempDonation.contactNum = _contactNumController.text;
-                            // } else{
-                              // qr
-                            // }
 
                             
 
                             context.read<DonationProvider>().addDonation(_tempDonation);
+                            // await FirebaseFirestore.instance.collection("donations").add(_tempDonation.toJson(_tempDonation))
+                            //   .then((DocumentReference doc){
+                            //     // print("document id is ${doc.id}");
+                            //     _docID=doc.id;
+                            //   });
+
                             
-                            Navigator.pop(context);
+
+
+                            // if (_deliveryMode=="Pickup") {
+                              Navigator.pop(context);
+                            // }
                           }
                         },
                         child:
@@ -602,26 +614,6 @@ class _DonatePageState extends State<DonatePage> {
                       ),
                     ]
                   ),
-
-          //////////////////////// for dropoff only
-                  if (_deliveryMode=="Dropoff") donateDivider(),
-                  if (_deliveryMode=="Dropoff") titleStyle("Generate QR"),
-
-                  
-                            // Reference referenceDonationDocumentToUpload = reference
-                            // try{
-                            //   await referenceImageToUpload.putFile(File(file!.path));
-                            //   _imageUrl = await referenceImageToUpload.getDownloadURL();
-                            // }catch(error){
-
-                            // }
-                            // final docRef = Firestore.instance.collection();
-
-                  if (_deliveryMode=="Dropoff") GenerateQR(),
-
-          
-          //////////////////////// for dropoff only 
-
                   ] // children
                 )
               )
@@ -651,14 +643,6 @@ Widget titleStyle(String title){
   return Text(title, style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold));
 }
 
-// Timestamp dateTimetoTimestamp(DateTime dateTime) {
-//   // return Timestamp.fromMillisecondsSinceEpoch(
-//   //   dateTime.millisecondsSinceEpoch
-//   // );
-//   return Timestamp.fromMicrosecondsSinceEpoch(
-//     dateTime.microsecondsSinceEpoch
-//   );
-// }
 
 
 
