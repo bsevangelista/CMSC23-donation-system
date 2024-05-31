@@ -1,4 +1,5 @@
-import 'package:app/providers/auth_provider.dart';
+import 'package:ELBIdonate/providers/admin_provider.dart';
+import 'package:ELBIdonate/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +11,10 @@ class AdminDashboard extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false, // Remove back arrow
-          title: Text('Admin Dashboard', style: TextStyle(color: Colors.white),),
+          title: Text(
+            'Admin Dashboard',
+            style: TextStyle(color: Colors.white),
+          ),
           actions: [
             IconButton(
               icon: Icon(Icons.logout),
@@ -43,10 +47,10 @@ class AdminDashboard extends StatelessWidget {
 class OrganizationsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserAuthProvider>(
-      builder: (context, authProvider, child) {
+    return Consumer<AdminProvider>(
+      builder: (context, adminProvider, child) {
         return FutureBuilder<List<Map<String, dynamic>>>(
-          future: authProvider.getOrganizations(),
+          future: adminProvider.getOrganizations(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
@@ -71,10 +75,14 @@ class OrganizationsView extends StatelessWidget {
                       ? Icon(Icons.check, color: Colors.green)
                       : ElevatedButton(
                           onPressed: () {
-                            authProvider.approveOrganization(org['id']);
+                            adminProvider.approveOrganization(org['id']);
                           },
                           child: Text('Approve'),
                         ),
+                  onTap: () {
+                    // Pass org object to _showImage method
+                    _showImage(context, org);
+                  },
                 );
               },
             );
@@ -83,16 +91,35 @@ class OrganizationsView extends StatelessWidget {
       },
     );
   }
-}
 
+  void _showImage(BuildContext context, Map<String, dynamic> org) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Proof of Legitimacy"),
+          content: Padding(
+            padding: EdgeInsets.only(right: 8),
+            child: Image.network(
+              org['logo'].toString(),
+              width: 250,
+              height: 250,
+              fit: BoxFit.cover,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
 
 class DonationsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserAuthProvider>(
-      builder: (context, authProvider, child) {
+    return Consumer<AdminProvider>(
+      builder: (context, adminProvider, child) {
         return FutureBuilder<List<Map<String, dynamic>>>(
-          future: authProvider.getDonations(),
+          future: adminProvider.getDonations(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
@@ -117,7 +144,8 @@ class DonationsView extends StatelessWidget {
                       Text('Organization ID: ${donation['organization']}'),
                       Text('Status: ${donation['status']}'),
                       Text('User ID: ${donation['user']}'),
-                      Text('Weight: ${donation['weight']} ${donation['weightType']}'),
+                      Text(
+                          'Weight: ${donation['weight']} ${donation['weightType']}'),
                     ],
                   ),
                 );
@@ -133,10 +161,10 @@ class DonationsView extends StatelessWidget {
 class DonorsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserAuthProvider>(
-      builder: (context, authProvider, child) {
+    return Consumer<AdminProvider>(
+      builder: (context, adminProvider, child) {
         return FutureBuilder<List<Map<String, dynamic>>>(
-          future: authProvider.getDonors(),
+          future: adminProvider.getDonors(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
@@ -166,4 +194,3 @@ class DonorsView extends StatelessWidget {
     );
   }
 }
-

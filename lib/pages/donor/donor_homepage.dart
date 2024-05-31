@@ -1,9 +1,6 @@
-import 'package:app/models/donor_model.dart';
-import 'package:app/models/organization_model.dart';
-import 'package:app/pages/donor/donor_profile.dart';
-import 'package:app/providers/auth_provider.dart';
-import 'package:app/providers/donation_provider.dart';
-import 'package:app/providers/organization_list_provider.dart';
+
+import 'package:ELBIdonate/models/organization_model.dart';
+import 'package:ELBIdonate/providers/organization_list_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

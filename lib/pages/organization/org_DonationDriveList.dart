@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:app/models/donationDrive_model.dart';
-import 'package:app/pages/organization/org_AddDonationDrive.dart';
-import 'package:app/pages/organization/org_DonationDriveView.dart';
-import 'package:app/providers/organization_provider.dart';
+import 'package:ELBIdonate/models/donationDrive_model.dart';
+import 'package:ELBIdonate/pages/organization/org_AddDonationDrive.dart';
+import 'package:ELBIdonate/pages/organization/org_DonationDriveView.dart';
+import 'package:ELBIdonate/providers/organization_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -55,21 +55,35 @@ class _DonationDriveState extends State<DonationDriveList> {
             return Card(
               color: Colors.black,
               child: Padding(
-                padding: EdgeInsets.all(15),
+                padding: EdgeInsets.all(10),
                 child: Column(
                   children: [
                     Row(
                       children: [
                         Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                dDrive.name, //fix later
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                  color: Colors.white,
+                              dDrive.logo != null
+                                  ? Padding(
+                                      padding: EdgeInsets.only(right: 8),
+                                      child: Image.network(
+                                        '${dDrive.logo}',
+                                        width: 50,
+                                        height: 50,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    )
+                                  : Container(),
+                              Expanded(
+                                child: Text(
+                                  dDrive.name, //fix later
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
                             ],
@@ -130,8 +144,8 @@ class _DonationDriveState extends State<DonationDriveList> {
             ),
           );
         },
-        backgroundColor: Colors.black, 
-        foregroundColor: Colors.white, 
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
         child: Icon(Icons.add),
         tooltip: 'Add donation drive',
       ),

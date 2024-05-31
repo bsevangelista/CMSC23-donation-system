@@ -1,6 +1,7 @@
-import 'package:app/api/firebase_organization_api.dart';
-import 'package:app/models/donationDrive_model.dart';
-import 'package:app/models/donation_model.dart';
+
+import 'package:ELBIdonate/api/firebase_organization_api.dart';
+import 'package:ELBIdonate/models/donationDrive_model.dart';
+import 'package:ELBIdonate/models/donation_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +62,8 @@ class OrgProvider with ChangeNotifier {
         description: description!,
         organization: orgId,
         donations: [],
-        logo: imageUrl);
+        logo: imageUrl,
+        );
 
     String message =
         await firebaseService.addDonationDrive(dDrive.toJson(dDrive));
@@ -69,24 +71,36 @@ class OrgProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateDonationDriveDonations(DonationDrive? donoDrive, Donation donation) {
-    if (donoDrive != null && donoDrive.id != null) {
-      firebaseService.updateDonationDriveDonations(donoDrive.id!, donation.id!);
+  void updateDonationDriveDonations(String? selectedDrive, Donation donation) {
+    if (selectedDrive != null && selectedDrive.isNotEmpty) {
+      firebaseService.updateDonationDriveDonations(selectedDrive, donation.id!);
     } else {
       print('DonationDrive or Donation is null');
     }
   }
+  
+  void updateProofDonationDrive(String? donationDriveId, String imageUrl){
+    if (donationDriveId!.isNotEmpty && imageUrl.isNotEmpty) {
+      firebaseService.updateProofDonationDrive(donationDriveId, imageUrl);
+    } else {
+      print('Error updating proof;');
+    }
+  }
 
-  // // uncomment if auth is implemented
-  // void fetchDonations() async {
-  //   // Get the current user's ID
-  //   User? user = FirebaseAuth.instance.currentUser;
-  //   String? orgId = user?.uid;
+  void deleteDonationDrive(String? donationDriveId) {
+    if (donationDriveId != null && donationDriveId.isNotEmpty) {
+      firebaseService.deleteDonationDrive(donationDriveId);
+    } else {
+      print('Faile to Delete Donation Drive');
+    }
+  }
 
-  //   if (orgId != null) {
-  //     // Fetch donations for the organization (using user ID as organization ID)
-  //     _donationsStream = firebaseService.getAllDonations(orgId);
-  //     notifyListeners();
-  //   }
-  // }
+  Future<bool> isDonationDriveNameExists(String name) async {
+    if (name.isNotEmpty) {
+      bool exists = await firebaseService.isDonationDriveNameExists(name);
+      return exists;
+    } else {
+      return false;
+    }
+  }
 }

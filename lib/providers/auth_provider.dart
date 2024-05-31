@@ -28,7 +28,7 @@ class UserAuthProvider with ChangeNotifier {
     required String username,
     required String password,
     required String name,
-    required String address,
+    required List<String> address, // Change the parameter type to List<String>
     required String contactNum,
     required String email,
   }) async {
@@ -36,24 +36,27 @@ class UserAuthProvider with ChangeNotifier {
       username: username,
       password: password,
       name: name,
-      address: address,
+      address: address, // Pass the address array directly
       contactNum: contactNum,
       email: email,
     );
     notifyListeners();
   }
 
+
   Future<void> orgSignUp({
     required String password,
     required String organizationName,
     required String description,
     required String email,
+    required String logo,
   }) async {
     await authService.orgSignUp(
       organizationName: organizationName,
       password: password,
       email: email,
       description: description,
+      logo: logo,
     );
     notifyListeners();
   }
@@ -69,23 +72,7 @@ class UserAuthProvider with ChangeNotifier {
 
   Future<void> signOut() async {
     await authService.signOut();
-    notifyListeners();
-  }
-
-  Future<List<Map<String, dynamic>>> getOrganizations() async {
-    return await authService.getOrganizations();
-  }
-
-  Future<List<Map<String, dynamic>>> getDonations() async {
-    return await authService.getDonations();
-  }
-
-  Future<List<Map<String, dynamic>>> getDonors() async {
-    return await authService.getDonors();
-  }
-
-  Future<void> approveOrganization(String orgId) async {
-    await authService.approveOrganization(orgId);
+    _userRole = null; // Reset user role upon sign-out
     notifyListeners();
   }
 }

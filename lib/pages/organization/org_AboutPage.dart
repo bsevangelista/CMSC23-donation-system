@@ -1,8 +1,6 @@
-import 'package:app/models/organization_model.dart';
-import 'package:app/providers/auth_provider.dart';
-import 'package:app/providers/organization_provider.dart';
+import 'package:ELBIdonate/models/organization_model.dart';
+import 'package:ELBIdonate/providers/organization_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +25,9 @@ class _OrgAboutPageState extends State<OrgAboutPage> {
   }
 
   void fetchOrganizationDetails() async {
-    DocumentSnapshot snapshot = await Provider.of<OrgProvider>(context, listen: false).organizationFuture;
+    DocumentSnapshot snapshot =
+        await Provider.of<OrgProvider>(context, listen: false)
+            .organizationFuture;
     setState(() {
       _organization = Organization.fromSnapshot(snapshot);
       _isOpen = _organization?.status == 'OPEN';
@@ -38,32 +38,54 @@ class _OrgAboutPageState extends State<OrgAboutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${_organization?.name}', style: TextStyle(color: Colors.white),),
+        title: Text(
+          '${_organization?.name}',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: _organization == null
           ? Center(child: CircularProgressIndicator())
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Description: ${_organization?.description}'),
-                Row(
-                  children: [
-                    Text('Status: '),
-                    Switch(
-                      value: _isOpen,
-                      onChanged: (value) {
-                        setState(() {
-                          _isOpen = value;
-                          String newStatus = value ? 'OPEN' : 'CLOSED';
-                          Provider.of<OrgProvider>(context, listen: false)
-                              .updateOrganizationStatus(_organization!.id!, newStatus);
-                        });
-                      },
-                    ),
-                    Text(_isOpen ? 'OPEN' : 'CLOSED'),
-                  ],
-                ),
-              ],
+          : SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _organization?.logo != null
+                      ? Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 8),
+                            child: Image.network(
+                              _organization!.logo.toString(),
+                              width: 250,
+                              height: 250,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        )
+                      : Container(),
+                  SizedBox(height: 20),
+                  Text('Description: ${_organization?.description}'),
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Text('Status: '),
+                      Switch(
+                        value: _isOpen,
+                        onChanged: (value) {
+                          setState(() {
+                            _isOpen = value;
+                            String newStatus = value ? 'OPEN' : 'CLOSED';
+                            Provider.of<OrgProvider>(context, listen: false)
+                                .updateOrganizationStatus(
+                                    _organization!.id!, newStatus);
+                          });
+                        },
+                      ),
+                      Text(_isOpen ? 'OPEN' : 'CLOSED'),
+                    ],
+                  ),
+                ],
+              ),
             ),
     );
   }

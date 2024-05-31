@@ -70,40 +70,42 @@ class FirebaseAuthAPI {
 
     return 'unknown';
   }
-
+  
   Future<void> userSignUp({
-    required String username,
-    required String name,
-    required String address,
-    required String contactNum,
-    required String password,
-    required String email,
-  }) async {
-    try {
-      UserCredential credential = await auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      required String username,
+      required String name,
+      required List<String> address,
+      required String contactNum,
+      required String password,
+      required String email,
+    }) async {
+      try {
+        UserCredential credential = await auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
 
-      await FirebaseFirestore.instance.collection('users').doc(credential.user!.uid).set({
-        'username': username,
-        'email': email,
-        'name': name,
-        'address': address,
-        'contactNum': contactNum,
-      });
-    } on FirebaseAuthException catch (e) {
-      print(_handleAuthException(e));
-    } catch (e) {
-      print(e);
+        await FirebaseFirestore.instance.collection('users').doc(credential.user!.uid).set({
+          'username': username,
+          'email': email,
+          'name': name,
+          'address': address,
+          'contactNum': contactNum,
+        });
+      } on FirebaseAuthException catch (e) {
+        print(_handleAuthException(e));
+      } catch (e) {
+        print(e);
+      }
     }
-  }
+
 
   Future<void> orgSignUp({
     required String password,
     required String organizationName,
     required String description,
     required String email,
+    required String logo,
   }) async {
     try {
       UserCredential credential = await auth.createUserWithEmailAndPassword(
@@ -116,7 +118,8 @@ class FirebaseAuthAPI {
         'description': description,
         'email': email,
         'name': organizationName,
-        'status': "OPEN",
+        'status': "CLOSED",
+        'logo': logo,
       });
     } on FirebaseAuthException catch (e) {
       print(_handleAuthException(e));
@@ -151,24 +154,5 @@ class FirebaseAuthAPI {
       print('Error checking username: $e');
       return false;
     }
-  }
-
-  Future<List<Map<String, dynamic>>> getOrganizations() async {
-    final snapshot = await FirebaseFirestore.instance.collection('organizations').get();
-    return snapshot.docs.map((doc) => {'id': doc.id, ...doc.data()}).toList();
-  }
-
-  Future<List<Map<String, dynamic>>> getDonations() async {
-    final snapshot = await FirebaseFirestore.instance.collection('donations').get();
-    return snapshot.docs.map((doc) => {'id': doc.id, ...doc.data()}).toList();
-  }
-
-  Future<List<Map<String, dynamic>>> getDonors() async {
-    final snapshot = await FirebaseFirestore.instance.collection('users').get();
-    return snapshot.docs.map((doc) => {'id': doc.id, ...doc.data()}).toList();
-  }
-
-  Future<void> approveOrganization(String orgId) async {
-    await FirebaseFirestore.instance.collection('organizations').doc(orgId).update({'approval': 'APPROVED'});
   }
 }

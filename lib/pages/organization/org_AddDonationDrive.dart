@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:app/providers/organization_provider.dart';
+import 'package:ELBIdonate/providers/organization_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -99,6 +99,17 @@ class _addDonationDriveState extends State<AddDonationDrive> {
         onPressed: () async {
           if (_formKey.currentState!.validate() && imgFile != null) {
             _formKey.currentState!.save();
+
+            // Check if the donation drive name already exists
+            bool nameExists = await context
+                .read<OrgProvider>()
+                .isDonationDriveNameExists(name!);
+            if (nameExists) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('A donation drive with this name already exists!')),
+              );
+              return;
+            }
 
             if (imgFile != null) {
               String uniqueFileName =

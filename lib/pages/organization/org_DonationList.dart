@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 
-import 'package:app/models/donation_model.dart';
-import 'package:app/pages/organization/org_DonationView.dart';
-import 'package:app/providers/organization_provider.dart';
+import 'package:ELBIdonate/models/donation_model.dart';
+import 'package:ELBIdonate/pages/organization/org_DonationView.dart';
+import 'package:ELBIdonate/providers/organization_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -62,15 +62,29 @@ class _DonationListState extends State<OrgDonationList> {
                     Row(
                       children: [
                         Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                dono.category.join(', '), //fix later
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                  color: Colors.white,
+                              dono.image != null
+                                  ? Padding(
+                                      padding: EdgeInsets.only(right: 8),
+                                      child: Image.network(
+                                        '${dono.image}',
+                                        width: 50,
+                                        height: 50,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    )
+                                  : Container(),
+                              Expanded(
+                                child: Text(
+                                  dono.category.join(', '), //fix later
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
                             ],
@@ -121,12 +135,6 @@ class _DonationListState extends State<OrgDonationList> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     Navigator.pushNamed(context, "/second");
-      //   },
-      //   child: Icon(Icons.person),
-      // ),
     );
   }
 }
