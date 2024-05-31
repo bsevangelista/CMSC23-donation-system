@@ -8,6 +8,7 @@ import 'package:ELBIdonate/pages/authentication/home_page.dart';
 import 'package:ELBIdonate/pages/authentication/orgsignup_page.dart';
 import 'package:ELBIdonate/pages/authentication/signup_page.dart';
 import 'package:ELBIdonate/pages/donor/donate_page.dart';
+import 'package:ELBIdonate/pages/donor/donation_details.dart';
 import 'package:ELBIdonate/pages/donor/donor_homepage.dart';
 import 'package:ELBIdonate/pages/donor/donor_profile.dart';
 import 'package:ELBIdonate/pages/donor/organization_details.dart';
