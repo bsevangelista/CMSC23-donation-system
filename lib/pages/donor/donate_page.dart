@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:ELBIdonate/models/donation_model.dart';
+import 'package:ELBIdonate/models/donor_model.dart';
 import 'package:ELBIdonate/models/organization_model.dart';
 import 'package:ELBIdonate/providers/donation_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

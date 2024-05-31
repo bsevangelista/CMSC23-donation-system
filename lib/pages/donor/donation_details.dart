@@ -1,6 +1,5 @@
-import 'package:app/models/donation_model.dart';
-import 'package:app/pages/donor/donor_profile.dart';
-import 'package:app/providers/donation_provider.dart';
+import 'package:ELBIdonate/models/donation_model.dart';
+import 'package:ELBIdonate/providers/donation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
