@@ -104,6 +104,7 @@ class FirebaseAuthAPI {
     required String organizationName,
     required String description,
     required String email,
+    required String logo,
   }) async {
     try {
       UserCredential credential = await auth.createUserWithEmailAndPassword(
@@ -117,6 +118,7 @@ class FirebaseAuthAPI {
         'email': email,
         'name': organizationName,
         'status': "CLOSED",
+        'logo': logo,
       });
     } on FirebaseAuthException catch (e) {
       print(_handleAuthException(e));
