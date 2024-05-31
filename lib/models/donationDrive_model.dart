@@ -25,10 +25,10 @@ class DonationDrive {
       id: json['id'],
       name: json['name'],
       description: json['description'],
-      donations: List<String>.from(json['donations']),
+      donations: List<String>.from(json['donations'] ?? []),
       organization: json['organization'],
       logo: json['logo'],
-      proof: List<String>.from(json['proof']),
+      proof: List<String>.from(json['proof'] ?? []),
     );
   }
 
