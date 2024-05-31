@@ -53,12 +53,18 @@ class FirebaseOrgAPI {
         .update({"status": newStatus});
   }
 
-  Future<void> updateProofDonationDrive(String donationDriveId, String imageUrl) {
-    return db
-        .collection("donationDrives")
+  Future<void> updateProofDonationDrive(String donationDriveId, String imageUrl) async {
+  try {
+    // Directly update the document with `arrayUnion`
+    await db.collection("donationDrives")
         .doc(donationDriveId)
-        .update({"proof": imageUrl});
+        .update({
+          "proof": FieldValue.arrayUnion([imageUrl])
+        });
+  } catch (e) {
+    print('Error updating proof images: $e');
   }
+}
 
   Future<String> addDonationDrive(Map<String, dynamic> dDrive) async {
     try {
