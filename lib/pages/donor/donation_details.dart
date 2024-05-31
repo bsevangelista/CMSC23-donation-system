@@ -77,7 +77,9 @@ class DonationDetails extends StatelessWidget {
                       ]
                     ),
 
-                    //optional na photo of donated items
+                    if (donation!.image != null) donateDivider(),
+                    headingDisplay("Photo of Donated Items"),
+                    if (donation!.image != null) displayImage(donation!.image!),
 
                     donateDivider(),
                     headingDisplay("Date and Time of Delivery"),
@@ -155,4 +157,8 @@ Widget valueDisplay(String? value){
     padding: const EdgeInsets.only(left: 28.0),
     child: Text(value!)
   );
+}
+
+Widget displayImage(String image){
+  return Image.network(image);
 }
