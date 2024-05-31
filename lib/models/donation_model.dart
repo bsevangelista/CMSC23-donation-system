@@ -9,12 +9,12 @@ class Donation {
   // double weight;
   String weight;
   String weightType;
-  String? image;
+  String image;
   // qr
   DateTime dateTime;
   // Timestamp dateTime;
-  List<String>? address;
-  String? contactNum;
+  List<String> address;
+  String contactNum;
   String status;
   String organization;
   String user;
@@ -25,11 +25,11 @@ class Donation {
     required this.deliveryMode,
     required this.weight,
     required this.weightType,
-    this.image,
+    required this.image,
     // qr
     required this.dateTime,
-    this.address,
-    this.contactNum,
+    required this.address,
+    required this.contactNum,
     required this.status,
     required this.organization,
     required this.user,

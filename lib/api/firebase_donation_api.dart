@@ -19,4 +19,18 @@ class FirebaseDonationAPI{
   //  Stream<QuerySnapshot> getDonationOrganization(String organization) {
   //   return db.collection("organizations").where(snapshot.uid,isEqualTo: organization).snapshots();
   // } 
+
+  Future<DocumentSnapshot> getUserInfo(String user) {
+    return db.collection("users").doc(user).get();
+  }
+
+  Future<String> cancelDonation(String? id, Map<String, dynamic> donation) async{
+    try{
+      await db.collection("donations").doc(id).update(donation);
+
+      return "Donation canceled successfully";
+    }on FirebaseException catch(e) {
+      return "Error at ${e.code}: ${e.message}";
+    }
+  }
 }

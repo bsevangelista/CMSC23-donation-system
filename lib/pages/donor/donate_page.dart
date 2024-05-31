@@ -27,9 +27,24 @@ class _DonatePageState extends State<DonatePage> {
   final Organization organization;
 
   // User? user = FirebaseAuth.instance.currentUser;
+  Donor? _donor;
 
+  @override
+  void initState() {
+    super.initState();
+    fetchUserInfo();
+  }
+
+  void fetchUserInfo() async {
+    DocumentSnapshot userInfoSnapshot = await Provider.of<DonationProvider>(context, listen: false).userInfoFuture;
+    setState(() {
+      _donor = Donor.fromSnapshot(userInfoSnapshot);
+    });
+  }
+  
 
   final _formKey = GlobalKey<FormState>();
+  int _categoryCounter = 0;
 
   bool _food = false;
   bool _clothes = false;
@@ -47,7 +62,8 @@ class _DonatePageState extends State<DonatePage> {
   List<String> _weightTypeChoices = <String>["kg", "lb"];
   String _weightType = "kg"; 
 
-  DateTime _dateTime = DateTime.now().add(Duration(hours: 8));
+  // DateTime _dateTime = DateTime.now().add(Duration(hours: 8));
+  DateTime _dateTime = DateTime.now();
 
   String _addressString = "";
   List<String> _address = [];
@@ -73,8 +89,11 @@ class _DonatePageState extends State<DonatePage> {
     deliveryMode: "Pickup",
     weight: "",
     weightType: "kg",
+    image: "",
     // dateTime: dateTimetoTimestamp(DateTime.now()),
     dateTime: DateTime.now(),
+    contactNum: "",
+    address: [],
     status: "Pending",
     organization: "",
     user: ""
@@ -85,10 +104,10 @@ class _DonatePageState extends State<DonatePage> {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
         appBar: AppBar(
-          backgroundColor: Color.fromARGB(184, 164, 162, 164),
+          backgroundColor: Color.fromARGB(184, 0, 0, 0),
           title: Text(
             "Donate",
-            style: TextStyle(color: Color.fromARGB(255, 0, 0, 0))
+            style: TextStyle(color: Color.fromARGB(255, 235, 235, 235))
           ),
         ),
       body:  SingleChildScrollView(
@@ -119,8 +138,10 @@ class _DonatePageState extends State<DonatePage> {
 
                                   if (_food == true) {
                                     _category.add("food");
+                                    _categoryCounter++;
                                   } else {
                                     _category.remove("food");
+                                    _categoryCounter--;
                                   }
                                 });
                               },
@@ -139,8 +160,10 @@ class _DonatePageState extends State<DonatePage> {
 
                                   if (_clothes == true) {
                                     _category.add("clothes");
+                                    _categoryCounter++;
                                   } else {
                                     _category.remove("clothes");
+                                    _categoryCounter--;
                                   }
                                 });
                               },
@@ -159,8 +182,10 @@ class _DonatePageState extends State<DonatePage> {
 
                                   if (_cash == true) {
                                     _category.add("cash");
+                                    _categoryCounter++;
                                   } else {
                                     _category.remove("cash");
+                                    _categoryCounter--;
                                   }
                                 });
                               },
@@ -179,8 +204,10 @@ class _DonatePageState extends State<DonatePage> {
 
                                   if (_food == true) {
                                     _category.add("necessities");
+                                    _categoryCounter++;
                                   } else {
                                     _category.remove("necessities");
+                                    _categoryCounter--;
                                   }
                                 });
                               },
@@ -197,6 +224,12 @@ class _DonatePageState extends State<DonatePage> {
                                 setState(() {
                                   _others = value!;
                                 });
+
+                                if (_others == true) {
+                                  _categoryCounter++;
+                                } else {
+                                  _categoryCounter--;
+                                }
                               },
                             ),
                             Text("Others"),
@@ -210,7 +243,7 @@ class _DonatePageState extends State<DonatePage> {
                   // OtherCategories(_otherCategoriesStringController, (String val) => _otherCategoriesString = val),
                   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
                   donateDivider(),
-                  Text("Delivery Type", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
+                  Text("Delivery Mode", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
 
 
                   Padding(
@@ -389,15 +422,15 @@ class _DonatePageState extends State<DonatePage> {
                                 FilledButton(
                                   style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
                                   onPressed: () async {
-                                    final DateTime? dateChosen = await showDatePicker(
+                                    final DateTime? _dateChosen = await showDatePicker(
                                       context: context,
                                       initialDate: _dateTime,
                                       firstDate: DateTime.now(),
                                       lastDate: DateTime(3000),
                                     );
-                                    if (dateChosen != null) {
+                                    if (_dateChosen != null) {
                                       setState(() {
-                                        _dateTime = dateChosen;
+                                        _dateTime = DateTime(_dateChosen.year, _dateChosen.month, _dateChosen.day, _dateTime.hour, _dateTime.minute);
                                       });
                                     }
                                   },
@@ -413,8 +446,11 @@ class _DonatePageState extends State<DonatePage> {
                           child: Center(
                             child: Column(
                               children: <Widget> [
-                                if (_dateTime.minute>=10) Text("${_dateTime.hour}:${_dateTime.minute}", style: TextStyle(fontSize: 24)),
-                                if (_dateTime.minute<10) Text("${_dateTime.hour}:0${_dateTime.minute}", style: TextStyle(fontSize: 24)),
+                                if (_dateTime.minute>=10 && _dateTime.hour >=10) Text("${_dateTime.hour}:${_dateTime.minute}", style: TextStyle(fontSize: 24)),
+                                if (_dateTime.minute>=10 && _dateTime.hour <10) Text("0${_dateTime.hour}:${_dateTime.minute}", style: TextStyle(fontSize: 24)),
+
+                                if (_dateTime.minute<10 && _dateTime.hour >=10) Text("${_dateTime.hour}:0${_dateTime.minute}", style: TextStyle(fontSize: 24)),
+                                if (_dateTime.minute<10 && _dateTime.hour <10) Text("0${_dateTime.hour}:0${_dateTime.minute}", style: TextStyle(fontSize: 24)),
                                 FilledButton(
                                   style: FilledButton.styleFrom(backgroundColor: Color.fromARGB(184, 208, 208, 208), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5))), 
                                   onPressed: () async {
@@ -445,9 +481,28 @@ class _DonatePageState extends State<DonatePage> {
           //////////////////////// for pickup only       
                   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
                   if (_deliveryMode=="Pickup") donateDivider(),
-                  if (_deliveryMode=="Pickup") Row(children: [titleStyle("Address"), Text(" (separate using semicolons only)", style: TextStyle(fontSize: 12, color: Color.fromRGBO(120, 117, 117, 1))),]),
+                  if (_deliveryMode=="Pickup") Row(children: [titleStyle("Address/es"), Text(" (separate using semicolons only)", style: TextStyle(fontSize: 12, color: Color.fromRGBO(120, 117, 117, 1))),]),
 
                   if (_deliveryMode=="Pickup") Address(_addressStringController, (String val) => _addressString = val),
+                  if (_deliveryMode=="Pickup") Padding(
+                                                padding: const EdgeInsets.only(left: 65.0),
+                                                child: TextButton(
+                                                  style: TextButton.styleFrom(
+                                                    backgroundColor: Color.fromARGB(184, 208, 208, 208),
+                                                  ),
+                                                  onPressed: () {
+
+                                                    for (int i=0; i<_donor!.address.length; i++) {
+                                                      if (i>0) {
+                                                        _addressStringController.text=_addressStringController.text+";"+_donor!.address[i];
+                                                      }else{
+                                                        _addressStringController.text=_donor!.address[0];
+                                                      }
+                                                    }
+                                                  },
+                                                  child: Text("Use user address/es", style: TextStyle(fontSize: 12, color: Color.fromRGBO(120, 117, 117, 1)))
+                                                ),
+                                              ),
 
 
                   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -455,20 +510,22 @@ class _DonatePageState extends State<DonatePage> {
                   if (_deliveryMode=="Pickup") titleStyle("Contact No"),
 
                   if (_deliveryMode=="Pickup") ContactNo(_contactNumController, (String val) => _contactNum = val),
+                  if (_deliveryMode=="Pickup") Padding(
+                                                padding: const EdgeInsets.only(left: 45.0),
+                                                child: TextButton(
+                                                  style: TextButton.styleFrom(
+                                                    backgroundColor: Color.fromARGB(184, 208, 208, 208),
+                                                  ),
+                                                  onPressed: () {
+                                                    _contactNumController.text=_donor!.contactNum;
+                                                  },
+                                                  child: Text("Use user contact number", style: TextStyle(fontSize: 12, color: Color.fromRGBO(120, 117, 117, 1)))
+                                                ),
+                                              ),
                   
           //////////////////////// for pickup only       
-          
-
-          //////////////////////// for dropoff only
-                  if (_deliveryMode=="Dropoff") donateDivider(),
-                  if (_deliveryMode=="Dropoff") titleStyle("Generate QR"),
-
-                  if (_deliveryMode=="Dropoff") GenerateQR(),
-
-          
-          //////////////////////// for dropoff only   
+            
                   donateDivider(),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -480,6 +537,9 @@ class _DonatePageState extends State<DonatePage> {
                           if (_dateTime.compareTo(DateTime.now())<0) {
                             ScaffoldMessenger.of(context)
                               .showSnackBar(SnackBar(content: Text("Please set delivery time in the future")));
+                          } else if (_categoryCounter==0) {
+                            ScaffoldMessenger.of(context)
+                              .showSnackBar(SnackBar(content: Text("Please choose/enter at least one donation category")));
                           }
                           else if (_formKey.currentState!.validate()) {
                             _formKey.currentState?.save();
@@ -491,10 +551,6 @@ class _DonatePageState extends State<DonatePage> {
                                   _category.add(_otherCategories[i]);
                                 }
                               }
-
-                              _address = _addressString.split(";").map((x) => x.trim()).where((element)=>element.isNotEmpty).toList();
-                              _tempDonation.address = _address;
-
                               _tempDonation.category=_category;
                               _tempDonation.organization=organization.id!;
                               _tempDonation.deliveryMode=_deliveryMode;
@@ -504,22 +560,20 @@ class _DonatePageState extends State<DonatePage> {
                               // _tempDonation.dateTime=dateTimetoTimestamp(_dateTime);
                               _tempDonation.dateTime=_dateTime;
                               // _tempDonation.user=user!.uid;
+                              _tempDonation.user=_donor!.id!;
 
                               if (_imageUrl!="") {
                                 _tempDonation.image=_imageUrl;
                               }
 
-
-                            if (_deliveryMode=="Pickup") {
-                              // setState(() {
-                                //address
-                                _tempDonation.contactNum=_contactNum;
-                              // });
-                            } else{
-                              // setState(() {
-                                //qr
-                              // });
-                            }
+                            // if (_deliveryMode=="Pickup") {
+                              _address = _addressStringController.text.split(";").map((x) => x.trim()).where((element)=>element.isNotEmpty).toList();
+                              _tempDonation.address = _address;
+                                  
+                              _tempDonation.contactNum = _contactNumController.text;
+                            // } else{
+                              // qr
+                            // }
 
                             
 
@@ -545,9 +599,26 @@ class _DonatePageState extends State<DonatePage> {
                           // Text("Generate QR", style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)))
                       ),
                     ]
-                  )
+                  ),
 
+          //////////////////////// for dropoff only
+                  if (_deliveryMode=="Dropoff") donateDivider(),
+                  if (_deliveryMode=="Dropoff") titleStyle("Generate QR"),
 
+                  
+                            // Reference referenceDonationDocumentToUpload = reference
+                            // try{
+                            //   await referenceImageToUpload.putFile(File(file!.path));
+                            //   _imageUrl = await referenceImageToUpload.getDownloadURL();
+                            // }catch(error){
+
+                            // }
+                            // final docRef = Firestore.instance.collection();
+
+                  if (_deliveryMode=="Dropoff") GenerateQR(),
+
+          
+          //////////////////////// for dropoff only 
 
                   ] // children
                 )

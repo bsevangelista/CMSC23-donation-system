@@ -1,3 +1,4 @@
+
 import 'package:ELBIdonate/models/donation_model.dart';
 import 'package:ELBIdonate/models/organization_model.dart';
 import 'package:ELBIdonate/providers/donation_provider.dart';
@@ -6,7 +7,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-// bHFOC8lDAKTiXhFhSuPfLPR2Tm42
 
 
 class DonorProfile extends StatefulWidget {
@@ -17,6 +17,21 @@ class DonorProfile extends StatefulWidget {
 }
 
 class _DonorProfileState extends State<DonorProfile> {
+  Donor? _donor;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserInfo();
+  }
+
+  void fetchUserInfo() async {
+    DocumentSnapshot userInfoSnapshot = await Provider.of<DonationProvider>(context, listen: false).userInfoFuture;
+    setState(() {
+      _donor = Donor.fromSnapshot(userInfoSnapshot);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -81,94 +96,74 @@ class _DonorProfileState extends State<DonorProfile> {
 
               List<DocumentSnapshot> userDonationsList = snapshot2.data!.docs;
 
+              if (userDonationsList.isEmpty) {
+                return Center(
+                  child: Column(
+                    children: [
+                      Icon(Icons.volunteer_activism),
+                      Text("No donations made yet.")
+                    ]
+                  )
+                );
+              }
+
               // return Row(
 
-              return Column(
-                children: [
-                  SizedBox(
-                    height: 60,
-                  ),
-                  Header(),
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Header(_donor!),
+                    Container(
+                      height: (80*userDonationsList.length.toDouble()),
+                      child:
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          padding: EdgeInsets.zero,
+                          itemCount: userDonationsList.length,
+                          itemBuilder: ((context, index) {
+                            Donation donation = Donation.fromJson(
+                              snapshot2.data?.docs[index].data() as Map<String,dynamic>
+                            );
 
-                  ////////////////////
-                  // Expanded(
-                  //   flex: 3,
-                  //   child: Header()
-                  // ),
-                
+                            donation.id = snapshot2.data?.docs[index].id;
 
-                  // Expanded(
-                  ////////////////////
+                            String _donationOrganization = "";
 
-                  Container(
+                            for (int i = 0; i < organizationsList.length; i++) {
+                              if (donation.organization==snapshot1.data?.docs[i].id) {
+                                Organization organization = Organization.fromJson(
+                                  snapshot1.data?.docs[i].data() as Map<String,dynamic>
+                                );
 
-                /////////////
-                // height: 200.0,
-                    // flex: 7,
-                /////////////
+                                _donationOrganization = organization.name;
+                              }
+                            } 
+                                        
+                          
 
-                    ////// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    //  decoration: BoxDecoration(
-                    //   border: Border.all(color: Colors.blueAccent)
-                    // ),
-                    ////// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    child:
-
-                    ///////////
-                    // children: [
-                    ///////////
-                      ListView.builder(
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        itemCount: userDonationsList.length,
-                        itemBuilder: ((context, index) {
-                          Donation donation = Donation.fromJson(
-                            snapshot2.data?.docs[index].data() as Map<String,dynamic>
-                          );
-
-                          donation.id = snapshot2.data?.docs[index].id;
-
-                          String _donationOrganization = "";
-
-                          for (int i = 0; i < organizationsList.length; i++) {
-                            if (donation.organization==snapshot1.data?.docs[i].id) {
-                              Organization organization = Organization.fromJson(
-                                snapshot1.data?.docs[i].data() as Map<String,dynamic>
-                              );
-
-                              _donationOrganization = organization.name;
-                            }
-                          } 
-                                      
-                        
-
-                          return Padding(
-                            padding: EdgeInsets.all(10),
-                            child: ListTile(
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5)),
-                              tileColor: Color.fromARGB(184, 164, 162, 164),
-                              // title: Text(donation.id),
-                              // title: Text(donation.organization),
-                              title: Text(_donationOrganization),
-                              // trailing: FilledButton(onPressed: () {Navigator.pushNamed(context, "/second", arguments: snapshot.data?.docs[index]);} , child: Text("View Details", style: TextStyle(fontSize: 10))),
-                              trailing: FilledButton(
-                                onPressed: () {
-                                  // Navigator.pushNamed(context, "/organizationdetails", arguments: organization);
-                                  } , 
-                                child: Text("View Details", style: TextStyle(fontSize: 10))),
-                            )
-                          );
-                        }) 
-                      )
-                    // ]
-                  ),
-                  ////////////////////
-                  // Expanded(
-                  //   flex: 1,
-                  //   child: Container(),
-                  // )
-                  ////////////////////
-                ]
+                            return Padding(
+                              padding: EdgeInsets.all(10),
+                              child: 
+                                    ListTile(
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.5)),
+                                      tileColor: Color.fromARGB(184, 0, 0, 0),
+                                      title: Text(_donationOrganization, style: TextStyle(color: Colors.white)),
+                                      trailing: TextButton(
+                                        onPressed: () {
+                                          Navigator.pushNamed(context, "/donationdetails", arguments: DonationArguments(donation, _donationOrganization));
+                                          } , 
+                                        child: Text("View Details", style: TextStyle(fontSize: 10, color: Colors.white))),
+                                    )
+                            );
+                          }) 
+                        )
+                    ),
+                  ]
+                )
               ); 
             }
           );
@@ -179,7 +174,7 @@ class _DonorProfileState extends State<DonorProfile> {
 }
 
 
-Widget Header(){
+Widget Header(Donor donor){
   return Padding(
     // padding: const EdgeInsets.all(20),
     padding: EdgeInsets.only(left: 20, top: 20, right: 20),
@@ -191,15 +186,18 @@ Widget Header(){
           children: [
             CircleAvatar(
               radius: 40,
-              backgroundImage: Image.network('https://docs.flutter.dev/assets/images/dash/dash-fainting.gif').image,
+              // backgroundImage: Image.network('https://docs.flutter.dev/assets/images/dash/dash-fainting.gif').image,
+              // backgroundColor: Colors.blue.shade300,
+              backgroundColor: Color.fromARGB(255, 0, 0, 0),
+              child: Text("${donor.username.substring(0,1)}", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
             ),
             SizedBox(width: 20),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children:[
-                Text("Temp Donor Name", style: TextStyle(fontSize: 24, color: Colors.black, fontWeight: FontWeight.bold)),
-                Text("tempdonor@email.com"),
+                Text("${donor.name}", style: TextStyle(fontSize: 24, color: Colors.black, fontWeight: FontWeight.bold)),
+                Text("${donor.email}"),
               ]
             )
           ]
@@ -220,7 +218,10 @@ Widget Header(){
 
 
 
+class DonationArguments{
+  final Donation? donation;
+  final String? orgName;
 
-
-
+  DonationArguments(this.donation, this.orgName);
+}
 
