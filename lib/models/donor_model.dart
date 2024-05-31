@@ -4,7 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Donor {
   String? id;
-  String address;
+  // String address;
+  List<String> address;
   String contactNum;
   String email;
   String name;
@@ -22,7 +23,7 @@ class Donor {
   factory Donor.fromJson(Map<String, dynamic> json) {
     return Donor(
       id: json['id'],
-      address: json['address'],
+      address: List<String>.from(json['address']),
       contactNum: json['contactNum'],
       email: json['email'],
       name: json['name'],
@@ -34,7 +35,7 @@ class Donor {
     Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
     return Donor(
       id: snapshot.id,
-      address: data['address'],
+      address: List<String>.from(data['address']),
       contactNum: data['contactNum'],
       email: data['email'], 
       name: data['name'],

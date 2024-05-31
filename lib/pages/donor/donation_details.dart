@@ -166,15 +166,18 @@ Widget cancelButton(BuildContext context, Donation donation){
 
 Widget displayList(List<String> list){
   return Container(
-    height: (50*list.length.toDouble()),
+    height: (25*list.length.toDouble()),
     child: 
       ListView.builder(
         physics: const NeverScrollableScrollPhysics(),
         itemCount: list.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            contentPadding: EdgeInsets.zero,
-            title: valueDisplay(list[index])
+          // return ListTile(
+          //   contentPadding: EdgeInsets.zero,
+          //   title: valueDisplay(list[index])
+          // );
+          return Container(
+            child: valueDisplay(list[index])
           );
         }
       ),

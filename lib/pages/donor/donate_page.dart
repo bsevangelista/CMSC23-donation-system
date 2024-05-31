@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:app/models/donation_model.dart';
+import 'package:app/models/donor_model.dart';
 import 'package:app/models/organization_model.dart';
 import 'package:app/providers/donation_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +30,22 @@ class _DonatePageState extends State<DonatePage> {
   _DonatePageState(this.organization);
   final Organization organization;
 
-  User? user = FirebaseAuth.instance.currentUser;
+  // User? user = FirebaseAuth.instance.currentUser;
+  Donor? _donor;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserInfo();
+  }
+
+  void fetchUserInfo() async {
+    DocumentSnapshot userInfoSnapshot = await Provider.of<DonationProvider>(context, listen: false).userInfoFuture;
+    setState(() {
+      _donor = Donor.fromSnapshot(userInfoSnapshot);
+    });
+  }
+  
 
   final _formKey = GlobalKey<FormState>();
   int _categoryCounter = 0;
@@ -467,6 +484,25 @@ class _DonatePageState extends State<DonatePage> {
                   if (_deliveryMode=="Pickup") Row(children: [titleStyle("Address"), Text(" (separate using semicolons only)", style: TextStyle(fontSize: 12, color: Color.fromRGBO(120, 117, 117, 1))),]),
 
                   if (_deliveryMode=="Pickup") Address(_addressStringController, (String val) => _addressString = val),
+                  if (_deliveryMode=="Pickup") Padding(
+                                                padding: const EdgeInsets.only(left: 65.0),
+                                                child: TextButton(
+                                                  style: TextButton.styleFrom(
+                                                    backgroundColor: Color.fromARGB(184, 208, 208, 208),
+                                                  ),
+                                                  onPressed: () {
+
+                                                    for (int i=0; i<_donor!.address.length; i++) {
+                                                      if (i>0) {
+                                                        _addressStringController.text=_addressStringController.text+";"+_donor!.address[i];
+                                                      }else{
+                                                        _addressStringController.text=_donor!.address[0];
+                                                      }
+                                                    }
+                                                  },
+                                                  child: Text("Use user address/es", style: TextStyle(fontSize: 12, color: Color.fromRGBO(120, 117, 117, 1)))
+                                                ),
+                                              ),
 
 
                   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -474,6 +510,18 @@ class _DonatePageState extends State<DonatePage> {
                   if (_deliveryMode=="Pickup") titleStyle("Contact No"),
 
                   if (_deliveryMode=="Pickup") ContactNo(_contactNumController, (String val) => _contactNum = val),
+                  if (_deliveryMode=="Pickup") Padding(
+                                                padding: const EdgeInsets.only(left: 65.0),
+                                                child: TextButton(
+                                                  style: TextButton.styleFrom(
+                                                    backgroundColor: Color.fromARGB(184, 208, 208, 208),
+                                                  ),
+                                                  onPressed: () {
+                                                    _contactNumController.text=_donor!.contactNum;
+                                                  },
+                                                  child: Text("Use user contact number", style: TextStyle(fontSize: 12, color: Color.fromRGBO(120, 117, 117, 1)))
+                                                ),
+                                              ),
                   
           //////////////////////// for pickup only       
           
@@ -513,10 +561,6 @@ class _DonatePageState extends State<DonatePage> {
                                   _category.add(_otherCategories[i]);
                                 }
                               }
-
-                              _address = _addressString.split(";").map((x) => x.trim()).where((element)=>element.isNotEmpty).toList();
-                              _tempDonation.address = _address;
-
                               _tempDonation.category=_category;
                               _tempDonation.organization=organization.id!;
                               _tempDonation.deliveryMode=_deliveryMode;
@@ -525,7 +569,8 @@ class _DonatePageState extends State<DonatePage> {
                               _tempDonation.weightType=_weightType;
                               // _tempDonation.dateTime=dateTimetoTimestamp(_dateTime);
                               _tempDonation.dateTime=_dateTime;
-                              _tempDonation.user=user!.uid;
+                              // _tempDonation.user=user!.uid;
+                              _tempDonation.user=_donor!.id!;
 
                               if (_imageUrl!="") {
                                 _tempDonation.image=_imageUrl;
@@ -533,14 +578,12 @@ class _DonatePageState extends State<DonatePage> {
 
 
                             if (_deliveryMode=="Pickup") {
-                              // setState(() {
-                                //address
-                                _tempDonation.contactNum=_contactNum;
-                              // });
+                              _address = _addressString.split(";").map((x) => x.trim()).where((element)=>element.isNotEmpty).toList();
+                              _tempDonation.address = _address;
+
+                              _tempDonation.contactNum=_contactNum;
                             } else{
-                              // setState(() {
                                 //qr
-                              // });
                             }
 
                             
