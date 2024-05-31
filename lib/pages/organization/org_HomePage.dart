@@ -46,6 +46,7 @@ class OrgHomePage extends StatelessWidget {
               onPressed: () {
                 context.read<UserAuthProvider>().signOut();
                 Navigator.pop(context);
+                Navigator.pushNamed(context, "/");
               },
             ),
           ],
