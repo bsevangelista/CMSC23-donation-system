@@ -1,5 +1,5 @@
-import 'package:app/models/organization_model.dart';
-import 'package:app/providers/organization_list_provider.dart';
+import 'package:ELBIdonate/models/organization_model.dart';
+import 'package:ELBIdonate/providers/organization_list_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // import '/donor/organization_details.dart';

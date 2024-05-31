@@ -1,8 +1,6 @@
-import 'package:app/models/organization_model.dart';
-import 'package:app/providers/auth_provider.dart';
-import 'package:app/providers/organization_provider.dart';
+import 'package:ELBIdonate/models/organization_model.dart';
+import 'package:ELBIdonate/providers/organization_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

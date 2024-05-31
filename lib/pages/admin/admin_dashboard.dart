@@ -1,5 +1,5 @@
-import 'package:app/providers/admin_provider.dart';
-import 'package:app/providers/auth_provider.dart';
+import 'package:ELBIdonate/providers/admin_provider.dart';
+import 'package:ELBIdonate/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

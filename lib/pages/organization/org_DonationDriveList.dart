@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:app/models/donationDrive_model.dart';
-import 'package:app/pages/organization/org_AddDonationDrive.dart';
-import 'package:app/pages/organization/org_DonationDriveView.dart';
-import 'package:app/providers/organization_provider.dart';
+import 'package:ELBIdonate/models/donationDrive_model.dart';
+import 'package:ELBIdonate/pages/organization/org_AddDonationDrive.dart';
+import 'package:ELBIdonate/pages/organization/org_DonationDriveView.dart';
+import 'package:ELBIdonate/providers/organization_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

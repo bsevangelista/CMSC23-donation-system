@@ -1,4 +1,4 @@
-import 'package:app/models/organization_model.dart';
+import 'package:ELBIdonate/models/organization_model.dart';
 import 'package:flutter/material.dart';
 
 class OrganizationDetails extends StatelessWidget {

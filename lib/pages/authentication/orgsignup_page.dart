@@ -2,8 +2,7 @@
 
 import 'dart:io';
 
-import 'package:app/providers/auth_provider.dart';
-import 'package:app/providers/organization_provider.dart';
+import 'package:ELBIdonate/providers/auth_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';

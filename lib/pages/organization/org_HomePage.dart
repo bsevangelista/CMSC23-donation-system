@@ -1,10 +1,9 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-
-import 'package:app/pages/organization/org_AboutPage.dart';
-import 'package:app/pages/organization/org_DonationDriveList.dart';
-import 'package:app/pages/organization/org_DonationList.dart';
-import 'package:app/providers/auth_provider.dart';
+import 'package:ELBIdonate/pages/organization/org_AboutPage.dart';
+import 'package:ELBIdonate/pages/organization/org_DonationDriveList.dart';
+import 'package:ELBIdonate/pages/organization/org_DonationList.dart';
+import 'package:ELBIdonate/providers/auth_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

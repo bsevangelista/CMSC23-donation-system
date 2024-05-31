@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last
 
-import 'package:app/models/donationDrive_model.dart';
-import 'package:app/models/donation_model.dart';
-import 'package:app/providers/organization_provider.dart';
+import 'package:ELBIdonate/models/donationDrive_model.dart';
+import 'package:ELBIdonate/models/donation_model.dart';
+import 'package:ELBIdonate/providers/organization_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

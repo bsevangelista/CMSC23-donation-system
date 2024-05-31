@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:app/models/donationDrive_model.dart';
-import 'package:app/providers/organization_provider.dart';
+import 'package:ELBIdonate/models/donationDrive_model.dart';
+import 'package:ELBIdonate/providers/organization_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';

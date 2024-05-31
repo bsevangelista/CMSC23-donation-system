@@ -4,10 +4,10 @@
   Description: Sample todo app with Firebase 
 */
 
-import 'package:app/pages/admin/admin_dashboard.dart';
-import 'package:app/pages/donor/donor_homepage.dart';
-import 'package:app/pages/organization/org_HomePage.dart';
-import 'package:app/providers/auth_provider.dart';
+import 'package:ELBIdonate/pages/admin/admin_dashboard.dart';
+import 'package:ELBIdonate/pages/donor/donor_homepage.dart';
+import 'package:ELBIdonate/pages/organization/org_HomePage.dart';
+import 'package:ELBIdonate/providers/auth_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
