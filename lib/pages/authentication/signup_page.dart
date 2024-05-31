@@ -25,6 +25,20 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.favorite,
+              color: Colors.white,
+            ),
+            SizedBox(width: 8),
+            Text(
+              'Elbi Donate',
+              style: TextStyle(color: Colors.white),
+            ),
+          ],
+        ),
         automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
@@ -55,6 +69,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+  
   Widget get heading => const Padding(
         padding: EdgeInsets.only(bottom: 20),
         child: Center(
