@@ -71,7 +71,7 @@ class UserAuthProvider with ChangeNotifier {
 
   Future<void> signOut() async {
     await authService.signOut();
-    _userRole = null;
+    _userRole = null; // Reset user role upon sign-out
     notifyListeners();
   }
 }

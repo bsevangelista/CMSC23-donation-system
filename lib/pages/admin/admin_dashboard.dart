@@ -45,9 +45,9 @@ class OrganizationsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AdminProvider>(
-      builder: (context, authProvider, child) {
+      builder: (context, adminProvider, child) {
         return FutureBuilder<List<Map<String, dynamic>>>(
-          future: authProvider.getOrganizations(),
+          future: adminProvider.getOrganizations(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
@@ -72,7 +72,7 @@ class OrganizationsView extends StatelessWidget {
                       ? Icon(Icons.check, color: Colors.green)
                       : ElevatedButton(
                           onPressed: () {
-                            authProvider.approveOrganization(org['id']);
+                            adminProvider.approveOrganization(org['id']);
                           },
                           child: Text('Approve'),
                         ),
@@ -95,9 +95,9 @@ class DonationsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AdminProvider>(
-      builder: (context, authProvider, child) {
+      builder: (context, adminProvider, child) {
         return FutureBuilder<List<Map<String, dynamic>>>(
-          future: authProvider.getDonations(),
+          future: adminProvider.getDonations(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
@@ -139,9 +139,9 @@ class DonorsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AdminProvider>(
-      builder: (context, authProvider, child) {
+      builder: (context, adminProvider, child) {
         return FutureBuilder<List<Map<String, dynamic>>>(
-          future: authProvider.getDonors(),
+          future: adminProvider.getDonors(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
